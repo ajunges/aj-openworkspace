@@ -1,4 +1,4 @@
-# Performance e Boas Práticas — Claude Code Desktop App (macOS)
+# Performance e Boas Práticas — Claude Code Desktop App
 
 > Guia pessoal de otimização e referência rápida.
 > Atualizado em abril/2026.
