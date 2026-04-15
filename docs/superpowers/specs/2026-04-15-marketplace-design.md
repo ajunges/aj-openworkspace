@@ -38,8 +38,8 @@ Tudo na raiz do repo, seguindo a convenção markdown-flat do `CLAUDE.md` local.
 ```
 aj-openworkspace/
 ├── .claude-plugin/
-│   └── marketplace.json                           # 15 plugins curados
-├── plugins/
+│   └── marketplace.json                           # 15 plugins curados (raiz obrigatória pelo schema)
+├── plugins/                                       # raiz (convenção do modelo de plugins)
 │   ├── marketplace-tools/
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
@@ -53,17 +53,25 @@ aj-openworkspace/
 │       │   └── sdd-workflow/
 │       │       └── SKILL.md                       # sanitizado (ver seção 8)
 │       └── README.md
-├── CLAUDE-PLUGINS.md                              # README do marketplace
-├── README.md                                     # atualizado com link pro CLAUDE-PLUGINS.md
-├── CLAUDE.md                                     # inalterado
-└── claude-code-desktop-performance.md             # inalterado
+├── marketplace/                                   # docs humanas do marketplace
+│   └── README.md                                  # conteúdo detalhado na seção 9
+├── guias/
+│   └── claude-code-desktop-performance.md         # movido da raiz (git mv)
+├── docs/
+│   └── superpowers/specs/
+│       └── 2026-04-15-marketplace-design.md       # este spec (artefato de brainstorming)
+├── README.md                                      # atualizado: contexto (CRO+IA) + marketplace + link do guia movido
+└── CLAUDE.md                                      # inalterado
 ```
 
-**Decisões estruturais**:
+**Decisões estruturais** (Opção B escolhida no brainstorm):
 
-- `CLAUDE-PLUGINS.md` na raiz em vez de `plugins/README.md` — mantém consistência com o guia existente (`claude-code-desktop-performance.md` também fica na raiz). Leitores do GitHub veem imediatamente.
-- `.gitkeep` na pasta `plugins/` **não é necessário** porque a pasta já terá conteúdo desde o dia zero (`marketplace-tools/` e `sdd-workflow/`).
-- `docs/superpowers/specs/` existe **apenas** para abrigar este spec como artefato de processo do brainstorming. Não é parte da estrutura do marketplace nem do playbook do repo.
+- **`.claude-plugin/marketplace.json` na raiz** — obrigatório pelo protocolo do Claude Code. Quando o usuário roda `/plugin marketplace add ajunges/aj-openworkspace`, o Claude Code clona o repo e procura exatamente esse path. Não é configurável. Citação da doc oficial: *"Create `.claude-plugin/marketplace.json` in your repository root."*
+- **`plugins/` na raiz** — segue a convenção oficial do modelo. A doc exemplifica sempre com `./plugins/<nome>`. Fugir disso é possível (via `./marketplace/plugins/xxx`) mas foi **rejeitado** pelo trade-off de confundir leitores e quebrar assumptions de ferramentas externas. Descartada no brainstorm como Opção C.
+- **`marketplace/` (nova pasta)** — agrupa docs humanas específicas do marketplace (README do marketplace + futuros CHANGELOG, update-policy, examples). Substitui o `CLAUDE-PLUGINS.md` na raiz que estava no design original. Motivo: o prefixo `CLAUDE-` é convenção para arquivos que instruem o Claude; o README do marketplace é doc pra humanos e não deveria usar esse prefixo. Além disso, agrupar numa pasta antecipa docs futuras do marketplace.
+- **`guias/` (nova pasta)** — agrupa guias opinativos do repo. O único guia existente (`claude-code-desktop-performance.md`) está na raiz só porque nunca foi organizado. A implementação deve mover via `git mv` (preserva histórico) e atualizar o link no `README.md`.
+- **`docs/superpowers/specs/` (nova árvore)** — abriga artefatos de processo do brainstorming, separado do produto principal (`guias/`). O primeiro (e por enquanto único) arquivo é este próprio spec.
+- **`.gitkeep`** não é necessário em nenhuma pasta nova — todas têm conteúdo desde o dia zero.
 
 ---
 
@@ -99,7 +107,7 @@ aj-openworkspace/
 | **2** | `url`/`git-subdir` **com** `sha` | Commit fixo, updates opt-in | Plugins que injetam skills/hooks/agents ativos; criticidade alta no workflow; stability-first |
 | **3** | `./plugins/xxx` | Código no próprio repo | Skills/commands próprios, forks locais, independência total |
 
-O nível **não vai no array `tags`** — é derivado do campo `source` e explicado no `CLAUDE-PLUGINS.md`.
+O nível **não vai no array `tags`** — é derivado do campo `source` e explicado no `marketplace/README.md`.
 
 ### 5.2 Status (primeira posição do `tags`)
 
@@ -123,7 +131,7 @@ Campo aberto (2-4 tags após o status), vocabulário base:
 | **Função** | `workflow`, `meta-skills`, `review`, `seguranca`, `mcp`, `lsp`, `integracao` | O que o plugin faz |
 | **Domínio** | `git`, `python`, `jira`, `azure`, `docs`, `core`, `solo-dev`, `meta-marketplace` | Área de atuação |
 
-Vocabulário é **aberto** — novas tags podem ser adicionadas livremente. Esta é a baseline documentada no `CLAUDE-PLUGINS.md`.
+Vocabulário é **aberto** — novas tags podem ser adicionadas livremente. Esta é a baseline documentada no `marketplace/README.md`.
 
 ---
 
@@ -173,7 +181,7 @@ Cada plugin tem uma `description` em pt-BR escrita do ponto de vista do usuário
 - **superpowers** — "Pacote de skills que ensinam brainstorming, TDD, debugging sistemático, subagent-driven development e criação de skills. Base do meu workflow. SHA pinnado porque as skills injetam comportamento ativo e updates frequentes podem mudar o fluxo mid-sprint."
 - **code-review** — "Agent de code review com scoring por confidence. Uso como segundo par de olhos antes de merge em branches de trabalho."
 - **code-simplifier** — "Agent que refina código recém-modificado pra clareza e manutenção sem mudar comportamento. Rodo no final de feature antes do commit final."
-- **commit-commands** — "Slash commands `/commit`, `/commit-push-pr` e `/clean_gone`. Substitui digitação manual do fluxo git e gera mensagens consistentes. Obs: sobrescrevi o template de commit no meu `~/.claude/CLAUDE.md` para não adicionar `Co-Authored-By: Claude`."
+- **commit-commands** — "Slash commands `/commit`, `/commit-push-pr` e `/clean_gone`. Substitui digitação manual do fluxo git. Personalização: removi o `Co-Authored-By: Claude` do template no meu `CLAUDE.md` global — sou CRO do Grupo Supero (não-dev), todo código neste repo é escrito via Claude Code, e prefiro manter o author primário como eu mesmo: a IA é ferramenta, não colaborador atribuído."
 - **feature-dev** — "Workflow de desenvolvimento de features com agents de exploração, arquitetura e review. Complementa superpowers em projetos maiores."
 - **skill-creator** — "Meta-skill pra criar, editar e avaliar skills. Uso quando vou escrever skills próprias (Level 3 deste marketplace)."
 - **claude-md-management** — "Skills pra auditar e melhorar `CLAUDE.md`. Mantém o arquivo conciso e alinhado com best practices."
@@ -358,6 +366,23 @@ Baseline: SKILL.md fornecido pelo usuário em `~/Downloads/SKILL.md` (versão pr
 | L99-108 | Título "Stack **Obrigatória**" | Título "Stack **Default** (preferência do autor; substituir no constitution se o projeto exigir outra)" |
 | L192 | "Stack tecnológica (conforme constitution — não renegociar)" | "Stack tecnológica definida no constitution do projeto (pode divergir da default)" |
 
+**Adição no topo do SKILL.md sanitizado** (bloco de contexto do autor, antes da Fase 0):
+
+Inserir após o título `# Spec-Driven Development Workflow` e antes de `**REGRA INVIOLÁVEL**`:
+
+```markdown
+> **Contexto do autor**: este workflow foi desenvolvido por um não-programador
+> (CRO do Grupo Supero) para dirigir o Claude Code na construção de sistemas
+> completos — todo o código é gerado por IA. Os gates, quality checks e a
+> auditoria em 8 dimensões existem exatamente para compensar a falta de
+> conhecimento técnico direto: o humano valida resultado e regras de negócio,
+> a IA escreve código. Se você é desenvolvedor experiente, provavelmente
+> muitos dos guard rails vão parecer excessivos — use o que fizer sentido pro
+> seu contexto.
+```
+
+Esse bloco é **informativo, não instrutivo** — não muda o comportamento da skill quando invocada, só contextualiza quem lê o arquivo de origem (no repo público ou pelo marketplace).
+
 **O que NÃO é modificado** (preserva a substância):
 
 - Estrutura completa de 7 fases + gates
@@ -380,16 +405,24 @@ Baseline: SKILL.md fornecido pelo usuário em `~/Downloads/SKILL.md` (versão pr
 
 ---
 
-## 9. CLAUDE-PLUGINS.md — README do marketplace
+## 9. marketplace/README.md — README do marketplace
 
-Arquivo na raiz do repo, house style do projeto (H2 numeradas separadas por `---`, tom imperativo-opinativo, tabelas, pt-BR).
+Arquivo em `marketplace/README.md` (pasta nova, criada na Opção B). House style do projeto (H2 numeradas separadas por `---`, tom imperativo-opinativo, tabelas, pt-BR).
+
+**Motivo da localização** (`marketplace/README.md` em vez de `CLAUDE-PLUGINS.md` na raiz, que era o design original):
+
+- Prefixo `CLAUDE-` é convenção para arquivos que instruem o Claude (`CLAUDE.md`); este arquivo é doc pra humanos, não deve usar o prefixo.
+- Agrupar docs do marketplace numa pasta dedicada antecipa adições futuras (`CHANGELOG.md`, `update-policy.md`, `examples.md`) sem espalhar arquivos na raiz.
+- O `README.md` principal do repo linka pra cá na nova seção "Marketplace" (ver §10).
 
 ### 9.1 Estrutura de seções
 
 ```
-# Meu marketplace curado de plugins do Claude Code
+# Marketplace aj-openworkspace — plugins curados do Claude Code
 
-> Curadoria pessoal do André Junges. N plugins hoje, modelo híbrido em 3 níveis.
+> Curadoria pessoal do André Junges. 15 plugins, modelo híbrido em 3 níveis.
+> Contexto: sou CRO do Grupo Supero (não-dev), todo o código deste
+> marketplace é escrito por IA via Claude Code.
 
 ## 1. Como instalar
 
@@ -413,6 +446,8 @@ Arquivo na raiz do repo, house style do projeto (H2 numeradas separadas por `---
 
 ### 9.2 Conteúdo por seção
 
+**Bloco de contexto no topo** — parágrafo curto após o blockquote de abertura: "Repo mantido por André Junges, CRO do Grupo Supero, não-programador. Todo o código, configuração e plugins próprios deste marketplace foi escrito por IA via Claude Code. Isto é um playbook público de alguém aprendendo em público a dirigir IA para produzir software — não é projeto de engenharia profissional."
+
 **§1 Como instalar** — bloco com `/plugin marketplace add ajunges/aj-openworkspace` + `/plugin install <nome>@aj-openworkspace`. Um parágrafo sobre o que você ganha (os 15 plugins com tagging opinativo).
 
 **§2 Modelo de 3 níveis** — tabela idêntica à §5.1 deste spec, um parágrafo por nível com critério de quando usar.
@@ -421,7 +456,7 @@ Arquivo na raiz do repo, house style do projeto (H2 numeradas separadas por `---
 
 **§4 Vocabulário de tags livres** — tabela idêntica à §5.3 deste spec. Nota de que é vocabulário aberto.
 
-**§5 Plugins hoje** — três subseções agrupando por Level. Para cada plugin: nome, status (emoji ou bullet indicando), descrição curta (1-2 linhas do parágrafo opinativo), link pro upstream. Visual de catálogo.
+**§5 Plugins hoje** — três subseções agrupando por Level. Para cada plugin: nome, status (bullet indicando), descrição curta (1-2 linhas do parágrafo opinativo), link pro upstream. Visual de catálogo.
 
 **§6 Atualizando pins** — explicação curta do problema (SHAs viram stale) + referência ao slash command `/check-marketplace-updates` do `marketplace-tools` + exemplo de invocação.
 
@@ -429,31 +464,57 @@ Arquivo na raiz do repo, house style do projeto (H2 numeradas separadas por `---
 
 **§8 Fontes** — links canônicos:
 - Schema oficial: `https://anthropic.com/claude-code/marketplace.schema.json`
-- Docs Anthropic sobre marketplaces
+- Docs Anthropic sobre marketplaces: `https://code.claude.com/docs/en/plugin-marketplaces`
 - Repo `anthropics/claude-plugins-official` (upstream dos Level 1/2 Anthropic)
 - Plugins individuais com link direto
 
 ### 9.3 Tamanho esperado
 
-200-300 linhas. Segue o padrão do `claude-code-desktop-performance.md` mas mais compacto (guia de referência, não tutorial).
+200-300 linhas. Segue o padrão do `guias/claude-code-desktop-performance.md` mas mais compacto (guia de referência, não tutorial).
 
 ---
 
 ## 10. Atualização do README.md existente
 
-Adicionar seção "Marketplace" entre "Guias" e "Roadmap" no `README.md` atual:
+Três mudanças no `README.md` principal, em ordem:
+
+### 10.1 Nova seção "Contexto" após o parágrafo de abertura
+
+Inserir logo após o blockquote que descreve o repo ("Playbook pessoal do André Junges..."), antes de `## Guias`:
+
+```markdown
+## Contexto
+
+Este repo é mantido por André Junges, CRO do Grupo Supero. **Não sou desenvolvedor** — todo o código deste repositório (`marketplace.json`, plugins próprios, scripts, configs) é escrito por IA via Claude Code. Uso este espaço como playbook pessoal de trabalho com LLMs e, agora, para distribuir minha curadoria de plugins.
+
+Não é um projeto de engenharia profissional — é um workbook público de alguém aprendendo e documentando em público como dirigir IA para produzir software.
+```
+
+### 10.2 Atualização do link na seção "Guias"
+
+O link atual aponta para `claude-code-desktop-performance.md` (raiz). Após o `git mv` para `guias/`, atualizar para:
+
+```markdown
+### Claude Code Desktop — Performance e boas práticas
+
+[guias/claude-code-desktop-performance.md](guias/claude-code-desktop-performance.md)
+```
+
+Texto de descrição do guia (que começa com "Referência em 15 seções numeradas...") permanece inalterado.
+
+### 10.3 Nova seção "Marketplace" entre "Guias" e "Roadmap"
 
 ```markdown
 ## Marketplace
 
 ### aj-openworkspace — plugins curados do Claude Code
 
-[CLAUDE-PLUGINS.md](CLAUDE-PLUGINS.md)
+[marketplace/README.md](marketplace/README.md)
 
-Curadoria pessoal de 15 plugins do Claude Code com sistema de classificação em 3 dimensões (nível, status, tags). Instalável via `/plugin marketplace add ajunges/aj-openworkspace`. Inclui dois plugins próprios: `marketplace-tools` (verifica updates dos SHAs pinnados) e `sdd-workflow` (playbook de Spec-Driven Development para solo devs).
+Curadoria pessoal de 15 plugins do Claude Code com sistema de classificação em 3 dimensões (nível de controle, status, tags). Instalável via `/plugin marketplace add ajunges/aj-openworkspace`. Inclui dois plugins próprios: `marketplace-tools` (verifica updates dos SHAs pinnados) e `sdd-workflow` (playbook de Spec-Driven Development para solo devs não-programadores).
 ```
 
-Não mexer em mais nada do `README.md` existente.
+Não mexer em mais nada do `README.md` existente (seções "Roadmap", "Referências externas", "Licença / uso" ficam como estão).
 
 ---
 
@@ -461,16 +522,22 @@ Não mexer em mais nada do `README.md` existente.
 
 Este é um esboço. O detalhamento fino é trabalho da próxima etapa (`writing-plans`).
 
-1. **Estrutura mínima do marketplace** — criar `.claude-plugin/marketplace.json` com os 13 plugins externos (sem os 2 Level 3 ainda), usando SHAs atuais
-2. **Plugin marketplace-tools** — criar `plugins/marketplace-tools/` completo com plugin.json, command, README
-3. **Plugin sdd-workflow** — criar `plugins/sdd-workflow/`, aplicar sanitização do SKILL.md do download, validar grep final
-4. **Adicionar os 2 Level 3 ao marketplace.json** — incluir entries 14 e 15
-5. **CLAUDE-PLUGINS.md** — escrever o README do marketplace
-6. **README.md update** — adicionar seção de marketplace
-7. **Commit único descritivo** — "Adicionar marketplace curado com 15 plugins e 2 plugins próprios (marketplace-tools, sdd-workflow)"
-8. **Validação manual** — rodar `jq . .claude-plugin/marketplace.json` (checa JSON válido), rodar `/plugin marketplace add` local pra confirmar que resolve, tentar `/check-marketplace-updates` pra validar o próprio slash command
+1. **Reorganização do repo existente** — criar pasta `guias/`, rodar `git mv claude-code-desktop-performance.md guias/claude-code-desktop-performance.md` (preserva histórico), atualizar o link no `README.md` principal
+2. **Estrutura mínima do marketplace** — criar `.claude-plugin/marketplace.json` com os 13 plugins externos (sem os 2 Level 3 ainda), usando SHAs atuais re-confirmados no início da implementação
+3. **Plugin marketplace-tools** — criar `plugins/marketplace-tools/` completo com `plugin.json`, `commands/check-marketplace-updates.md`, `README.md`
+4. **Plugin sdd-workflow** — re-ler `~/Downloads/SKILL.md` (proteção do source §8.4), criar `plugins/sdd-workflow/` com `plugin.json`, `skills/sdd-workflow/SKILL.md` sanitizado + bloco de contexto do autor, `README.md`; rodar grep final por `Supero|dev-monorepo|~/repos/|E8611A|#333333` pra validar sanitização
+5. **Adicionar os 2 Level 3 ao marketplace.json** — incluir entries 14 e 15 apontando para `./plugins/marketplace-tools` e `./plugins/sdd-workflow`
+6. **marketplace/README.md** — escrever o README do marketplace (antigo CLAUDE-PLUGINS.md do design original) dentro da nova pasta `marketplace/`, incluindo bloco de contexto "CRO + IA"
+7. **README.md update** — adicionar seção "Contexto" (§10.1), atualizar link do guia movido (§10.2), adicionar seção "Marketplace" (§10.3)
+8. **Commit descritivo único** — "Adicionar marketplace curado (15 plugins, 2 próprios) e reorganizar repo em subpastas". Mensagem detalhada lista cada grupo de mudança.
+9. **Validação manual**:
+   - `jq . .claude-plugin/marketplace.json` (checa JSON válido)
+   - `claude plugin validate .` (validador oficial se disponível)
+   - `/plugin marketplace add ./` (teste local de resolução)
+   - `/plugin install marketplace-tools@aj-openworkspace` (teste de install)
+   - `/check-marketplace-updates` (valida o próprio slash command contra os 9 SHAs pinnados)
 
-Passo 8 expõe um risco real: o `/check-marketplace-updates` não foi testado contra caso real até a implementação. Plano de contingência no writing-plans.
+Passo 9 expõe um risco real: o `/check-marketplace-updates` não foi testado contra caso real até a implementação. Plano de contingência: se a validação falhar, fix-forward num commit subsequente, não bloqueia o commit principal. Detalhamento no `writing-plans`.
 
 ---
 
@@ -489,8 +556,8 @@ Passo 8 expõe um risco real: o `/check-marketplace-updates` não foi testado co
 ## 13. Fontes
 
 - Schema oficial do marketplace: `https://anthropic.com/claude-code/marketplace.schema.json`
-- Docs Anthropic sobre plugins: `https://docs.anthropic.com/en/docs/claude-code/plugins` (página canônica)
-- `anthropics/claude-plugins-official` — upstream dos 9 plugins Level 2 e 2 plugins Level 1 pinned-by-path
-- `obra/superpowers` — upstream do plugin superpowers (versão pinnada 5.0.7)
-- Playbook interno `~/Downloads/SKILL.md` (baseline do sdd-workflow sanitizado)
-- `claude-code-desktop-performance.md` — guia existente no repo (padrão de estilo)
+- Doc oficial "Create and distribute a plugin marketplace": `https://code.claude.com/docs/en/plugin-marketplaces` (consultada durante o brainstorm em 2026-04-15 pra confirmar a restrição de path `.claude-plugin/marketplace.json` na raiz)
+- `anthropics/claude-plugins-official` — upstream dos 9 plugins Level 2 Anthropic-authored e 2 plugins Level 1 pinned-by-path (`github` e `pyright-lsp`)
+- `obra/superpowers` — upstream do plugin superpowers (pin no HEAD atual do brainstorm)
+- `~/Downloads/SKILL.md` — baseline privada do sdd-workflow a ser sanitizada (ver §8.4)
+- `guias/claude-code-desktop-performance.md` — guia existente no repo (padrão de estilo H2 numerado com `---`)
