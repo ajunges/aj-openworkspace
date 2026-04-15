@@ -1,10 +1,8 @@
-# aj-openworkspace
-
-> Playbook pessoal do André Junges sobre Claude Code, workflows de AI e produtividade com LLMs. Notas organizadas e opinativas, em pt-BR com termos técnicos em inglês.
-
 ## O que você encontra aqui
 
 - Guias opinativos sobre Claude Code Desktop, `prompts` e workflows de AI
+
+> Playbook pessoal do André Junges sobre Claude Code, workflows de AI e produtividade com LLMs. Notas organizadas e opinativas, em pt-BR com termos técnicos em inglês.
 
 ## Guias
 
