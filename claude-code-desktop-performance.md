@@ -551,12 +551,7 @@ A Anthropic documenta esses erros comuns:
 | `/memory` | Gerencia auto-memory |
 | `/init` | Gera CLAUDE.md starter do projeto |
 | `/cost` | Consumo de tokens da sessão |
-| `/rename [nome]` | Nomeia sessão (CLI); no Desktop: via UI da sidebar |
-| `/resume` | Retoma sessão (CLI); no Desktop: clique na sidebar |
-| `/rewind` | Checkpoints (CLI); no Desktop: via UI do app |
-| `/statusline` | Configura barra de status (CLI only — Desktop tem usage ring nativo) |
 | `/hooks` | Visualiza hooks configurados |
-| `/plugin` | Plugins (CLI); no Desktop: botão **+** → Plugins |
 | `/sandbox` | Configura isolamento OS-level |
 | `@arquivo` | Referência direta (economiza tokens) |
 | `Esc` | Interrompe Claude mid-action |
