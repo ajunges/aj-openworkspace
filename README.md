@@ -4,6 +4,12 @@
 
 > Playbook pessoal do André Junges sobre Claude Code, workflows de AI e produtividade com LLMs. Notas organizadas e opinativas, em pt-BR com termos técnicos em inglês.
 
+## Contexto
+
+Este repo é mantido por André Junges, CRO do Grupo Supero. **Não sou desenvolvedor** — todo o código deste repositório (`marketplace.json`, plugins próprios, scripts, configs) é escrito por IA via Claude Code. Uso este espaço como playbook pessoal de trabalho com LLMs e, agora, para distribuir minha curadoria de plugins.
+
+Não é um projeto de engenharia profissional — é um workbook público de alguém aprendendo e documentando em público como dirigir IA para produzir software.
+
 ## Guias
 
 ### Claude Code Desktop — Performance e boas práticas
