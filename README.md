@@ -1,4 +1,4 @@
-## O que você encontra aqui
+# O que você encontra aqui
 
 - Guias opinativos sobre Claude Code Desktop, `prompts` e workflows de AI
 
