@@ -477,8 +477,8 @@ Adicionar ao `~/.zshrc` ou ao bloco `"env"` em `~/.claude/settings.json`:
 
 | Variável | Efeito |
 |---|---|
-| `BASH_DEFAULT_TIMEOUT_MS=1800000` | Timeout padrão de comandos Bash: 30min (default ~2min) — cobre builds, tests e debugging longos |
-| `BASH_MAX_TIMEOUT_MS=3600000` | Cap máximo de timeout Bash: 1h (default ~10min) — cobre tarefas longas sem virar runaway |
+| `BASH_DEFAULT_TIMEOUT_MS=1800000` | Timeout padrão de comandos Bash: 30min (default 2min) — cobre builds, tests e debugging longos |
+| `BASH_MAX_TIMEOUT_MS=3600000` | Cap máximo de timeout Bash: 1h (default 10min) — cobre tarefas longas sem virar runaway |
 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=70` | Compacta mais cedo (default ~83%) — mais espaço de trabalho |
 | `CLAUDE_CODE_NO_FLICKER=1` | Rendering suave no terminal (aplica-se ao CLI; Desktop app tem renderer próprio) |
 
