@@ -17,18 +17,6 @@ Mostra em tempo real quanto do context window está ocupado. Olhar **antes** de 
 - 50–80%: performance aceitável, considerar `/compact`
 - Acima de 80%: compactar imediatamente ou iniciar sessão nova
 
-### Status Line — monitoramento passivo
-
-**Desktop app:** usage ring nativo ao lado do model picker mostra `context %` e uso mensal do plano. Model picker (dropdown) mostra o modelo ativo. Branch git aparece no session toolbar. Zero configuração necessária.
-
-**CLI:** configurar barra customizada via `/statusline`:
-
-```
-/statusline mostrar modelo, percentual de contexto com barra de progresso, custo e branch git
-```
-
-Claude gera o script automaticamente. Roda localmente, zero consumo de API. Feature exclusiva da CLI.
-
 ### `/compact` — usar proativamente
 
 Sumariza a conversa preservando decisões-chave. **Não esperar** o auto-compact (que dispara a ~83% do contexto). Ao rodar, especificar o que preservar:
