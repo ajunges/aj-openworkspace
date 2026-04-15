@@ -205,11 +205,12 @@ Use Write para criar o arquivo com o conteúdo abaixo:
 
 ```json
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "aj-openworkspace",
-  "description": "Curadoria pessoal de plugins e skills do Claude Code do André Junges (CRO do Grupo Supero, não-dev, todo código escrito via Claude Code). Sistema de classificação em 3 dimensões: nível de controle (referência, pin, snapshot local), status (recomendado, em-testes, não-recomendado) e tags livres.",
   "owner": {
     "name": "André Junges"
+  },
+  "metadata": {
+    "description": "Curadoria pessoal de plugins e skills do Claude Code do André Junges (CRO do Grupo Supero, não-dev, todo código escrito via Claude Code). Sistema de classificação em 3 dimensões: nível de controle (referência, pin, snapshot local), status (recomendado, em-testes, não-recomendado) e tags livres."
   },
   "plugins": [
     {
