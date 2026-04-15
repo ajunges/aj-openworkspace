@@ -6,8 +6,6 @@ Instruções específicas deste repo. Carrega junto com `~/.claude/CLAUDE.md` (p
 
 Workspace pessoal de notas do André Junges (`ajunges`). **Não é um projeto de código** — sem `build system`, sem testes, sem `package manager`, sem código-fonte. Apenas markdown. Não procure por `package.json`, não sugira `linters`, CI ou `test runners`.
 
-Documento principal: [claude-code-desktop-performance.md](claude-code-desktop-performance.md). Índice público em [README.md](README.md).
-
 ## Estilo de documentação
 
 House style para novas notas e edições — **overrides** o `Tom e formato` do global quando o conteúdo for nota/guia deste repo:
