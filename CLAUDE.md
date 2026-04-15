@@ -1,32 +1,26 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Instruções específicas deste repo. Carrega junto com `~/.claude/CLAUDE.md` (preferências pessoais globais) — mantém aqui apenas o que é específico do workspace.
 
-## What this repo is
+## O que é este repo
 
-Personal notes workspace of Andre Junges (`ajunges`). **Not a code project** — no build system, no tests, no package manager, no source code. Only markdown. Do not search for `package.json`, do not suggest linters, CI, or test runners.
+Workspace pessoal de notas do André Junges (`ajunges`). **Não é um projeto de código** — sem `build system`, sem testes, sem `package manager`, sem código-fonte. Apenas markdown. Não procure por `package.json`, não sugira `linters`, CI ou `test runners`.
 
-Current contents: [claude-code-desktop-performance.md](claude-code-desktop-performance.md) — a personal pt-BR reference guide on optimizing Claude Code Desktop on macOS (context management, memory, workflows, subagents, hooks, env vars, anti-patterns). [README.md](README.md) is a single-line placeholder.
+Documento principal: [claude-code-desktop-performance.md](claude-code-desktop-performance.md). Índice público em [README.md](README.md).
 
-## Language
+## Estilo de documentação
 
-**Respond in Brazilian Portuguese (pt-BR) by default.** All existing content and the user's own prompts are in pt-BR. Keep ecosystem/technical terms in English (prompt, context window, subagent, hook, skill, worktree, etc.) — they appear untranslated in the existing guide and that is the intended style. Only switch languages if the user explicitly asks.
+House style para novas notas e edições — **overrides** o `Tom e formato` do global quando o conteúdo for nota/guia deste repo:
 
-## Documentation style
+- Seções H2 numeradas (`## 1.`, `## 2.`, ...) separadas por horizontal rules (`---`)
+- Tabelas markdown para comparações — "antes/depois", "quando usar", "incluir/não incluir"
+- Fenced code blocks para comandos, JSON configs e exemplos de `prompt`
+- Tom **dentro das notas**: imperativo e opinativo, hedging mínimo — é playbook pessoal, não documentação neutra (distinto do tom de conversa do global, que é profissional-amigável)
+- Guias de referência terminam com uma seção **Fontes** linkando fontes primárias (Anthropic docs primeiro)
 
-The existing guide defines the house style for new notes and edits:
+## Convenções do repo
 
-- Numbered H2 sections (`## 1.`, `## 2.`, ...) separated by horizontal rules (`---`)
-- Markdown tables for comparisons — "antes/depois", "quando usar", "incluir/não incluir"
-- Fenced code blocks for commands, JSON configs, and example prompts
-- Imperative, opinionated tone — it's a personal playbook, not neutral docs; minimal hedging
-- Reference guides end with a **Fontes** section linking primary sources (Anthropic docs first)
-
-When editing `claude-code-desktop-performance.md`, preserve its numbered-section structure and tone.
-
-## Repo conventions
-
-- Default branch: `main`. No CI, no required PR workflow — commits land directly on `main` unless the user asks for a branch/PR.
-- **Public repository** at `ajunges/aj-openworkspace` — everything committed is world-readable.
-- `.claude/settings.local.json` is machine-local and must not be committed. Before `git add -A`, either add `.claude/` to a `.gitignore` or stage files explicitly by name.
-- Use `gh` CLI for any GitHub interaction (repo state, issues, PRs) — it is available and authenticated.
+- Branch padrão: `main`. Sem CI, sem workflow de PR obrigatório — commits vão direto para `main` a menos que o usuário peça branch/PR.
+- **Repositório público** em `ajunges/aj-openworkspace` — tudo committado é world-readable.
+- `.claude/` está no `.gitignore`. Não tentar committar settings locais.
+- Usar o `gh` CLI para qualquer interação com GitHub — disponível e autenticado.

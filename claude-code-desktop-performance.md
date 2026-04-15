@@ -19,13 +19,15 @@ Mostra em tempo real quanto do context window está ocupado. Olhar **antes** de 
 
 ### Status Line — monitoramento passivo
 
-Barra de informação fixa no rodapé da sessão mostrando modelo, % de contexto, custo e branch git. Configurar via `/statusline`:
+**Desktop app:** usage ring nativo ao lado do model picker mostra `context %` e uso mensal do plano. Model picker (dropdown) mostra o modelo ativo. Branch git aparece no session toolbar. Zero configuração necessária.
+
+**CLI:** configurar barra customizada via `/statusline`:
 
 ```
 /statusline mostrar modelo, percentual de contexto com barra de progresso, custo e branch git
 ```
 
-Claude gera o script automaticamente. Roda localmente, zero consumo de API.
+Claude gera o script automaticamente. Roda localmente, zero consumo de API. Feature exclusiva da CLI.
 
 ### `/compact` — usar proativamente
 
@@ -109,7 +111,7 @@ See @README.md for project overview
 Git workflow: @docs/git-instructions.md
 ```
 
-**Setup inicial:** `/init` analisa o codebase e gera um starter. Refinar a partir dele.
+**Setup inicial:** `/init` analisa o codebase e gera um CLAUDE.md starter. Refinar a partir dele. Para fluxo interativo que também guia `skills`, `hooks` e memory files, ativar `CLAUDE_CODE_NEW_INIT=1` no ambiente.
 
 ### Auto Memory — caderno de notas do Claude
 
@@ -154,13 +156,21 @@ Selecionar pelo dropdown ao lado do botão de envio, ou via `/model`.
 
 Ativado por padrão. Com Opus 4.6 e Sonnet 4.6, o thinking é **adaptativo** — aloca tokens dinamicamente conforme o `/effort`. Palavras como "think hard" no prompt são instrução regular, não controlam thinking tokens.
 
-Para desativar pontualmente: `Option+T` (macOS).
+Para desativar pontualmente na CLI: `Option+T` (macOS). No Desktop app, não há atalho documentado equivalente.
 
 ---
 
 ## 4. Workflow: Explore → Plan → Implement → Commit
 
 Workflow oficial de 4 fases da Anthropic. Evita resolver o problema errado.
+
+**Ativar Plan Mode:**
+
+- **CLI:** `Shift+Tab` cicla entre permission modes inline (inclui Plan Mode)
+- **Desktop app:** acessar via menu de permission modes na UI — `Shift+Tab` é feature exclusiva da CLI e não funciona no Desktop
+- **Ambos:** slash command `/plan`
+
+Plan Mode é read-only — Claude analisa e propõe sem editar arquivos.
 
 **1. Explore** (Plan Mode) — Claude lê arquivos e responde perguntas, sem modificar nada.
 ```
@@ -286,9 +296,14 @@ Você é um engenheiro de segurança sênior. Revise:
 Forneça referências de linha e correções sugeridas.
 ```
 
-### Plugins — `/plugin`
+### Plugins
 
-Marketplace de bundles (skills + hooks + agents + MCP). Instalar sem configuração manual. Para linguagens tipadas, instalar um plugin de code intelligence para navegação de símbolos e detecção de erros.
+Bundles de `skills` + `hooks` + `agents` + `MCP servers` reutilizáveis. Instalar sem configuração manual.
+
+- **Desktop app:** botão **+** → **Plugins** na UI da sessão abre o seletor visual
+- **CLI:** `/plugin` para gerenciar via slash command
+
+Para linguagens tipadas, instalar um plugin de code intelligence para navegação de símbolos e detecção de erros.
 
 ---
 
@@ -301,11 +316,14 @@ Indicador `+12 -1` após edições. Clicar para:
 - Comentar linhas específicas — Claude lê e revisa
 - "Review code" para Claude auto-avaliar os diffs
 
-### `/rewind` — desfazer com checkpoint
+### Desfazer com checkpoint
 
-Cada ação do Claude cria checkpoint. `/rewind` abre menu para restaurar conversa, código, ou ambos. Checkpoints persistem entre sessões.
+Cada ação do Claude cria checkpoint. Checkpoints persistem entre sessões.
 
-Quando Claude errar a direção: **não tentar corrigir no mesmo contexto poluído**. `/rewind` e reiniciar com prompt melhor. Depois de 2 correções falhas, `/clear` e reescrever o prompt incorporando o aprendizado.
+- **CLI:** `/rewind` abre menu para restaurar conversa, código, ou ambos. Alternativa: `Esc` duas vezes
+- **Desktop app:** `/rewind` não funciona como slash command; acessar checkpoints via UI do app
+
+Quando Claude errar a direção: **não tentar corrigir no mesmo contexto poluído**. Reiniciar com prompt melhor via checkpoint disponível. Depois de 2 correções falhas, `/clear` e reescrever o prompt incorporando o aprendizado.
 
 ### `Esc` — interromper mid-action
 
@@ -315,17 +333,25 @@ Pressionar `Esc` para parar Claude durante execução. Contexto preservado — r
 
 ## 8. Gestão de Sessões
 
-### `/rename` — nomear sessões
+### Nomear sessões
+
+- **CLI:** usar `/rename` + novo nome:
 
 ```
 /rename apipass-auth-refactor
 ```
+
+- **Desktop app:** `/rename` não funciona como slash command; renomear via UI da sidebar
+
 Nomear cedo. Muito mais fácil encontrar "payment-integration" do que "explain this function".
 
 ### `/resume` — retomar sessões
 
+- **CLI:** `/resume` abre seletor de sessões recentes inline
+- **Desktop app:** `/resume` **não funciona**; retomar sessões clicando na sessão desejada na sidebar
+
 ```
-/resume            # seletor de sessões recentes
+/resume            # CLI apenas: seletor de sessões recentes
 ```
 
 Tratar sessões como branches: diferentes workstreams com contextos persistentes e separados.
@@ -371,8 +397,11 @@ Funciona também com testes: uma sessão escreve testes, outra escreve código p
 ### MCP Servers
 
 Cada server adiciona definições de tools ao contexto. Desabilitar inativos:
-- `/` → MCP → Manage MCP Servers
-- Ferramentas MCP são diferidas por padrão — só nomes entram no contexto até Claude usar uma tool específica
+
+- **CLI:** `/` → MCP → Manage MCP Servers via slash command
+- **Desktop app:** sem slash command ou UI dedicada — gerenciar manualmente editando `~/.claude/settings.json` (ou via botão **+** → Plugins quando o server vem empacotado como plugin)
+
+Ferramentas MCP são diferidas por padrão — só nomes entram no contexto até Claude usar uma tool específica.
 
 ### Connectors para workflows de negócio
 
@@ -425,11 +454,18 @@ Pré-aprovar comandos seguros para reduzir interrupções:
 
 ### Auto Mode
 
-Classifier AI que aprova automaticamente operações seguras (reads, git status, test runs) e bloqueia riscos (force push, rm -rf, deploys em produção). Ciclar via Shift+Tab na UI ou configurar como permission mode.
+Classifier AI que aprova automaticamente operações seguras (reads, git status, test runs) e bloqueia riscos (force push, rm -rf, deploys em produção).
+
+- **CLI:** `Shift+Tab` cicla entre permission modes (inclui Auto Mode) inline
+- **Desktop app:** acessar via menu de permission modes na UI (`Shift+Tab` não funciona no Desktop)
+- Também pode fixar um permission mode default em `~/.claude/settings.json`
 
 ### Sandboxing
 
-`/sandbox` para isolamento em nível de OS — restringe filesystem e rede. Permite ao Claude trabalhar mais livremente dentro de limites definidos.
+Isolamento em nível de OS — restringe filesystem e rede. Permite ao Claude trabalhar mais livremente dentro de limites definidos.
+
+- **CLI:** `/sandbox` slash command para ativar/configurar
+- **Desktop app:** sem slash command equivalente — configurar via `~/.claude/settings.json`
 
 ---
 
@@ -441,11 +477,18 @@ Adicionar ao `~/.zshrc` ou ao bloco `"env"` em `~/.claude/settings.json`:
 
 | Variável | Efeito |
 |---|---|
+| `BASH_DEFAULT_TIMEOUT_MS=1800000` | Timeout padrão de comandos Bash: 30min (default ~2min) — cobre builds, tests e debugging longos |
+| `BASH_MAX_TIMEOUT_MS=3600000` | Cap máximo de timeout Bash: 1h (default ~10min) — cobre tarefas longas sem virar runaway |
 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=70` | Compacta mais cedo (default ~83%) — mais espaço de trabalho |
-| `DISABLE_NON_ESSENTIAL_MODEL_CALLS=1` | Suprime chamadas background (suggestions, tips) — reduz consumo |
-| `MAX_THINKING_TOKENS=10000` | Limita thinking tokens por request — reduz custo em tarefas simples |
-| `CLAUDE_CODE_SUBAGENT_MODEL=haiku` | Subagents usam Haiku (~80% mais barato) |
 | `CLAUDE_CODE_NO_FLICKER=1` | Rendering suave no terminal (aplica-se ao CLI; Desktop app tem renderer próprio) |
+
+### Vars que parecem úteis mas evite
+
+Testadas e consideradas subótimas ou problemáticas:
+
+- **`MAX_THINKING_TOKENS=N`** — Opus 4.6 e Sonnet 4.6 têm adaptive thinking que aloca tokens dinamicamente conforme complexidade da tarefa. Hard cap corta raciocínio em tarefas complexas (debug, arquitetura, code review) sem economia real em tarefas simples (que já usam pouco). Deixar sem setar.
+- **`CLAUDE_CODE_SUBAGENT_MODEL=haiku`** — Força Haiku em todos os subagents. Comportamento incerto em relação ao `model:` declarado no frontmatter de custom agents (pode ou não override). Economia marginal (~$0.05/sessão) não compensa risco de degradar agents sofisticados como `code-architect` ou `security-reviewer`. Deixar sem setar — cada agent usa seu `model:` ou o default inteligente.
+- **`DISABLE_NON_ESSENTIAL_MODEL_CALLS=1`** — Não aparece na doc oficial atual. Tem bug conhecido ([anthropics/claude-code#5025](https://github.com/anthropics/claude-code/issues/5025)) que impede supressão completa de status spinners. Economia marginal. Deixar sem setar.
 
 ### Settings.json recomendado
 
@@ -456,30 +499,32 @@ Arquivo: `~/.claude/settings.json`
   "$schema": "https://json-schema.org/claude-code-settings.json",
   "permissions": {
     "allow": [
-      "Bash(npm run *)",
       "Bash(git status)",
       "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git commit *)"
+      "Bash(git log *)"
     ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",
-      "Read(~/.ssh/**)"
+      "Read(~/.ssh/**)",
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)"
     ]
   },
   "showTurnDuration": true,
   "env": {
-    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
+    "BASH_DEFAULT_TIMEOUT_MS": "1800000",
+    "BASH_MAX_TIMEOUT_MS": "3600000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "70"
   }
 }
 ```
 
 ### Hierarquia de settings
 
-Precedência (maior para menor): Managed Policy → Command line → Local (`.claude/settings.local.json`) → Project (`.claude/settings.json`) → User (`~/.claude/settings.json`)
+Precedência (maior para menor): Managed Policy → Local (`.claude/settings.local.json`) → Project (`.claude/settings.json`) → User (`~/.claude/settings.json`)
 
-No macOS, managed settings ficam em `/Library/Application Support/ClaudeCode/`.
+Managed Policy é imposto pelo admin da organização e sobrepõe tudo. No macOS fica em `/Library/Application Support/ClaudeCode/`. Os outros três escopos são editáveis pelo usuário.
 
 ---
 
@@ -518,16 +563,16 @@ A Anthropic documenta esses erros comuns:
 | `/memory` | Gerencia auto-memory |
 | `/init` | Gera CLAUDE.md starter do projeto |
 | `/cost` | Consumo de tokens da sessão |
-| `/rename [nome]` | Nomeia sessão ativa |
-| `/resume` | Retoma sessão anterior |
-| `/rewind` | Desfaz código e conversa até checkpoint |
-| `/statusline` | Configura barra de status persistente |
+| `/rename [nome]` | Nomeia sessão (CLI); no Desktop: via UI da sidebar |
+| `/resume` | Retoma sessão (CLI); no Desktop: clique na sidebar |
+| `/rewind` | Checkpoints (CLI); no Desktop: via UI do app |
+| `/statusline` | Configura barra de status (CLI only — Desktop tem usage ring nativo) |
 | `/hooks` | Visualiza hooks configurados |
-| `/plugin` | Marketplace de plugins |
+| `/plugin` | Plugins (CLI); no Desktop: botão **+** → Plugins |
 | `/sandbox` | Configura isolamento OS-level |
 | `@arquivo` | Referência direta (economiza tokens) |
 | `Esc` | Interrompe Claude mid-action |
-| `Option+T` | Toggle extended thinking |
+| `Option+T` | Toggle extended thinking (CLI; pode requerer terminal config) |
 | Side Chat (sidebar) | Pergunta sem poluir contexto |
 | Sessões paralelas (sidebar) | Tarefas com contexto separado |
 | Remote session | Execução cloud, sem consumo local |
