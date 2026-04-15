@@ -1,0 +1,172 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "aj-openworkspace",
+  "description": "Curadoria pessoal de plugins e skills do Claude Code do André Junges (CRO do Grupo Supero, não-dev, todo código escrito via Claude Code). Sistema de classificação em 3 dimensões: nível de controle (referência, pin, snapshot local), status (recomendado, em-testes, não-recomendado) e tags livres.",
+  "owner": {
+    "name": "André Junges"
+  },
+  "plugins": [
+    {
+      "name": "superpowers",
+      "description": "Pacote de skills que ensinam brainstorming, TDD, debugging sistemático, subagent-driven development e criação de skills. Base do meu workflow. SHA pinnado porque as skills injetam comportamento ativo e updates frequentes podem mudar o fluxo mid-sprint.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/obra/superpowers.git",
+        "sha": "c4bbe651cb1bc5e7bec6f7effae2b946571f3258"
+      },
+      "category": "development",
+      "tags": ["recomendado", "comunidade", "meta-skills", "workflow", "core"],
+      "homepage": "https://github.com/obra/superpowers"
+    },
+    {
+      "name": "code-review",
+      "description": "Agent de code review com scoring por confidence. Uso como segundo par de olhos antes de merge em branches de trabalho.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/code-review",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "productivity",
+      "tags": ["recomendado", "oficial-anthropic", "review", "workflow"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-review"
+    },
+    {
+      "name": "code-simplifier",
+      "description": "Agent que refina código recém-modificado para clareza e manutenção sem mudar comportamento. Rodo no final de feature antes do commit final.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/code-simplifier",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "productivity",
+      "tags": ["recomendado", "oficial-anthropic", "workflow"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier"
+    },
+    {
+      "name": "commit-commands",
+      "description": "Slash commands /commit, /commit-push-pr e /clean_gone. Substitui digitação manual do fluxo git. Personalização: removi o Co-Authored-By: Claude do template no meu CLAUDE.md global — sou CRO do Grupo Supero (não-dev), todo código neste repo é escrito via Claude Code, e prefiro manter o author primário como eu mesmo: a IA é ferramenta, não colaborador atribuído.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/commit-commands",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "productivity",
+      "tags": ["recomendado", "oficial-anthropic", "git", "workflow"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/commit-commands"
+    },
+    {
+      "name": "feature-dev",
+      "description": "Workflow de desenvolvimento de features com agents de exploração, arquitetura e review. Complementa superpowers em projetos maiores.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/feature-dev",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "development",
+      "tags": ["recomendado", "oficial-anthropic", "workflow"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev"
+    },
+    {
+      "name": "skill-creator",
+      "description": "Meta-skill para criar, editar e avaliar skills. Uso quando vou escrever skills próprias (Level 3 deste marketplace).",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/skill-creator",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "development",
+      "tags": ["recomendado", "oficial-anthropic", "meta-skills"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator"
+    },
+    {
+      "name": "claude-md-management",
+      "description": "Skills para auditar e melhorar CLAUDE.md. Mantém o arquivo conciso e alinhado com best practices.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/claude-md-management",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "productivity",
+      "tags": ["recomendado", "oficial-anthropic", "meta-skills", "docs"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management"
+    },
+    {
+      "name": "security-guidance",
+      "description": "Hook que avisa de padrões inseguros (injection, XSS, etc) ao editar arquivos. Rede de segurança passiva.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/security-guidance",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "security",
+      "tags": ["recomendado", "oficial-anthropic", "seguranca"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance"
+    },
+    {
+      "name": "claude-code-setup",
+      "description": "Skill que analisa um codebase e recomenda automações (hooks/skills/MCPs/subagents). Em avaliação — rodei algumas vezes, ainda formando opinião.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/claude-code-setup",
+        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
+      },
+      "category": "productivity",
+      "tags": ["em-testes", "oficial-anthropic", "meta-skills"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup"
+    },
+    {
+      "name": "github",
+      "description": "MCP server oficial do GitHub. Core da integração com repos/issues/PRs. HEAD porque updates são estáveis.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "external_plugins/github"
+      },
+      "category": "productivity",
+      "tags": ["recomendado", "terceiro-oficial", "mcp", "git", "integracao"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/github"
+    },
+    {
+      "name": "atlassian",
+      "description": "MCP server oficial da Atlassian (Jira + Confluence). Uso no trabalho diário. Tool passiva, HEAD é seguro.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/atlassian/atlassian-mcp-server.git"
+      },
+      "category": "productivity",
+      "tags": ["recomendado", "terceiro-oficial", "mcp", "integracao", "jira"],
+      "homepage": "https://github.com/atlassian/atlassian-mcp-server"
+    },
+    {
+      "name": "microsoft-docs",
+      "description": "MCP server de docs Microsoft/Azure. Em avaliação — instalado para consultas pontuais sobre stack Microsoft.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/MicrosoftDocs/mcp.git"
+      },
+      "category": "development",
+      "tags": ["em-testes", "terceiro-oficial", "mcp", "docs", "azure"],
+      "homepage": "https://github.com/microsoftdocs/mcp"
+    },
+    {
+      "name": "pyright-lsp",
+      "description": "Pyright LSP para Python. Em avaliação — uso Python ocasionalmente.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/pyright-lsp"
+      },
+      "category": "development",
+      "tags": ["em-testes", "oficial-anthropic", "lsp", "python"],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp"
+    }
+  ]
+}
