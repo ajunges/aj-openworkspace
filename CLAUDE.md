@@ -22,3 +22,15 @@ House style para novas notas e edições — **overrides** o `Tom e formato` do 
 - **Repositório público** em `ajunges/aj-openworkspace` — tudo committado é world-readable.
 - `.claude/` está no `.gitignore`. Não tentar committar settings locais.
 - Usar o `gh` CLI para qualquer interação com GitHub — disponível e autenticado.
+
+## Marketplace
+
+Este repo hospeda um marketplace Claude Code (`ajunges/aj-openworkspace`) com 15 plugins curados.
+
+- `.claude-plugin/marketplace.json` é o catálogo. Schema: `metadata.description` (não `description` no root). Validar com `claude plugin validate .` antes de commitar mudanças.
+- `plugins/` contém plugins Level 3 (próprios). Level 1/2 são referências externas.
+- Classificação: `tags[0]` sempre é `recomendado`, `em-testes` ou `nao-recomendado`. Plugins novos começam `em-testes`.
+- Level 2 (SHA pin) pra plugins que injetam workflow. Level 1 (HEAD) pra tools passivas.
+- Descriptions em pt-BR, opinativas, do ponto de vista do usuário.
+- Repo público — sanitizar dados profissionais antes de publicar (grep gate: Supero, caminhos absolutos, brand colors).
+- Docs do marketplace em `marketplace/README.md` (uso) e `marketplace/ADMIN.md` (administração).
