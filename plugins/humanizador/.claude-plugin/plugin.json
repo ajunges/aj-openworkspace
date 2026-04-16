@@ -1,0 +1,9 @@
+{
+  "name": "humanizador",
+  "description": "Remove sinais de escrita gerada por IA em textos em português brasileiro. Detecta 24 padrões adaptados ao pt-BR. Versão vendorizada do Argentoni/humanizador v2.2.0 (MIT), derivado do blader/humanizer.",
+  "version": "2.2.0",
+  "author": {
+    "name": "André Junges"
+  },
+  "homepage": "https://github.com/ajunges/aj-openworkspace/tree/main/plugins/humanizador"
+}
