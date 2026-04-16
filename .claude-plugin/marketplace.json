@@ -501,23 +501,6 @@
       "homepage": "https://github.com/semgrep/mcp-marketplace.git"
     },
     {
-      "name": "autofix-bot",
-      "description": "Agent de code review que detecta vulnerabilidades de segurança, issues de qualidade e secrets hardcoded. Upgrade do security-guidance.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "external_plugins/autofix-bot"
-      },
-      "category": "security",
-      "tags": [
-        "em-testes",
-        "terceiro-oficial",
-        "seguranca",
-        "review"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/autofix-bot"
-    },
-    {
       "name": "posthog",
       "description": "MCP de PostHog — analytics, feature flags, experiments, error tracking e insights direto do Claude.",
       "source": {
