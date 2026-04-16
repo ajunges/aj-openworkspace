@@ -22,7 +22,9 @@ Referência em 15 seções numeradas cobrindo gestão de `context window`, memó
 
 ### aj-openworkspace — plugins curados do Claude Code
 
-[marketplace/README.md](marketplace/README.md)
+[marketplace/README.md](marketplace/README.md) — guia de uso (instalar, desinstalar, escopos, atualizar, troubleshooting)
+
+[marketplace/ADMIN.md](marketplace/ADMIN.md) — guia de administração (adicionar plugins, atualizar SHAs, criar plugins próprios, sanitização, regras)
 
 Curadoria pessoal de 15 plugins do Claude Code com sistema de classificação em 3 dimensões (nível de controle, status, tags). Instalável via `/plugin marketplace add ajunges/aj-openworkspace`. Inclui dois plugins próprios: `marketplace-tools` (verifica updates dos SHAs pinnados) e `sdd-workflow` (playbook de Spec-Driven Development para solo devs não-programadores).
 
