@@ -18,6 +18,14 @@ Não é um projeto de engenharia profissional — é um workbook público de alg
 
 Referência em 15 seções numeradas cobrindo gestão de `context window`, memória persistente (`CLAUDE.md` + Auto Memory), escolha de modelo e `/effort`, workflow Explore → Plan → Implement → Commit, `prompts` efetivos, `subagents`/`skills`/`plugins`, diff review e `/rewind`, gestão de sessões, remote/dispatch/parallelism, `MCP servers` e `hooks`, `permissions` e Auto Mode, env vars úteis, anti-patterns oficiais e quick reference de comandos. Atualizado em abril/2026.
 
+## Marketplace
+
+### aj-openworkspace — plugins curados do Claude Code
+
+[marketplace/README.md](marketplace/README.md)
+
+Curadoria pessoal de 15 plugins do Claude Code com sistema de classificação em 3 dimensões (nível de controle, status, tags). Instalável via `/plugin marketplace add ajunges/aj-openworkspace`. Inclui dois plugins próprios: `marketplace-tools` (verifica updates dos SHAs pinnados) e `sdd-workflow` (playbook de Spec-Driven Development para solo devs não-programadores).
+
 ## Roadmap
 
 ## Referências externas
