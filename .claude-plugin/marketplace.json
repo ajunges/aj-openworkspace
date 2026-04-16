@@ -16,7 +16,13 @@
         "sha": "c4bbe651cb1bc5e7bec6f7effae2b946571f3258"
       },
       "category": "development",
-      "tags": ["recomendado", "comunidade", "meta-skills", "workflow", "core"],
+      "tags": [
+        "recomendado",
+        "comunidade",
+        "meta-skills",
+        "workflow",
+        "core"
+      ],
       "homepage": "https://github.com/obra/superpowers"
     },
     {
@@ -29,7 +35,12 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "productivity",
-      "tags": ["recomendado", "oficial-anthropic", "review", "workflow"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "review",
+        "workflow"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-review"
     },
     {
@@ -42,7 +53,11 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "productivity",
-      "tags": ["recomendado", "oficial-anthropic", "workflow"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "workflow"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier"
     },
     {
@@ -55,7 +70,12 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "productivity",
-      "tags": ["recomendado", "oficial-anthropic", "git", "workflow"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "git",
+        "workflow"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/commit-commands"
     },
     {
@@ -68,7 +88,11 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "development",
-      "tags": ["recomendado", "oficial-anthropic", "workflow"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "workflow"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev"
     },
     {
@@ -81,7 +105,11 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "development",
-      "tags": ["recomendado", "oficial-anthropic", "meta-skills"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "meta-skills"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator"
     },
     {
@@ -94,7 +122,12 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "productivity",
-      "tags": ["recomendado", "oficial-anthropic", "meta-skills", "docs"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "meta-skills",
+        "docs"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management"
     },
     {
@@ -107,7 +140,11 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "security",
-      "tags": ["recomendado", "oficial-anthropic", "seguranca"],
+      "tags": [
+        "recomendado",
+        "oficial-anthropic",
+        "seguranca"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance"
     },
     {
@@ -120,7 +157,11 @@
         "sha": "48aa43517886014e90ee80a6461f9de75045369d"
       },
       "category": "productivity",
-      "tags": ["em-testes", "oficial-anthropic", "meta-skills"],
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "meta-skills"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup"
     },
     {
@@ -132,7 +173,13 @@
         "path": "external_plugins/github"
       },
       "category": "productivity",
-      "tags": ["recomendado", "terceiro-oficial", "mcp", "git", "integracao"],
+      "tags": [
+        "recomendado",
+        "terceiro-oficial",
+        "mcp",
+        "git",
+        "integracao"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/github"
     },
     {
@@ -143,7 +190,13 @@
         "url": "https://github.com/atlassian/atlassian-mcp-server.git"
       },
       "category": "productivity",
-      "tags": ["recomendado", "terceiro-oficial", "mcp", "integracao", "jira"],
+      "tags": [
+        "recomendado",
+        "terceiro-oficial",
+        "mcp",
+        "integracao",
+        "jira"
+      ],
       "homepage": "https://github.com/atlassian/atlassian-mcp-server"
     },
     {
@@ -154,7 +207,13 @@
         "url": "https://github.com/MicrosoftDocs/mcp.git"
       },
       "category": "development",
-      "tags": ["em-testes", "terceiro-oficial", "mcp", "docs", "azure"],
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "mcp",
+        "docs",
+        "azure"
+      ],
       "homepage": "https://github.com/microsoftdocs/mcp"
     },
     {
@@ -166,7 +225,12 @@
         "path": "plugins/pyright-lsp"
       },
       "category": "development",
-      "tags": ["em-testes", "oficial-anthropic", "lsp", "python"],
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "lsp",
+        "python"
+      ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp"
     },
     {
@@ -174,7 +238,12 @@
       "description": "Plugin próprio com slash command /check-marketplace-updates que verifica updates nos SHAs pinnados deste marketplace, mostra diffs e aplica sob confirmação.",
       "source": "./plugins/marketplace-tools",
       "category": "productivity",
-      "tags": ["recomendado", "proprio", "meta-marketplace", "workflow"],
+      "tags": [
+        "recomendado",
+        "proprio",
+        "meta-marketplace",
+        "workflow"
+      ],
       "author": {
         "name": "André Junges"
       }
@@ -184,10 +253,301 @@
       "description": "Playbook pessoal de Spec-Driven Development para projetos solo gerados 100% por IA. Primeira versão pública sanitizada do workflow privado do autor.",
       "source": "./plugins/sdd-workflow",
       "category": "development",
-      "tags": ["em-testes", "proprio", "workflow", "meta-skills", "solo-dev"],
+      "tags": [
+        "em-testes",
+        "proprio",
+        "workflow",
+        "meta-skills",
+        "solo-dev"
+      ],
       "author": {
         "name": "André Junges"
       }
+    },
+    {
+      "name": "explanatory-output-style",
+      "description": "Output style que adiciona insights educacionais sobre escolhas de implementação e padrões do codebase. Bom pra entender o porquê do código gerado, não só o resultado.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/explanatory-output-style"
+      },
+      "category": "learning",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "output-style",
+        "learning"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/explanatory-output-style"
+    },
+    {
+      "name": "learning-output-style",
+      "description": "Output style de modo interativo que pede contribuições de código em pontos de decisão. Complementa o explanatory-output-style (ativo vs passivo).",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/learning-output-style"
+      },
+      "category": "learning",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "output-style",
+        "learning"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/learning-output-style"
+    },
+    {
+      "name": "hookify",
+      "description": "Cria hooks customizados para prevenir comportamentos indesejados analisando padrões de conversa. Útil pra automatizar correções que preciso repetir.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/hookify"
+      },
+      "category": "productivity",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "meta-skills",
+        "hooks"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/hookify"
+    },
+    {
+      "name": "session-report",
+      "description": "Gera relatório HTML explorável de uso da sessão (tokens, cache efficiency, subagents). Métrica de eficiência.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/session-report"
+      },
+      "category": "productivity",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "analytics",
+        "report"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/session-report"
+    },
+    {
+      "name": "pr-review-toolkit",
+      "description": "Agents especializados em comments, tests, error handling, type design e code quality. Camada extra de review pra código gerado por IA.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/pr-review-toolkit"
+      },
+      "category": "productivity",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "review",
+        "workflow"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/pr-review-toolkit"
+    },
+    {
+      "name": "ralph-loop",
+      "description": "Loops auto-referenciais para desenvolvimento iterativo (Ralph Wiggum technique). Pra tarefas onde você quer deixar o Claude rodando até completar.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/ralph-loop"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "workflow",
+        "automation"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/ralph-loop"
+    },
+    {
+      "name": "playground",
+      "description": "Cria playgrounds HTML single-file interativos com controles visuais. Útil pra prototipar ideias rapidamente.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/playground"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "prototyping",
+        "html"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground"
+    },
+    {
+      "name": "plugin-dev",
+      "description": "Toolkit pra desenvolver plugins do Claude Code. 7 skills cobrindo hooks, MCP, agents e empacotamento.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/plugin-dev"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "meta-skills",
+        "plugins"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/plugin-dev"
+    },
+    {
+      "name": "mcp-server-dev",
+      "description": "Skills pra projetar e construir MCP servers que funcionam bem com o Claude. Útil se eu quiser empacotar ferramentas próprias.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/mcp-server-dev"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "meta-skills",
+        "mcp"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev"
+    },
+    {
+      "name": "agent-sdk-dev",
+      "description": "Kit de desenvolvimento pra trabalhar com o Claude Agent SDK. Exploração do SDK pra automações futuras.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/agent-sdk-dev"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "meta-skills",
+        "sdk"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/agent-sdk-dev"
+    },
+    {
+      "name": "firecrawl",
+      "description": "MCP server de web scraping e crawling (Firecrawl). Transforma qualquer site em markdown limpo pronto pra LLM.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/firecrawl/firecrawl-claude-plugin.git"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "mcp",
+        "web-scraping"
+      ],
+      "homepage": "https://github.com/firecrawl/firecrawl-claude-plugin.git"
+    },
+    {
+      "name": "remember",
+      "description": "Memória contínua pro Claude Code — extrai, sumariza e comprime conversas em dados tiered. Alternativa às compactações automáticas.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Digital-Process-Tools/claude-remember.git"
+      },
+      "category": "productivity",
+      "tags": [
+        "em-testes",
+        "comunidade",
+        "memoria",
+        "skills"
+      ],
+      "homepage": "https://github.com/Digital-Process-Tools/claude-remember"
+    },
+    {
+      "name": "serena",
+      "description": "MCP server de análise semântica de código. Oferece entendimento inteligente, sugestões de refactoring.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "external_plugins/serena"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "mcp",
+        "refactoring"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/serena"
+    },
+    {
+      "name": "semgrep",
+      "description": "Captura vulnerabilidades de segurança em tempo real e guia o Claude a escrever código seguro desde o início. Complementa security-guidance.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/semgrep/mcp-marketplace.git",
+        "path": "plugin"
+      },
+      "category": "security",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "seguranca",
+        "sast"
+      ],
+      "homepage": "https://github.com/semgrep/mcp-marketplace.git"
+    },
+    {
+      "name": "autofix-bot",
+      "description": "Agent de code review que detecta vulnerabilidades de segurança, issues de qualidade e secrets hardcoded. Upgrade do security-guidance.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "external_plugins/autofix-bot"
+      },
+      "category": "security",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "seguranca",
+        "review"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/autofix-bot"
+    },
+    {
+      "name": "posthog",
+      "description": "MCP de PostHog — analytics, feature flags, experiments, error tracking e insights direto do Claude.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/PostHog/ai-plugin.git"
+      },
+      "category": "monitoring",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "mcp",
+        "analytics"
+      ],
+      "homepage": "https://posthog.com/docs/model-context-protocol"
+    },
+    {
+      "name": "amplitude",
+      "description": "MCP de Amplitude — analista expert. Instrumenta Amplitude, descobre oportunidades de produto, analisa coortes.",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/amplitude/mcp-marketplace.git"
+      },
+      "category": "monitoring",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "mcp",
+        "analytics"
+      ],
+      "homepage": "https://github.com/amplitude/mcp-marketplace"
     }
   ]
 }
