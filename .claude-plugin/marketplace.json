@@ -531,6 +531,40 @@
         "analytics"
       ],
       "homepage": "https://github.com/amplitude/mcp-marketplace"
+    },
+    {
+      "name": "frontend-design",
+      "description": "Cria interfaces frontend distintivas e production-grade com alta qualidade de design. Gera código criativo e polido evitando estéticas genéricas de IA.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "plugins/frontend-design"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "oficial-anthropic",
+        "design",
+        "frontend"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design"
+    },
+    {
+      "name": "context7",
+      "description": "MCP server do Upstash Context7 pra lookup de documentação up-to-date. Puxa docs e code examples versionados direto dos repos pro contexto do Claude. Muito citado pela comunidade.",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/anthropics/claude-plugins-official.git",
+        "path": "external_plugins/context7"
+      },
+      "category": "development",
+      "tags": [
+        "em-testes",
+        "terceiro-oficial",
+        "mcp",
+        "docs"
+      ],
+      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/context7"
     }
   ]
 }
