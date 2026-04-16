@@ -168,6 +168,26 @@
       "category": "development",
       "tags": ["em-testes", "oficial-anthropic", "lsp", "python"],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp"
+    },
+    {
+      "name": "marketplace-tools",
+      "description": "Plugin próprio com slash command /check-marketplace-updates que verifica updates nos SHAs pinnados deste marketplace, mostra diffs e aplica sob confirmação.",
+      "source": "./plugins/marketplace-tools",
+      "category": "productivity",
+      "tags": ["recomendado", "proprio", "meta-marketplace", "workflow"],
+      "author": {
+        "name": "André Junges"
+      }
+    },
+    {
+      "name": "sdd-workflow",
+      "description": "Playbook pessoal de Spec-Driven Development para projetos solo gerados 100% por IA. Primeira versão pública sanitizada do workflow privado do autor.",
+      "source": "./plugins/sdd-workflow",
+      "category": "development",
+      "tags": ["em-testes", "proprio", "workflow", "meta-skills", "solo-dev"],
+      "author": {
+        "name": "André Junges"
+      }
     }
   ]
 }
