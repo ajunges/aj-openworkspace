@@ -202,8 +202,9 @@ git push
 
 ```bash
 claude plugin marketplace update aj-openworkspace
-claude plugin update <nome>@aj-openworkspace
 ```
+
+O refresh do marketplace aplica automaticamente as novas versões dos plugins instalados. Não existe `claude plugin update <plugin>` — a atualização acontece via refresh do catálogo, não por comando per-plugin.
 
 Restart da sessão pra aplicar.
 

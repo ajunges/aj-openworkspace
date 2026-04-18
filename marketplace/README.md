@@ -121,41 +121,54 @@ Use quando:
 
 ## 5. Atualizar plugins
 
-### 5.1 Plugins Level 1 (HEAD — sem SHA pin)
+O modelo de update do Claude Code é baseado em **refresh do marketplace**, não em comando por plugin. Quando o catálogo sincroniza, os plugins instalados recebem as novas versões automaticamente. Não existe `/plugin update <plugin>` — isso é consequência, não comando.
 
-Se atualizam automaticamente quando o Claude Code sincroniza o marketplace. Não precisa fazer nada.
+### 5.1 Ligar auto-update (recomendado)
 
-Pra forçar atualização manual:
+Marketplaces third-party (como `aj-openworkspace`) vêm com auto-update **desligado** por default — apenas os marketplaces oficiais da Anthropic têm auto-update on. Pra ligar:
+
+1. Roda `/plugin` (sem args) — abre a UI tabbed
+2. Vai pra tab **Marketplaces**
+3. Seleciona `aj-openworkspace`
+4. **Enable auto-update**
+
+Depois disso, todo startup do Claude Code puxa updates do catálogo e aplica nos plugins instalados. Quando algo muda, aparece um prompt pra rodar `/reload-plugins`.
+
+Funciona igual no Desktop e no CLI.
+
+### 5.2 Refresh manual do marketplace
+
+Sem auto-update ligado, pra forçar sync do catálogo:
 
 ```
 /plugin marketplace update aj-openworkspace
 ```
 
-### 5.2 Plugins Level 2 (SHA pin)
+Plugins Level 1 e Level 3 recebem as novas versões automaticamente após o refresh. Level 2 só muda se o SHA pinnado no catálogo tiver sido bumpado (ver 5.4).
 
-Estes **não** se atualizam sozinhos — é intencional (estabilidade). Pra verificar se há updates e aplicar sob confirmação, use o slash command do plugin `marketplace-tools`:
+### 5.3 Plugins Level 1 (HEAD — sem SHA pin)
+
+Se atualizam automaticamente a cada refresh do marketplace (manual ou auto). Não precisa fazer mais nada.
+
+### 5.4 Plugins Level 2 (SHA pin)
+
+Estes **não** mudam quando o marketplace sincroniza — ficam travados no SHA do catálogo. É intencional (estabilidade).
+
+Pra bumpar o SHA e disponibilizar a nova versão aos usuários do marketplace, use o slash command do plugin `marketplace-tools` **na raiz do repo do marketplace**:
 
 ```
 /check-marketplace-updates
 ```
 
-O comando verifica cada plugin Level 2 contra o HEAD atual do upstream, mostra diffs (commits + arquivos), e pergunta plugin-por-plugin: aplicar / skip / detalhar / parar. Cada update aceito vira um commit individual.
+O comando verifica cada plugin Level 2 contra o HEAD atual do upstream, mostra diffs (commits + arquivos), e pergunta plugin-por-plugin: aplicar / skip / detalhar / parar. Cada update aceito vira um commit individual no repo do marketplace.
 
 Requer `gh` CLI autenticado (`gh auth status`) e `jq` instalado.
 
-### 5.3 Plugins Level 3 (locais)
+Após o bump ser commitado, usuários instalados recebem a nova versão no próximo refresh do marketplace (auto ou manual via 5.2).
 
-Vivem no próprio repo. Atualizações chegam automaticamente quando o marketplace é sincronizado.
+### 5.5 Plugins Level 3 (locais)
 
-### 5.4 Atualizar um plugin individual
-
-Após o marketplace ter sido atualizado:
-
-```
-/plugin update superpowers@aj-openworkspace
-```
-
-Requer restart da sessão pra aplicar.
+Vivem no próprio repo. Atualizações chegam automaticamente a cada refresh do marketplace.
 
 ---
 
