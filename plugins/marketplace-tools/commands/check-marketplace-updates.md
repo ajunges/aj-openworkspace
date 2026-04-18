@@ -32,8 +32,10 @@ gh auth status >/dev/null 2>&1 || { echo "ERRO: gh não autenticado. Rode 'gh au
 Extrair lista de plugins pinnados com metadados necessários para o check:
 
 ```bash
-jq -r '.plugins[] | select(.source.sha) | [.name, .source.source, .source.url, .source.path // "", .source.ref // "main", .source.sha] | @tsv' .claude-plugin/marketplace.json
+jq -r '.plugins[] | select((.source | type) == "object" and .source.sha) | [.name, .source.source, .source.url, .source.path // "", .source.ref // "main", .source.sha] | @tsv' .claude-plugin/marketplace.json
 ```
+
+O `select` precisa validar que `.source` é object antes de acessar `.sha` — plugins Level 3 (locais) usam `source` como string (ex: `"./plugins/<nome>"`), e indexar string com campo aborta o `jq` inteiro.
 
 Para cada linha do output (formato TSV: `name | source-type | url | path | ref | sha`), executar o check do passo 3.
 
