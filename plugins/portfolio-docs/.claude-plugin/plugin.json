@@ -1,0 +1,9 @@
+{
+  "name": "portfolio-docs",
+  "description": "Skill de gestão de portfólio de produtos. Produz e mantém o dossiê canônico (documento-mãe) de cada produto — markdown estruturado em 10 camadas cobrindo identidade, sumário universal, posicionamento, produto, GTM, sales enablement, marketing, operação, riscos e instruções para IA. Suporta 3 modos: Greenfield (entrevista estruturada), Consolidação (ingere materiais dispersos) e Update (revisão cirúrgica com controle de versão). Roda 4 validações de coerência antes da entrega. Escrito por um CRO não-dev dirigindo Claude Code.",
+  "version": "0.1.0",
+  "author": {
+    "name": "André Junges"
+  },
+  "homepage": "https://github.com/ajunges/aj-openworkspace/tree/main/plugins/portfolio-docs"
+}

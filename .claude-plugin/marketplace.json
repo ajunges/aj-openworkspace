@@ -595,6 +595,22 @@
       "author": {
         "name": "André Junges"
       }
+    },
+    {
+      "name": "portfolio-docs",
+      "description": "Playbook pessoal de gestão de portfólio de produtos — gera e mantém o dossiê canônico (documento-mãe) de cada produto em 10 camadas (identidade, sumário universal, posicionamento, produto, GTM, sales enablement, marketing, operação, riscos, instruções para IA). Suporta 3 modos (Greenfield, Consolidação, Update), roda 4 validações de coerência antes de entregar e gera artefatos downstream (one-pager, battlecard, pitch deck, board update). Primeira versão pública sanitizada do workflow privado do autor.",
+      "source": "./plugins/portfolio-docs",
+      "category": "productivity",
+      "tags": [
+        "em-testes",
+        "proprio",
+        "workflow",
+        "meta-skills",
+        "product-management"
+      ],
+      "author": {
+        "name": "André Junges"
+      }
     }
   ]
 }
