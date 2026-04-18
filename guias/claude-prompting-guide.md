@@ -1,9 +1,9 @@
 # Guia de Prompting do Claude
 
-> Tradução em português do **Prompt Engineering Guide** oficial da Anthropic.
-> Conteúdo original © Anthropic, PBC — publicado em [docs.anthropic.com](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview).
+> Tradução em português de uma versão anterior do **Prompt Engineering Guide** oficial da Anthropic — foco em fundamentos de conversação (clareza, exemplos, CoT, role-playing, refinamento iterativo).
+> Conteúdo original © Anthropic, PBC. Fonte canônica atualizada: [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) — guia único que agora consolida XML tags, long context, prefill migration, tool use, adaptive thinking, subagent orchestration e guidance específico para Claude Opus 4.7 / Sonnet 4.6 / Haiku 4.5.
 > Tradução e manutenção: André Junges ([@ajunges](https://github.com/ajunges)).
-> Este guia será ampliado posteriormente com notas e exemplos próprios — marcações de autoria ficarão explícitas quando adicionadas.
+> Ampliações futuras (notas próprias + seções novas do guia atual) terão marcação de autoria explícita quando adicionadas.
 
 ---
 
@@ -422,10 +422,28 @@ Por que é melhor: Esse prompt combina role-playing (como CFO), output estrutura
 
 ## Fontes
 
-- [Prompt Engineering Overview — Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
-- [Be Clear and Direct — Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct)
-- [Use Examples (Multishot) — Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting)
-- [Chain of Thought — Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought)
-- [System Prompts / Role Prompting — Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts)
-- [Prompt Library — Anthropic](https://docs.anthropic.com/en/resources/prompt-library/library)
-- [Prompt Engineering Interactive Tutorial — anthropics/prompt-eng-interactive-tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
+Fonte canônica atual — substitui as subpáginas antigas (be-clear-and-direct, multishot-prompting, chain-of-thought, use-xml-tags, system-prompts, prefill-claudes-response, chain-prompts, long-context-tips):
+
+- [Prompting best practices — Anthropic](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+
+Complementos oficiais:
+
+- [Prompt engineering overview — Anthropic](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+- [Prompt engineering interactive tutorial — anthropics/prompt-eng-interactive-tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
+- [Prompt engineering interactive tutorial (Google Sheets) — Anthropic](https://docs.google.com/spreadsheets/d/19jzLgRruG9kjUQNKtCg1ZjdD6l6weA6qRXG5zLIAhC8)
+
+---
+
+## Gap em relação ao guia oficial atual
+
+Tópicos cobertos hoje na fonte canônica e **ausentes** nesta tradução — candidatos naturais para ampliação:
+
+| Área | Tópicos |
+| --- | --- |
+| Fundamentos estruturais | XML tags (`<instructions>`, `<context>`, `<example>`, `<documents>`), long context prompting (documentos no topo, extração por quotes) |
+| Controle de saída | Dizer o que fazer vs. o que não fazer, controle de verbosidade, LaTeX, migração de prefilled responses |
+| Tool use | Instrução explícita para agir vs. sugerir, otimização de parallel tool calling |
+| Thinking | Adaptive thinking, parâmetro `effort` (low/medium/high/xhigh/max), controle de overthinking |
+| Sistemas agênticos | State tracking multi-context-window, subagent orchestration, research patterns, balanceamento autonomia/segurança, redução de hallucinations |
+| Específico por modelo | Guidance para Claude Opus 4.7 (response length, tool triggering, literal instruction following, design defaults, code review harnesses) |
+| Design e vision | Prompting para frontend design (evitar AI slop), crop tool para vision |
