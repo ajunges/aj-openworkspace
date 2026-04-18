@@ -23,15 +23,6 @@ Fork próprio, não é tradução. Diferenças principais:
 
 5. **Passada final anti-IA** — depois do rascunho, a skill pergunta "o que ainda entrega que é IA?" e revisa uma segunda vez.
 
-## Relação com `humanizer`
-
-Este repo também distribui [`humanizer`](../humanizer) (blader, inglês). Os dois não se sobrepõem:
-
-- **humanizer** (inglês) — padrões lexicais de AI writing em inglês (`delve`, `navigate`, `tapestry`, etc.)
-- **humanizador** (pt-BR) — padrões de pt-BR (`é importante ressaltar`, `dir-se-ia`, `no cenário atual`, `alavancar`, `orientado a dados`)
-
-Invocar o humanizador correto pro idioma do texto.
-
 ## Como usar
 
 Invocar via frase natural ("humanize este texto em português", "remover padrões de IA em pt-BR", "tá com cara de ChatGPT") ou `/humanizador` em texto selecionado.

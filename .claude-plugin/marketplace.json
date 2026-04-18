@@ -567,21 +567,6 @@
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/context7"
     },
     {
-      "name": "humanizer",
-      "description": "Remove sinais de escrita gerada por IA em textos em inglês. Detecta 29 padrões baseados no guia 'Signs of AI writing' da Wikipedia. Plugin próprio vendorizado do blader/humanizer v2.5.1 (MIT).",
-      "source": "./plugins/humanizer",
-      "category": "productivity",
-      "tags": [
-        "em-testes",
-        "proprio",
-        "writing",
-        "english"
-      ],
-      "author": {
-        "name": "André Junges"
-      }
-    },
-    {
       "name": "humanizador",
       "description": "Remove sinais de escrita gerada por IA em textos em português brasileiro. Detecta 36 padrões: 22 herdados do guia 'Signs of AI writing' da Wikipédia e 14 nativos do pt-BR (mesóclise artificial, nominalização abstrata, calcos do inglês, jargão corporativo composto, conectivos conclusivos empilhados, construções impessoais com -se). Inclui calibração de voz por amostra e de registro (referencial/corporativo/pessoal/acadêmico). Fork próprio inspirado em blader/humanizer e Argentoni/humanizador.",
       "source": "./plugins/humanizador",

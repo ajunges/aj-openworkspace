@@ -1,9 +1,0 @@
-{
-  "name": "humanizer",
-  "description": "Remove sinais de escrita gerada por IA em textos em inglês. Detecta 29 padrões baseados no guia 'Signs of AI writing' da Wikipedia. Versão vendorizada do blader/humanizer v2.5.1 (MIT). Upstream: https://github.com/blader/humanizer",
-  "version": "2.5.1",
-  "author": {
-    "name": "André Junges"
-  },
-  "homepage": "https://github.com/ajunges/aj-openworkspace/tree/main/plugins/humanizer"
-}
