@@ -1,7 +1,7 @@
 {
   "name": "humanizador",
-  "description": "Remove sinais de escrita gerada por IA em textos em português brasileiro. Detecta 24 padrões adaptados ao pt-BR. Versão vendorizada do Argentoni/humanizador v2.2.0 (MIT), derivado do blader/humanizer.",
-  "version": "2.2.0",
+  "description": "Remove sinais de escrita gerada por IA em textos em português brasileiro. Detecta 36 padrões: 22 herdados do blader/humanizer v2.5.1 (via guia 'Signs of AI writing' da Wikipédia) e 14 nativos do pt-BR (mesóclise artificial, nominalização abstrata, calcos do inglês, jargão corporativo composto, entre outros). Inclui calibração de voz por amostra e calibração de registro (referencial/corporativo/pessoal/acadêmico). Fork próprio inspirado em blader/humanizer e Argentoni/humanizador.",
+  "version": "3.0.0",
   "author": {
     "name": "André Junges"
   },
