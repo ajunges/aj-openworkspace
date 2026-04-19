@@ -55,6 +55,7 @@ test -d "$PLUGIN_DIR" || { echo "ERRO: diretório $PLUGIN_DIR não encontrado.";
 Checar que existe ao menos um commit em `HEAD` afetando `$PLUGIN_DIR/` depois do último bump de version.
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 # Achar o último commit que mudou version do plugin em marketplace.json
 LAST_BUMP=$(git log --format=%H -- .claude-plugin/marketplace.json | head -1)
 # Commits depois desse afetando o plugin
@@ -70,6 +71,7 @@ fi
 ### 3. Calcular nova version
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 CURR=$(jq -r --arg n "$PLUGIN_NAME" '.plugins[] | select(.name == $n) | .version' .claude-plugin/marketplace.json)
 IFS=. read -r MAJ MIN PAT <<< "$CURR"
 case "$BUMP_TYPE" in
@@ -108,6 +110,7 @@ Se o usuário escolher `n`, abortar sem mudanças.
 ### 5. Bumpar version em marketplace.json
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 jq --arg n "$PLUGIN_NAME" --arg v "$NEW" \
   '(.plugins[] | select(.name == $n) | .version) = $v' \
   .claude-plugin/marketplace.json > /tmp/mkt.new.json
@@ -118,6 +121,7 @@ mv /tmp/mkt.new.json .claude-plugin/marketplace.json
 ### 6. Commit
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 git add .claude-plugin/marketplace.json
 git commit -m "Bump $PLUGIN_NAME para $NEW"
 ```
@@ -127,6 +131,7 @@ git commit -m "Bump $PLUGIN_NAME para $NEW"
 Se o branch atual é `main`, push direto:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 if [ "$(git branch --show-current)" = "main" ]; then
   git push origin main
 else
@@ -157,6 +162,7 @@ fi
 ### 8. Sync no clone local do marketplace
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 MKT_NAME=$(jq -r '.name' .claude-plugin/marketplace.json)
 CLONE_PATH="$HOME/.claude/plugins/marketplaces/$MKT_NAME"
 test -d "$CLONE_PATH" || { echo "AVISO: clone não encontrado em $CLONE_PATH. Pulando sync."; }
@@ -168,6 +174,7 @@ git -C "$CLONE_PATH" pull --ff-only
 Backup timestamped e edit via jq (nunca regex).
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 BACKUP=~/.claude/plugins/installed_plugins.json.bak-$(date +%Y%m%d-%H%M%S)
 cp ~/.claude/plugins/installed_plugins.json "$BACKUP"
 echo "Backup: $BACKUP"
@@ -183,6 +190,7 @@ mv /tmp/ip.new.json ~/.claude/plugins/installed_plugins.json
 Deletar cache antigo da versão anterior, copiar plugin atualizado do clone para o path que a nova install vai usar.
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 CACHE_DIR="$HOME/.claude/plugins/cache/$MKT_NAME/$PLUGIN_NAME"
 mkdir -p "$CACHE_DIR"
 

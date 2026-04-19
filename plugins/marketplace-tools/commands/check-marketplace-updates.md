@@ -35,6 +35,7 @@ gh auth status >/dev/null 2>&1 || { echo "ERRO: gh não autenticado. Rode 'gh au
 Extrair lista de plugins pinnados com metadados necessários para o check:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 jq -r '.plugins[] | select((.source | type) == "object" and .source.sha) | [.name, .source.source, .source.url, .source.path // "", .source.ref // "main", .source.sha] | @tsv' .claude-plugin/marketplace.json
 ```
 
@@ -47,6 +48,7 @@ Para cada linha do output (formato TSV: `name | source-type | url | path | ref |
 **Se `source.source == "url"` (repo próprio do plugin):**
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 CURRENT_SHA=$(git ls-remote "$URL" "$REF" | awk '{print $1}' | head -1)
 ```
 
@@ -55,6 +57,7 @@ CURRENT_SHA=$(git ls-remote "$URL" "$REF" | awk '{print $1}' | head -1)
 Extrair `owner/repo` da URL e usar GitHub API:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 OWNER_REPO=$(echo "$URL" | sed -E 's|https://github.com/([^/]+/[^/]+)\.git|\1|')
 CURRENT_SHA=$(gh api "repos/$OWNER_REPO/commits/$REF" --jq '.sha')
 ```
@@ -66,6 +69,7 @@ Se `CURRENT_SHA` é vazio ou falha, logar erro e seguir pro próximo plugin (nã
 Se `CURRENT_SHA != OLD_SHA`, buscar o compare entre os SHAs:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 COMPARE=$(gh api "repos/$OWNER_REPO/compare/$OLD_SHA...$CURRENT_SHA")
 ```
 
@@ -75,6 +79,7 @@ Extrair do compare:
 - Commits relevantes (filtrar por path se for git-subdir):
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 if [ -n "$PATH_PREFIX" ]; then
   RELEVANT_FILES=$(echo "$COMPARE" | jq -r ".files[] | select(.filename | startswith(\"$PATH_PREFIX/\")) | .filename")
 else
@@ -87,12 +92,14 @@ Se `RELEVANT_FILES` vazio (mudou o SHA mas nenhum arquivo do plugin foi afetado)
 Extrair top 5 commit messages:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 TOP_COMMITS=$(echo "$COMPARE" | jq -r '.commits[:5][] | "- " + (.commit.message | split("\n")[0])')
 ```
 
 Detectar breaking change por keyword nas commit messages:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 BREAKING=$(echo "$COMPARE" | jq -r '.commits[] | .commit.message | select(test("BREAKING|breaking:|!:"; "i"))')
 ```
 
@@ -125,6 +132,7 @@ Aguardar input. Processar conforme:
 Editar o SHA no `marketplace.json` via `jq` (não regex):
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 jq --arg name "$PLUGIN_NAME" --arg new_sha "$CURRENT_SHA" \
   '(.plugins[] | select(.name == $name) | .source.sha) = $new_sha' \
   .claude-plugin/marketplace.json > .claude-plugin/marketplace.json.tmp \
@@ -134,12 +142,14 @@ jq --arg name "$PLUGIN_NAME" --arg new_sha "$CURRENT_SHA" \
 Validar JSON após edit:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 jq . .claude-plugin/marketplace.json > /dev/null || { echo "ERRO: JSON quebrou após edit. Restaurar via git checkout."; exit 1; }
 ```
 
 Commit individual para cada plugin atualizado:
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 git add .claude-plugin/marketplace.json
 git commit -m "bump $PLUGIN_NAME para ${CURRENT_SHA:0:12}"
 ```
