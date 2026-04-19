@@ -20,9 +20,14 @@ Siga os passos em ordem. Pare no primeiro erro crítico.
 
 ### 1. Sanity check
 
+Garantir PATH consistente — o shell snapshot do Claude Code às vezes perde ferramentas mid-execution. Fazer isso **antes** de qualquer `command -v`.
+
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
+
 test -f .claude-plugin/marketplace.json || { echo "ERRO: rode da raiz do repo do marketplace."; exit 1; }
 command -v jq >/dev/null || { echo "ERRO: jq não instalado."; exit 1; }
+command -v git >/dev/null || { echo "ERRO: git não instalado."; exit 1; }
 test -f ~/.claude/plugins/installed_plugins.json || { echo "ERRO: installed_plugins.json não encontrado."; exit 1; }
 test -f ~/.claude/plugins/known_marketplaces.json || { echo "ERRO: known_marketplaces.json não encontrado."; exit 1; }
 ```
@@ -39,22 +44,32 @@ test -d "$CLONE_PATH" || { echo "AVISO: clone local do marketplace não encontra
 
 Rodar os checks abaixo e agregar findings num array. Cada finding tem: `severity` (high/medium/low), `check_id`, `plugin` (ou `*` para geral), `message`, `auto_fixable` (bool).
 
-#### 3.1 Clone stale (MEDIUM)
+#### 3.1 Clone behind remote (MEDIUM)
 
-`known_marketplaces.json.lastUpdated` mais antigo que 48h.
+Mede **sinal direto**: há commits no remote que ainda não foram puxados para o clone local? Substitui o check antigo baseado em `known_marketplaces.json.lastUpdated` (que era um proxy enganoso — só atualizava quando a UI rodava `/plugin marketplace update`, não pelo `git pull` externo).
 
 ```bash
-LAST_UPDATED=$(jq -r --arg m "$MKT_NAME" '.[$m].lastUpdated // empty' ~/.claude/plugins/known_marketplaces.json)
-if [ -n "$LAST_UPDATED" ]; then
-  AGE_SEC=$(( $(date +%s) - $(date -j -f "%Y-%m-%dT%H:%M:%S" "${LAST_UPDATED%.*}" +%s 2>/dev/null || echo 0) ))
-  AGE_H=$(( AGE_SEC / 3600 ))
-  if [ "$AGE_H" -gt 48 ]; then
-    # Finding MEDIUM: clone stale, ${AGE_H}h desde último /plugin marketplace update
-    # Auto-fix: cd "$CLONE_PATH" && git pull --ff-only
-    echo "MEDIUM clone-stale: ${AGE_H}h desde último sync"
+if [ -d "$CLONE_PATH" ]; then
+  if git -C "$CLONE_PATH" fetch origin --quiet 2>/dev/null; then
+    LOCAL_HEAD=$(git -C "$CLONE_PATH" rev-parse HEAD)
+    # Detectar o branch trackeado (geralmente origin/main, mas pode ser outro)
+    TRACKING=$(git -C "$CLONE_PATH" rev-parse --abbrev-ref '@{upstream}' 2>/dev/null || echo "origin/main")
+    REMOTE_HEAD=$(git -C "$CLONE_PATH" rev-parse "$TRACKING" 2>/dev/null)
+    if [ -n "$REMOTE_HEAD" ] && [ "$LOCAL_HEAD" != "$REMOTE_HEAD" ]; then
+      BEHIND=$(git -C "$CLONE_PATH" rev-list --count "$LOCAL_HEAD..$REMOTE_HEAD" 2>/dev/null || echo "?")
+      # Finding MEDIUM: clone behind remote ($BEHIND commits)
+      # Auto-fix: git -C "$CLONE_PATH" pull --ff-only
+      echo "MEDIUM clone-behind-remote: $BEHIND commits atrás de $TRACKING"
+    fi
+  else
+    # Fetch falhou — offline ou credenciais. Finding LOW para não espamar HIGH/MEDIUM.
+    # Auto-fix: não (requer intervenção manual — conectar internet ou ajustar credenciais)
+    echo "LOW fetch-failed: não consegui fetch em $CLONE_PATH (offline ou auth?)"
   fi
 fi
 ```
+
+Nota: o campo `known_marketplaces.json.lastUpdated` permanece informativo (dá pra exibir no relatório como "última vez que o app sincronizou"), mas não determina staleness.
 
 #### 3.2 Dangling installPath (HIGH)
 

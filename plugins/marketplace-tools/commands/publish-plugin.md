@@ -29,13 +29,17 @@ Siga os passos em ordem. Pare no primeiro erro crítico.
 
 ### 1. Parsing de argumentos e sanity check
 
+Garantir PATH consistente — o shell snapshot do Claude Code às vezes perde ferramentas mid-execution. Fazer **antes** de `command -v`.
+
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
+
 PLUGIN_NAME="$1"
 BUMP_TYPE="${2:-patch}"   # patch, minor, ou major
 
 test -n "$PLUGIN_NAME" || { echo "Uso: /publish-plugin <nome> [patch|minor|major]"; exit 1; }
 test -f .claude-plugin/marketplace.json || { echo "ERRO: rode da raiz do repo do marketplace."; exit 1; }
-command -v jq >/dev/null && command -v gh >/dev/null || { echo "ERRO: jq e gh são obrigatórios."; exit 1; }
+command -v jq >/dev/null && command -v gh >/dev/null && command -v git >/dev/null || { echo "ERRO: jq, gh e git são obrigatórios."; exit 1; }
 
 # Verificar que o plugin é Level 3 (source string local)
 SOURCE_TYPE=$(jq -r --arg n "$PLUGIN_NAME" '.plugins[] | select(.name == $n) | .source | type' .claude-plugin/marketplace.json)

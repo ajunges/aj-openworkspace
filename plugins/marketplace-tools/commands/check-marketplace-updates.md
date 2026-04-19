@@ -18,12 +18,15 @@ Siga os passos abaixo em ordem. Pare no primeiro erro crítico.
 
 ### 1. Sanity check do ambiente
 
-Verificar que estamos no lugar certo e com as ferramentas instaladas:
+Garantir PATH consistente — o shell snapshot do Claude Code às vezes perde ferramentas mid-execution. Fazer **antes** de `command -v`.
 
 ```bash
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
+
 test -f .claude-plugin/marketplace.json || { echo "ERRO: .claude-plugin/marketplace.json não encontrado. Rode da raiz de um repo com marketplace."; exit 1; }
 command -v gh >/dev/null || { echo "ERRO: gh CLI não instalado."; exit 1; }
 command -v jq >/dev/null || { echo "ERRO: jq não instalado."; exit 1; }
+command -v git >/dev/null || { echo "ERRO: git não instalado."; exit 1; }
 gh auth status >/dev/null 2>&1 || { echo "ERRO: gh não autenticado. Rode 'gh auth login'."; exit 1; }
 ```
 
