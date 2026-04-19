@@ -1,7 +1,6 @@
 {
   "name": "marketplace-tools",
   "description": "Ferramentas para manter o marketplace aj-openworkspace — principalmente verificação de updates em plugins com SHA pinnado (Level 2).",
-  "version": "0.1.1",
   "author": {
     "name": "André Junges"
   },

@@ -1,7 +1,6 @@
 {
   "name": "sdd-workflow",
   "description": "Workflow de Spec-Driven Development para desenvolvedores solo gerando software 100% por IA. 7 fases (Discovery → Entrega) com quality gates explícitos, TDD e auditoria em 8 dimensões. Escrito por um CRO não-dev dirigindo Claude Code.",
-  "version": "0.1.0",
   "author": {
     "name": "André Junges"
   },

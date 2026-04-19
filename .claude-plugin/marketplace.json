@@ -246,7 +246,8 @@
       ],
       "author": {
         "name": "André Junges"
-      }
+      },
+      "version": "0.1.1"
     },
     {
       "name": "sdd-workflow",
@@ -262,7 +263,8 @@
       ],
       "author": {
         "name": "André Junges"
-      }
+      },
+      "version": "0.1.0"
     },
     {
       "name": "explanatory-output-style",
@@ -579,7 +581,8 @@
       ],
       "author": {
         "name": "André Junges"
-      }
+      },
+      "version": "3.0.0"
     },
     {
       "name": "portfolio-docs",
@@ -595,7 +598,8 @@
       ],
       "author": {
         "name": "André Junges"
-      }
+      },
+      "version": "0.1.0"
     }
   ]
 }
