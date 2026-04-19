@@ -34,3 +34,28 @@ Este repo hospeda um marketplace Claude Code (`ajunges/aj-openworkspace`) com 15
 - Descriptions em pt-BR, opinativas, do ponto de vista do usuário.
 - Repo público — sanitizar dados profissionais antes de publicar (grep gate: Supero, caminhos absolutos, brand colors).
 - Docs do marketplace em `marketplace/README.md` (uso) e `marketplace/ADMIN.md` (administração).
+
+### Versioning de plugins Level 3
+
+- Para plugins com `source: "./plugins/..."`, **`version` vive no `marketplace.json`**, não no `plugin.json`. Se duplicar, o `plugin.json` vence silenciosamente (warning oficial da Anthropic) e facilita drift entre os dois arquivos.
+- **Toda mudança de comportamento em plugin Level 3 exige bump de `version`** no `marketplace.json`. Sem bump, o cache do Claude Code não é invalidado e o app continua servindo a versão antiga — comportamento documentado em [docs oficiais](https://code.claude.com/docs/en/plugins-reference#version-management) ("If you change your plugin's code but don't bump the version… existing users won't see your changes due to caching").
+- SemVer: patch para bugfix sem mudar API, minor para feature nova (comando/skill), major para breaking change.
+
+### Bugs conhecidos no ciclo de update
+
+O Desktop app sofre de três bugs documentados que fazem plugins ficarem stale mesmo com push feito em main:
+
+- [#13799](https://github.com/anthropics/claude-code/issues/13799) — cache não invalida quando marketplace atualiza
+- [#14061](https://github.com/anthropics/claude-code/issues/14061) — `/plugin update` não invalida cache
+- [#46081](https://github.com/anthropics/claude-code/issues/46081) — `claude plugin update` usa clone stale (não faz `git fetch` antes)
+
+**Fluxo manual para publicar Level 3** (encapsulado em `/marketplace-tools:publish-plugin`):
+
+1. Bumpar `version` do plugin em `.claude-plugin/marketplace.json`
+2. Commit + push em `main`
+3. `git -C ~/.claude/plugins/marketplaces/aj-openworkspace pull --ff-only`
+4. `jq 'del(.plugins["<nome>@aj-openworkspace"])' ~/.claude/plugins/installed_plugins.json > tmp && mv tmp …`
+5. Copiar `marketplaces/aj-openworkspace/plugins/<nome>` → `cache/aj-openworkspace/<nome>/<version>` (workaround do #14061)
+6. Reiniciar Claude Code Desktop
+
+**Diagnóstico** via `/marketplace-tools:marketplace-qa` — detecta clone stale, dangling installPaths, version drift entre installed e clone, e plugins habilitados sem entry em installed_plugins.
