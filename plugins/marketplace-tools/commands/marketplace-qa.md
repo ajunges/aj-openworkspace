@@ -60,6 +60,16 @@ Diretórios em `cache/<mkt>/<plugin>/<versão>/` não referenciados por `install
 
 **Auto-fix**: `rm -rf` no diretório.
 
+### 3.7 Version duplicada — plugin.json vs marketplace.json (MEDIUM)
+
+Para plugins Level 3, detecta se `version` está em **ambos** `plugin.json` e `marketplace.json`. A doc oficial da Anthropic avisa: *"avoid setting the version in both places. The plugin manifest always wins silently"*. Quando os dois têm version, o Claude Code honra o `plugin.json` e ignora `marketplace.json` — se o bump foi feito só em `marketplace.json`, fica invisível pro app (bug silencioso de re-cache).
+
+**Auto-fix**: remover `version` do `plugin.json` (convenção deste marketplace: version vive em marketplace.json).
+
+```bash
+jq 'del(.version)' plugins/<nome>/.claude-plugin/plugin.json > tmp && mv tmp plugins/<nome>/.claude-plugin/plugin.json
+```
+
 ## Auto-fix interativo
 
 Depois de revisar o relatório, passar por cada finding `auto-fixable: yes` e decidir manualmente se aplica. Estes são os fixes correspondentes (rodar após revisão humana):
@@ -86,6 +96,13 @@ Invocar `/marketplace-tools:publish-plugin <nome> patch` (ou bump adequado).
 ```bash
 rm -rf "$dir"
 ```
+
+### 3.7 version-duplicated
+```bash
+jq 'del(.version)' plugins/<nome>/.claude-plugin/plugin.json > /tmp/p.json \
+  && mv /tmp/p.json plugins/<nome>/.claude-plugin/plugin.json
+```
+Depois bumpar em `marketplace.json` se quiser invalidar cache, ou rodar `/marketplace-tools:publish-plugin <nome>`.
 
 ## Checks não implementados (v0.3)
 

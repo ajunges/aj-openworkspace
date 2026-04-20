@@ -8,7 +8,12 @@
 #   - #14061 /plugin update não invalida cache
 #   - #46081 claude plugin update usa marketplace cache stale
 
-set -u  # variáveis não definidas = erro (set -e NÃO — queremos continuar apesar de erros por-check)
+set -Eeuo pipefail
+# -E: traps ERR propagam em funções e subshells
+# -e: aborta ao primeiro erro não tratado (evita relatório falso-limpo quando algo falha)
+# -u: variável indefinida = erro
+# -o pipefail: pipe retorna o exit do primeiro comando que falhar (senão esconde erros do meio)
+trap 'echo "ERRO em qa.sh linha $LINENO: $BASH_COMMAND" >&2' ERR
 
 # PATH hardening — script roda em processo bash dedicado, env é o do sistema
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
@@ -109,6 +114,21 @@ while read -r dir; do
     fi
   fi
 done < "$TMPDIR_QA/cache.txt"
+
+# ---------------- 3.7 Version duplicated (plugin.json vs marketplace.json) ----------------
+# Doc oficial: "avoid setting the version in both places. The plugin manifest always wins silently".
+# Se plugin.json tem version E marketplace.json tem version pra mesma entry, o plugin.json vence
+# e o bump em marketplace.json fica invisível (bug silencioso já sentido na pele).
+jq -r --arg m "$MKT_NAME" '.plugins[] | select(.source | type == "string") | "\(.name)\t\(.source)\t\(.version // "")"' "$MKT_JSON" > "$TMPDIR_QA/l3.tsv"
+while IFS=$'\t' read -r name plugin_dir mkt_ver; do
+  [ -z "$mkt_ver" ] && continue       # sem version em marketplace.json → não há duplicação possível
+  plugin_json_path="$plugin_dir/.claude-plugin/plugin.json"
+  [ -f "$plugin_json_path" ] || continue
+  pjs_ver=$(jq -r '.version // ""' "$plugin_json_path" 2>/dev/null || echo "")
+  if [ -n "$pjs_ver" ]; then
+    echo "MEDIUM|3.7|$name|version-duplicated: plugin.json=$pjs_ver marketplace.json=$mkt_ver (plugin.json vence silenciosamente)|yes" >> "$FINDINGS"
+  fi
+done < "$TMPDIR_QA/l3.tsv"
 
 # ---------------- Relatório ----------------
 count_sev() { awk -F'|' -v s="$1" '$1==s{n++}END{print n+0}' "$FINDINGS"; }

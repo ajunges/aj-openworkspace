@@ -6,7 +6,12 @@
 # Encapsula o fluxo manual que os bugs #13799, #14061, #46081 do Claude Code forçam:
 #   bump → commit → push → pull no clone → remove entry → copy cache
 
-set -u
+set -Eeuo pipefail
+# -E: traps ERR propagam em funções e subshells
+# -e: aborta ao primeiro erro não tratado
+# -u: variável indefinida = erro
+# -o pipefail: pipe retorna exit do primeiro comando que falhar
+trap 'echo "ERRO em publish.sh linha $LINENO: $BASH_COMMAND" >&2' ERR
 
 # PATH hardening — script roda em processo bash dedicado
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
@@ -38,9 +43,10 @@ PLUGIN_DIR=$(jq -r --arg n "$PLUGIN_NAME" '.plugins[] | select(.name == $n) | .s
 test -d "$PLUGIN_DIR" || { echo "ERRO: diretório $PLUGIN_DIR não encontrado."; exit 1; }
 
 # --- Detectar mudanças desde último bump ---
-LAST_BUMP=$(git log --format=%H -- .claude-plugin/marketplace.json 2>/dev/null | head -1)
+# || echo "" / || echo 0 protege contra pipefail abortar se git retornar não-zero
+LAST_BUMP=$(git log --format=%H -- .claude-plugin/marketplace.json 2>/dev/null | head -1 || echo "")
 if [ -n "$LAST_BUMP" ]; then
-  CHANGED=$(git log --format=%H "$LAST_BUMP..HEAD" -- "$PLUGIN_DIR/" 2>/dev/null | wc -l | tr -d ' ')
+  CHANGED=$(git log --format=%H "$LAST_BUMP..HEAD" -- "$PLUGIN_DIR/" 2>/dev/null | wc -l | tr -d ' ' || echo "0")
 else
   CHANGED="?"
 fi
