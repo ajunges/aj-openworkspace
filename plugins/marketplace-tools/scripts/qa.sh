@@ -27,8 +27,8 @@ CLONE_PATH="$HOME/.claude/plugins/marketplaces/$MKT_NAME"
 INSTALLED="$HOME/.claude/plugins/installed_plugins.json"
 SETTINGS="$HOME/.claude/settings.json"
 MKT_JSON=".claude-plugin/marketplace.json"
-FINDINGS=$(mktemp "/tmp/mkt-qa-findings-XXXXXX.txt")
-TMPDIR_QA=$(mktemp -d "/tmp/mkt-qa-XXXXXX")
+FINDINGS=$(mktemp) || { echo "ERRO: mktemp falhou"; exit 1; }
+TMPDIR_QA=$(mktemp -d) || { echo "ERRO: mktemp -d falhou"; exit 1; }
 trap 'rm -rf "$TMPDIR_QA"' EXIT
 
 echo "=== Marketplace QA: $MKT_NAME ==="

@@ -84,7 +84,7 @@ read -r answer
 [ "$answer" = "y" ] || [ "$answer" = "Y" ] || { echo "Abortado."; exit 0; }
 
 # --- 1. Bump version em marketplace.json ---
-TMPFILE=$(mktemp "/tmp/mkt.new.XXXXXX.json")
+TMPFILE=$(mktemp) || { echo "ERRO: mktemp falhou"; exit 1; }
 jq --arg n "$PLUGIN_NAME" --arg v "$NEW" \
   '(.plugins[] | select(.name == $n) | .version) = $v' \
   .claude-plugin/marketplace.json > "$TMPFILE"
@@ -128,7 +128,7 @@ cp "$INSTALLED" "$BACKUP"
 echo "Backup: $BACKUP"
 
 KEY="$PLUGIN_NAME@$MKT_NAME"
-TMPIP=$(mktemp "/tmp/ip.new.XXXXXX.json")
+TMPIP=$(mktemp) || { echo "ERRO: mktemp falhou"; exit 1; }
 jq --arg k "$KEY" 'del(.plugins[$k])' "$INSTALLED" > "$TMPIP"
 jq . "$TMPIP" > /dev/null || { echo "ERRO: JSON inválido. Restaurando backup."; cp "$BACKUP" "$INSTALLED"; rm -f "$TMPIP"; exit 1; }
 mv "$TMPIP" "$INSTALLED"
