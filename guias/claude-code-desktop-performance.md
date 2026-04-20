@@ -294,6 +294,52 @@ Bundles de `skills` + `hooks` + `agents` + `MCP servers` reutilizáveis. Instala
 
 Para linguagens tipadas, instalar um plugin de code intelligence para navegação de símbolos e detecção de erros.
 
+### Arquitetura de camadas (Desktop macOS)
+
+A UI mostra "Habilidades", "Conectores" e "Plugins pessoais" como categorias paralelas, mas existem **4 camadas sobrepostas** com nomenclatura ambígua. A palavra "plugin" está sobrecarregada — o que a UI chama de "Plugins pessoais" (Cowork bundles inline) é sistema diferente do que o `/plugin install` gerencia (marketplace plugins). Eles não conversam entre si.
+
+| # | Camada | Origem | Onde vive | Como desativar |
+|---|---|---|---|---|
+| 1 | **Conectores nativos** | Built-in Anthropic + adds do usuário | Top-level menu "Conectores" da UI | Settings → Conectores |
+| 2 | **Cowork bundles** ("Plugins pessoais" na UI) | Vêm inline com o Desktop app | Sidebar "Plugins pessoais". **NÃO** aparecem em `~/.claude/plugins/installed_plugins.json` | Toggle individual no sidebar |
+| 3 | **Plugins de marketplace** | Catálogos tipo `aj-openworkspace` | `~/.claude/plugins/installed_plugins.json` + cache em `~/.claude/plugins/cache/` | `/plugin` ou `claude plugin disable` |
+| 4 | **Plugins por-projeto** | Scoped via `.claude/settings.json` (`project`/`local`) | Per-diretório | Per-scope flag |
+
+#### Cowork bundles (camada 2)
+
+Bundles de skills + MCP conectores que vêm com o app. Toggle liga/desliga **tudo junto**, sem granularidade dentro do bundle:
+
+- `pdf-viewer` — viewer interativo
+- `brand-voice` — adiciona 7 MCPs (notion, atlassian, box, figma, gong, microsoft-365, granola)
+- `productivity` — adiciona 10 MCPs (slack, notion, asana, linear, atlassian, ms365, monday, clickup, google-calendar, gmail)
+- `data` — adiciona 8 MCPs (snowflake, databricks, bigquery, hex, amplitude, amplitude-eu, atlassian, definite)
+- `marketing`, `product-management`, `sales`, `legal`, `bio-research` — vistos no sidebar, escopo não totalmente mapeado
+
+Nenhum deles aparece em `installed_plugins.json` nem no marketplace — são inline no binário do Desktop.
+
+#### Duplicação de MCPs entre camadas
+
+Evidência de um `replaceRemoteMcpServers` com **53 servers** numa sessão real (`main.log`, 2026-04-20):
+
+| MCP service | Aparições | Via |
+|---|---|---|
+| **Atlassian** | **5x** | Conector nativo + `plugin:atlassian:atlassian` (marketplace) + `plugin:brand-voice:atlassian` + `plugin:productivity:atlassian` + `plugin:data:atlassian` |
+| Gmail | 2x | Conector nativo + `plugin:productivity:gmail` |
+| GitHub | 2x | Conector nativo + `plugin:github:github` |
+| Figma | 2x | Conector nativo + `plugin:brand-voice:figma` |
+| Notion | 2x | `plugin:brand-voice:notion` + `plugin:productivity:notion` |
+| MS365 | 2x | `plugin:brand-voice:microsoft-365` + `plugin:productivity:ms365` |
+
+Overhead de duplicação: **~77%** (53 registrados vs. ~30 serviços únicos).
+
+O `main.log` mostra shadowing parcial: `Plugin "X" has remote MCP servers (Y). Shadowing with no-ops to prevent SDK double-load.` Isto protege só contra double-load do SDK binário — a lista de tools continua registrada múltiplas vezes, e o modelo vê N variantes funcionalmente equivalentes no catálogo.
+
+#### Implicações
+
+- **Tool selection ruidoso**: 5 variantes de Atlassian search no mesmo catálogo aumentam chance de escolha sub-ótima pelo modelo
+- **Bootstrap do renderer mais pesado**: 53 servers carregados no startup correlaciona (hipótese) com crashes V8 observados do `Claude Helper (Renderer)` em `v8::Isolate::Dispose`
+- **Nenhuma view única** mostra as 4 camadas juntas. Auditoria requer checar cada fonte separadamente: sidebar "Plugins pessoais" (camada 2), menu Conectores (camada 1), `jq . ~/.claude/plugins/installed_plugins.json` (camada 3), `.claude/settings.json` em cada repo (camada 4)
+
 ---
 
 ## 7. Diff Review, Undo e Checkpoints
