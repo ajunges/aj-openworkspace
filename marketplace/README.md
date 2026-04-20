@@ -132,6 +132,8 @@ Marketplaces third-party (como `aj-openworkspace`) vêm com auto-update **deslig
 3. Seleciona `aj-openworkspace`
 4. **Enable auto-update**
 
+> **Caveat Desktop app (2.1.109+):** regressão conhecida no autocomplete pode ocultar o built-in `/plugin` quando há skills com "plugin" no nome instaladas (ex: `marketplace-tools:publish-plugin`, `plugin-dev:create-plugin`). Se o picker forçar escolha de um sufixo, digite `/plugin` → **Esc** pra dispensar o picker → **Enter** pra submit literal. Alternativa: `claude plugin list` / `claude plugin install` via CLI fora da sessão. Tracking: [#49087](https://github.com/anthropics/claude-code/issues/49087), [#49454](https://github.com/anthropics/claude-code/issues/49454).
+
 Depois disso, todo startup do Claude Code puxa updates do catálogo e aplica nos plugins instalados. Quando algo muda, aparece um prompt pra rodar `/reload-plugins`.
 
 Funciona igual no Desktop e no CLI.

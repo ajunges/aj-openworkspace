@@ -288,8 +288,9 @@ Forneça referências de linha e correções sugeridas.
 
 Bundles de `skills` + `hooks` + `agents` + `MCP servers` reutilizáveis. Instalar sem configuração manual.
 
-- **Desktop app:** botão **+** → **Plugins** na UI da sessão abre o seletor visual
-- **CLI:** `/plugin` para gerenciar via slash command
+- **Desktop app:** `/plugin` (slash command built-in) abre a UI tabbed de marketplaces/instalados. Alternativa visual: botão **+** → **Plugins** na UI da sessão.
+- **CLI:** `/plugin` funciona dentro de sessão interativa. Fora da sessão, `claude plugin <install|list|enable|disable|update|uninstall>` gerencia via shell (útil pra scripts).
+- **Caveat Desktop (2.1.109+):** autocomplete do `/` tem regressão que pode ocultar `/plugin` built-in quando há skills custom com "plugin" no nome (issues [#49087](https://github.com/anthropics/claude-code/issues/49087), [#49454](https://github.com/anthropics/claude-code/issues/49454)). Workaround: digitar `/plugin` → **Esc** pra dispensar picker → **Enter**. Ou usar `claude plugin …` no terminal.
 
 Para linguagens tipadas, instalar um plugin de code intelligence para navegação de símbolos e detecção de erros.
 

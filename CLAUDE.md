@@ -59,3 +59,18 @@ O Desktop app sofre de três bugs documentados que fazem plugins ficarem stale m
 6. Reiniciar Claude Code Desktop
 
 **Diagnóstico** via `/marketplace-tools:marketplace-qa` — detecta clone stale, dangling installPaths, version drift entre installed e clone, e plugins habilitados sem entry em installed_plugins.
+
+### Bugs conhecidos no picker de slash commands (Desktop)
+
+Regressão em Claude Code Desktop 2.1.109+: autocomplete do `/` trunca a lista prematuramente e pode ocultar tanto built-ins (`/plugin`, `/clear`, etc.) quanto skills custom, dependendo do estado do cache e da quantidade de skills instaladas. Sintomas variam — num caso observado aqui, digitar `/plugin` mostrou só 5 skills com "plugin" no nome (`marketplace-tools:publish-plugin`, `plugin-dev:create-plugin`, etc.) e omitiu o built-in `/plugin`, forçando escolha de um sufixo.
+
+- [#49087](https://github.com/anthropics/claude-code/issues/49087) (closed, duplicate) — autocomplete mostra só ~5 built-ins, esconde 78 skills custom (regressão do fix de #22020)
+- [#49454](https://github.com/anthropics/claude-code/issues/49454) (closed, duplicate) — plugin slash commands não aparecem no picker do Desktop; CLI funciona
+- [#45593](https://github.com/anthropics/claude-code/issues/45593) (closed) — custom `/commands` de `~/.claude/commands/` somem do autocomplete após update
+- [#49148](https://github.com/anthropics/claude-code/issues/49148) (open) — skills de `~/.claude/skills/` não aparecem no dropdown (Desktop Windows)
+
+**Workarounds:**
+
+1. Digitar `/<comando>` → pressionar **Esc** pra dispensar o picker → **Enter** pra submit literal. Funciona pro built-in `/plugin` quando está shadowed.
+2. Usar a CLI fora de sessão: `claude plugin <install|list|enable|disable|update|uninstall>`. A CLI não passa pelo picker quebrado.
+3. Gerenciar plugins via Settings UI (botão **+** → **Plugins** na sessão) quando o slash command falhar.
