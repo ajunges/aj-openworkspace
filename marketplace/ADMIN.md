@@ -11,10 +11,12 @@ Este guia é pra quem mantém o marketplace (eu). Pra quem quer usar/instalar pl
 ```
 aj-openworkspace/
 ├── .claude-plugin/
-│   └── marketplace.json           # catálogo (15 plugins hoje)
+│   └── marketplace.json           # catálogo (29 plugins hoje)
 ├── plugins/                       # plugins Level 3 (próprios)
 │   ├── marketplace-tools/
-│   └── sdd-workflow/
+│   ├── sdd-workflow/
+│   ├── humanizador/
+│   └── portfolio-docs/
 ├── marketplace/
 │   ├── README.md                  # guia de uso (pra quem instala)
 │   └── ADMIN.md                   # este arquivo
@@ -288,6 +290,18 @@ O plugin `skill-creator` guia a criação de skills com frontmatter correto, tri
 
 ### 4.6 Validar, commitar, instalar
 
+**Com `marketplace-tools` instalado (recomendado pra updates):**
+
+```
+/validate                                        # valida schema + convenções pré-commit
+# commit manual (git add/commit/push) conforme abaixo pra criação inicial
+/publish-plugin <nome> patch                     # pra updates subsequentes: bump + commit + push + re-cache
+```
+
+`/publish-plugin` cuida do ciclo completo de versionamento em atualizações (bump de `version` no `marketplace.json`, commit, push, e workaround dos bugs de cache do Desktop). A **criação inicial** ainda é manual — não tem versão anterior pra bumpar. Ver seção 9 para o toolkit completo.
+
+**Fluxo manual (fallback ou criação inicial):**
+
 ```bash
 # Validar
 jq . .claude-plugin/marketplace.json > /dev/null
@@ -414,6 +428,13 @@ git push
 
 ## 8. Validação completa do marketplace
 
+**Com `marketplace-tools` instalado (recomendado):**
+
+- `/validate` — schema oficial + convenções do marketplace (`tags[0]` válido, SemVer, `version` duplicada em L3). Encapsula os checks manuais abaixo em um comando.
+- `/marketplace-qa` — diagnóstico de saúde do marketplace local (clone stale, `dangling installPaths`, `version drift` entre `installed_plugins.json` e clone). Complementa `/validate`.
+
+**Manualmente (fallback):**
+
 Checklist pra rodar antes de qualquer push importante:
 
 ```bash
@@ -440,16 +461,38 @@ done
 claude plugin validate .
 
 # 7. plugin.json dos Level 3
-for pj in plugins/*/. claude-plugin/plugin.json; do
+for pj in plugins/*/.claude-plugin/plugin.json; do
   jq . "$pj" > /dev/null 2>&1 && echo "OK: $pj" || echo "ERRO: $pj"
 done
 ```
 
 ---
 
-## 9. Regras do marketplace
+## 9. Toolkit marketplace-tools
 
-Decisões tomadas no brainstorm (2026-04-15) que governam este marketplace:
+Plugin Level 3 próprio (`plugins/marketplace-tools/`) que encapsula os fluxos manuais de manutenção forçados pelos bugs conhecidos de cache do Claude Code Desktop ([#13799](https://github.com/anthropics/claude-code/issues/13799), [#14061](https://github.com/anthropics/claude-code/issues/14061), [#46081](https://github.com/anthropics/claude-code/issues/46081)).
+
+### 9.1 Comandos disponíveis
+
+| Comando | Usar quando |
+|---|---|
+| `/check-marketplace-updates` | Checar e aplicar updates nos SHAs de plugins Level 2 (seção 3.1). |
+| `/validate` | Validar `marketplace.json` antes de commit — schema + convenções (seção 8). |
+| `/publish-plugin <nome> [patch\|minor\|major]` | Publicar mudança em plugin Level 3: bump + commit + push + re-cache (seção 4.6). |
+| `/marketplace-qa` | Diagnóstico de saúde do marketplace local (clone stale, dangling paths, version drift). |
+| `/restart-desktop` | Reiniciar Claude Code Desktop — útil após `/publish-plugin` aplicar no cache. |
+
+### 9.2 Arquitetura
+
+Todos os comandos seguem o padrão **opção Z**: lógica operacional mora em `scripts/*.sh` (testável fora do Claude via `bats`), o `.md` do comando só explica **quando usar** e o que o script faz conceitualmente. Testes automatizados em `tests/checks/` cobrem os sub-scripts puros.
+
+Para roadmap de comandos futuros, ver [README do plugin](../plugins/marketplace-tools/README.md).
+
+---
+
+## 10. Regras do marketplace
+
+Regras que governam este marketplace:
 
 1. **Só plugins** — conectores MCP gerenciados pela UI do Desktop (PDF Tools, Gmail, HubSpot) não entram. São outra camada.
 2. **Só o que não é padrão** — skills inline do Desktop app (anthropic-skills, brand-voice, design, data, engineering, productivity) não entram. Já vêm com o app.
@@ -461,11 +504,12 @@ Decisões tomadas no brainstorm (2026-04-15) que governam este marketplace:
 
 ---
 
-## 10. Fontes
+## 11. Fontes
 
 - [Schema oficial do marketplace](https://anthropic.com/claude-code/marketplace.schema.json)
 - [Doc: Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
 - [Doc: Discover and install plugins](https://code.claude.com/docs/en/discover-plugins)
 - [Doc: Plugins reference](https://code.claude.com/docs/en/plugins-reference)
 - [Spec do brainstorm](../docs/superpowers/specs/2026-04-15-marketplace-design.md)
-- [Plano de implementação](../docs/superpowers/plans/2026-04-15-marketplace.md)
+- [Spec do marketplace-tools onda 1](../docs/superpowers/specs/2026-04-20-marketplace-tools-onda-1-design.md)
+- [Plano do marketplace-tools onda 1](../docs/superpowers/plans/2026-04-20-marketplace-tools-onda-1.md)

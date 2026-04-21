@@ -1,7 +1,6 @@
 # Performance e Boas Práticas — Claude Code Desktop App
 
 > Guia pessoal de otimização e referência rápida.
-> Atualizado em abril/2026.
 
 ---
 
@@ -319,46 +318,22 @@ Nenhum deles aparece em `installed_plugins.json` nem no marketplace — são inl
 
 #### Duplicação de MCPs entre camadas
 
-Evidência de um `replaceRemoteMcpServers` com **53 servers** numa sessão real (`main.log`, 2026-04-20):
+Os serviços mais comuns podem aparecer registrados múltiplas vezes no startup — cada camada resolve o MCP independentemente:
 
-| MCP service | Aparições | Via |
-|---|---|---|
-| **Atlassian** | **5x** | Conector nativo + `plugin:atlassian:atlassian` (marketplace) + `plugin:brand-voice:atlassian` + `plugin:productivity:atlassian` + `plugin:data:atlassian` |
-| Gmail | 2x | Conector nativo + `plugin:productivity:gmail` |
-| GitHub | 2x | Conector nativo + `plugin:github:github` |
-| Figma | 2x | Conector nativo + `plugin:brand-voice:figma` |
-| Notion | 2x | `plugin:brand-voice:notion` + `plugin:productivity:notion` |
-| MS365 | 2x | `plugin:brand-voice:microsoft-365` + `plugin:productivity:ms365` |
-
-Overhead de duplicação: **~77%** (53 registrados vs. ~30 serviços únicos).
+- **Atlassian** pode aparecer até 5x: Conector nativo + plugin marketplace dedicado + os 3 Cowork bundles que incluem Atlassian (`brand-voice`, `productivity`, `data`).
+- **Gmail, Notion, MS365, Figma, GitHub** frequentemente aparecem 2x: Conector nativo + algum bundle ou plugin marketplace.
 
 O `main.log` mostra shadowing parcial: `Plugin "X" has remote MCP servers (Y). Shadowing with no-ops to prevent SDK double-load.` Isto protege só contra double-load do SDK binário — a lista de tools continua registrada múltiplas vezes, e o modelo vê N variantes funcionalmente equivalentes no catálogo.
 
 #### Implicações
 
-- **Tool selection ruidoso**: 5 variantes de Atlassian search no mesmo catálogo aumentam chance de escolha sub-ótima pelo modelo
-- **Bootstrap do renderer mais pesado**: 53 servers carregados no startup correlaciona (hipótese) com crashes V8 observados do `Claude Helper (Renderer)` em `v8::Isolate::Dispose`
-- **Nenhuma view única** mostra as 4 camadas juntas. Auditoria requer checar cada fonte separadamente: sidebar "Plugins pessoais" (camada 2), menu Conectores (camada 1), `jq . ~/.claude/plugins/installed_plugins.json` (camada 3), `.claude/settings.json` em cada repo (camada 4)
+- **Tool selection ruidoso**: múltiplas variantes do mesmo serviço (ex. 5 Atlassian search) no catálogo aumentam chance de escolha sub-ótima pelo modelo.
+- **Bootstrap mais pesado**: muitos servers carregados no startup correlacionam (hipótese) com crashes V8 observáveis em `Claude Helper (Renderer)` / `v8::Isolate::Dispose`.
+- **Nenhuma view única** mostra as 4 camadas juntas. Auditoria requer checar cada fonte: sidebar "Plugins pessoais" (camada 2), menu Conectores (camada 1), `jq . ~/.claude/plugins/installed_plugins.json` (camada 3), `.claude/settings.json` em cada repo (camada 4).
 
-#### Case study: auditoria de 2026-04-20 (−60% MCPs)
+#### Estratégia de cleanup
 
-Sessão de ~3h de diagnóstico + cleanup produziu estes números:
-
-| Métrica | Antes | Depois | Delta |
-|---|---|---|---|
-| MCP servers ativos | 53 | 21 | **−60%** |
-| Plugins marketplace instalados | 34 | 30 | −4 |
-| Cowork bundles com MCP | 3 (brand-voice + productivity + data) | 0 | −100% |
-| Duplicações de serviço | 6 (Atlassian 5x, Figma 3x, GitHub 2x, Gmail 2x, Notion 2x, MS365 2x) | 0 | −100% |
-
-**Ações tomadas** (ordem priorizada por impacto):
-
-1. **Desligar Cowork bundles não usados** (sidebar "Plugins pessoais" → toggle OFF): `brand-voice` (−7), `productivity` (−10), `data` (−8) = **−25 MCPs**
-2. **Desinstalar plugins marketplace que só eram wrapper de MCP duplicado**: `github@aj-openworkspace` (0 skills perdidas), `atlassian@aj-openworkspace` (5 skills perdidas — consciente)
-3. **Dedupe de Conectores nativos**: Figma tinha 2 entries idênticas (−1); Atlassian nativo removido totalmente pois não era mais usado
-4. **Limpeza de plugins com MCP shadowed**: `microsoft-docs@aj-openworkspace` tinha MCP shadowed (duplicata com Microsoft Learn nativo implícito); `posthog@aj-openworkspace` removido por opção pessoal
-
-**Lição aprendida**: a maior redução vem de **desligar bundles inteiros da camada 2**, não de dedupe ponto-a-ponto. Um bundle `productivity` traz 10 MCPs de uma vez — perguntar antes "uso 3 ou mais desses 10?" se não, desligar o bundle inteiro. Plugins marketplace que são só wrapper de MCP (sem skills próprias) também são alvos óbvios de remoção quando o serviço já tem Conector nativo.
+A maior redução vem de **desligar bundles inteiros da camada 2**, não de dedupe ponto-a-ponto. Um bundle `productivity` traz 10 MCPs de uma vez — perguntar antes "uso 3 ou mais desses 10?"; se não, desligar o bundle inteiro. Plugins marketplace que são só wrapper de MCP (sem skills próprias) também são alvos óbvios quando o serviço já tem Conector nativo.
 
 ---
 
@@ -431,7 +406,7 @@ Selecionar **Remote** ao iniciar sessão. Execução na infra Anthropic:
 
 ### Dispatch — controle pelo celular
 
-Disparar e monitorar tarefas pelo app mobile. Workflow CRO: iniciar análise entre reuniões → Claude executa na cloud → resultado pronto ao voltar ao Mac.
+Disparar e monitorar tarefas pelo app mobile. Exemplo de uso: iniciar análise entre reuniões → Claude executa na cloud → resultado pronto ao voltar ao Mac.
 
 ### Padrão Writer/Reviewer
 
@@ -538,8 +513,6 @@ Adicionar ao `~/.zshrc` ou ao bloco `"env"` em `~/.claude/settings.json`:
 | `CLAUDE_CODE_NO_FLICKER=1` | Rendering suave no terminal (aplica-se ao CLI; Desktop app tem renderer próprio) |
 
 ### Vars que parecem úteis mas evite
-
-Testadas e consideradas subótimas ou problemáticas:
 
 - **`MAX_THINKING_TOKENS=N`** — Opus 4.6 e Sonnet 4.6 têm adaptive thinking que aloca tokens dinamicamente conforme complexidade da tarefa. Hard cap corta raciocínio em tarefas complexas (debug, arquitetura, code review) sem economia real em tarefas simples (que já usam pouco). Deixar sem setar.
 - **`CLAUDE_CODE_SUBAGENT_MODEL=haiku`** — Força Haiku em todos os subagents. Comportamento incerto em relação ao `model:` declarado no frontmatter de custom agents (pode ou não override). Economia marginal (~$0.05/sessão) não compensa risco de degradar agents sofisticados como `code-architect` ou `security-reviewer`. Deixar sem setar — cada agent usa seu `model:` ou o default inteligente.

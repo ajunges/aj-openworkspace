@@ -24,6 +24,7 @@ Todos seguem o padrão **opção Z**: lógica operacional em `scripts/*.sh`, `.m
 ### Onda 3 — Automação residual
 - `/nuke-cache` — invalidação total pra casos de emergência
 - `/changelog` — gera changelog entre versions de um plugin L3
+- `/regen-catalog` — regenera seção 7 do `marketplace/README.md` a partir do `marketplace.json` (elimina manutenção manual da tabela)
 
 ### Onda 4 — Scaffolding
 - `/new-plugin` — cria dir + plugin.json + entry em marketplace.json pra plugin Level 3 novo
@@ -38,7 +39,7 @@ cd plugins/marketplace-tools
 bats tests/checks/
 ```
 
-Scripts de orquestração (`check.sh`, `validate.sh`, `qa.sh`, `publish.sh`, `restart.sh`) não têm testes automatizados na Onda 1 — testabilidade manual rodando cada um fora do Claude Code.
+Scripts de orquestração (`check.sh`, `validate.sh`, `qa.sh`, `publish.sh`, `restart.sh`) não têm testes automatizados — testabilidade manual rodando cada um fora do Claude Code.
 
 ## Instalação
 

@@ -25,7 +25,7 @@ House style para novas notas e edições — **overrides** o `Tom e formato` do 
 
 ## Marketplace
 
-Este repo hospeda um marketplace Claude Code (`ajunges/aj-openworkspace`) com 15 plugins curados.
+Este repo hospeda um marketplace Claude Code (`ajunges/aj-openworkspace`) com 29 plugins curados (7 Level 2 com SHA pin, 18 Level 1 em HEAD, 4 Level 3 próprios: `marketplace-tools`, `sdd-workflow`, `humanizador`, `portfolio-docs`).
 
 - `.claude-plugin/marketplace.json` é o catálogo. Schema: `metadata.description` (não `description` no root). Validar com `claude plugin validate .` antes de commitar mudanças.
 - `plugins/` contém plugins Level 3 (próprios). Level 1/2 são referências externas.
@@ -62,7 +62,7 @@ O Desktop app sofre de três bugs documentados que fazem plugins ficarem stale m
 
 ### Bugs conhecidos no picker de slash commands (Desktop)
 
-Regressão em Claude Code Desktop 2.1.109+: autocomplete do `/` trunca a lista prematuramente e pode ocultar tanto built-ins (`/plugin`, `/clear`, etc.) quanto skills custom, dependendo do estado do cache e da quantidade de skills instaladas. Sintomas variam — num caso observado aqui, digitar `/plugin` mostrou só 5 skills com "plugin" no nome (`marketplace-tools:publish-plugin`, `plugin-dev:create-plugin`, etc.) e omitiu o built-in `/plugin`, forçando escolha de um sufixo.
+Regressão em Claude Code Desktop 2.1.109+: autocomplete do `/` trunca a lista prematuramente e pode ocultar tanto built-ins (`/plugin`, `/clear`, etc.) quanto skills custom, dependendo do estado do cache e da quantidade de skills instaladas. Sintoma típico: digitar um built-in mostra apenas skills custom cujo nome contém aquele termo, escondendo o built-in e forçando escolha de um sufixo. Confirmar olhando a lista antes de aceitar o sugerido.
 
 - [#49087](https://github.com/anthropics/claude-code/issues/49087) (closed, duplicate) — autocomplete mostra só ~5 built-ins, esconde 78 skills custom (regressão do fix de #22020)
 - [#49454](https://github.com/anthropics/claude-code/issues/49454) (closed, duplicate) — plugin slash commands não aparecem no picker do Desktop; CLI funciona

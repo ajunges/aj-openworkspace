@@ -1,7 +1,7 @@
 # Marketplace aj-openworkspace — guia de uso
 
 > Curadoria pessoal de plugins do Claude Code do André Junges.
-> 15 plugins, modelo híbrido em 3 níveis, sistema de classificação opinativo.
+> 29 plugins (7 Level 2, 18 Level 1, 4 Level 3 próprios), modelo híbrido em 3 níveis, sistema de classificação opinativo.
 
 Este marketplace é uma fonte funcional de instalação de plugins — você adiciona, escolhe o que instalar, e gerencia direto na sessão do Claude Code Desktop. Tudo que está aqui foi testado por alguém que não é desenvolvedor e usa Claude Code pra gerar 100% do código.
 
@@ -59,7 +59,7 @@ Pra instalar com escopo diferente do default:
 
 ```
 /plugin install pyright-lsp@aj-openworkspace --scope project
-/plugin install marketing@aj-openworkspace --scope local
+/plugin install hookify@aj-openworkspace --scope local
 ```
 
 ### 2.4 Exemplos por caso de uso
@@ -96,7 +96,7 @@ Desinstala do escopo default (user). Pra desinstalar de escopo específico:
 
 ```
 /plugin uninstall pyright-lsp@aj-openworkspace --scope project
-/plugin uninstall marketing@aj-openworkspace --scope local
+/plugin uninstall hookify@aj-openworkspace --scope local
 ```
 
 Se o plugin estava em múltiplos escopos, ele permanece nos outros. Dados persistentes do plugin são removidos automaticamente quando o último escopo é desinstalado.
@@ -192,7 +192,7 @@ O nível é derivado de como o plugin é referenciado no marketplace — você n
 |---|---|---|
 | `recomendado` | Uso ativo, confiável, maduro | Instale sem hesitar |
 | `em-testes` | Em avaliação, pode mudar | Instale com `--scope local` pra testar antes |
-| `nao-recomendado` | Testei e não compensa | Leia o motivo na description do plugin |
+| `nao-recomendado` | Avaliado e descartado | Leia o motivo na description do plugin |
 
 ### 6.3 Tags livres
 
@@ -208,35 +208,62 @@ Após o status, 2-4 tags descrevem origem, função e domínio:
 
 ## 7. Catálogo de plugins
 
-### Level 2 — SHA pin (9 plugins de workflow)
+Organizado por status (recomendado primeiro). Para o listagem canônica e atualizada, ver [`.claude-plugin/marketplace.json`](../.claude-plugin/marketplace.json).
 
-| Plugin | Status | O que faz |
+### 7.1 Recomendado (7 plugins)
+
+Uso ativo confirmado, opinião formada. Instalar sem hesitar.
+
+| Plugin | Nível | O que faz |
 |---|---|---|
-| [superpowers](https://github.com/obra/superpowers) | `recomendado` | Skills de brainstorming, TDD, debugging, subagent-driven-development. Base do workflow. |
-| [code-review](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-review) | `recomendado` | Agent de code review com scoring por confidence. |
-| [code-simplifier](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier) | `recomendado` | Refina código recém-modificado sem mudar comportamento. |
-| [commit-commands](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/commit-commands) | `recomendado` | Slash commands `/commit`, `/commit-push-pr`, `/clean_gone`. |
-| [feature-dev](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev) | `recomendado` | Workflow de dev de features com agents especializados. |
-| [skill-creator](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator) | `recomendado` | Meta-skill pra criar, editar e avaliar skills. |
-| [claude-md-management](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management) | `recomendado` | Auditar e melhorar CLAUDE.md. |
-| [security-guidance](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance) | `recomendado` | Hook que avisa de padrões inseguros ao editar arquivos. |
-| [claude-code-setup](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup) | `em-testes` | Analisa codebase e recomenda automações. |
+| [superpowers](https://github.com/obra/superpowers) | L2 | Skills de brainstorming, TDD, debugging, subagent-driven-development. Base do workflow. |
+| [code-review](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-review) | L2 | Agent de code review com scoring por confidence. |
+| [commit-commands](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/commit-commands) | L2 | Slash commands `/commit`, `/commit-push-pr`, `/clean_gone`. |
+| [skill-creator](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator) | L2 | Meta-skill pra criar, editar e avaliar skills. |
+| [claude-md-management](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management) | L2 | Auditar e melhorar CLAUDE.md. |
+| [security-guidance](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance) | L2 | Hook que avisa de padrões inseguros ao editar arquivos. |
+| [marketplace-tools](../plugins/marketplace-tools) | L3 próprio | Toolkit de manutenção do marketplace: `/check-marketplace-updates`, `/validate`, `/publish-plugin`, `/marketplace-qa`, `/restart-desktop`. |
 
-### Level 1 — HEAD (4 plugins passivos)
+### 7.2 Em testes (22 plugins)
 
-| Plugin | Status | O que faz |
-|---|---|---|
-| [github](https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/github) | `recomendado` | MCP server oficial do GitHub (repos, issues, PRs). |
-| [atlassian](https://github.com/atlassian/atlassian-mcp-server) | `recomendado` | MCP server oficial da Atlassian (Jira + Confluence). |
-| [microsoft-docs](https://github.com/microsoftdocs/mcp) | `em-testes` | MCP server de docs Microsoft/Azure. |
-| [pyright-lsp](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp) | `em-testes` | Pyright LSP pra Python. |
+Em avaliação — instalar com `--scope local` antes de promover pro scope `user`. Descriptions resumidas; ver JSON pro texto completo.
 
-### Level 3 — snapshots locais (2 plugins próprios)
+**Level 2 — SHA pin (1 plugin):**
 
-| Plugin | Status | O que faz |
-|---|---|---|
-| [marketplace-tools](../plugins/marketplace-tools) | `recomendado` | `/check-marketplace-updates` — verifica updates dos SHAs Level 2. |
-| [sdd-workflow](../plugins/sdd-workflow) | `em-testes` | Playbook de Spec-Driven Development pra solo devs + IA. |
+| Plugin | O que faz |
+|---|---|
+| [claude-code-setup](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup) | Analisa codebase e recomenda automações (hooks/skills/MCPs/subagents). |
+
+**Level 1 — HEAD (18 plugins):**
+
+| Plugin | O que faz |
+|---|---|
+| [pyright-lsp](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp) | Pyright LSP pra Python. |
+| [explanatory-output-style](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/explanatory-output-style) | Output style com insights educacionais sobre escolhas de implementação. |
+| [learning-output-style](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/learning-output-style) | Output style interativo que pede contribuições em pontos de decisão. |
+| [hookify](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/hookify) | Cria hooks customizados pra prevenir comportamentos indesejados a partir de padrões da conversa. |
+| [session-report](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/session-report) | Relatório HTML explorável de uso da sessão (tokens, cache, subagents). |
+| [pr-review-toolkit](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/pr-review-toolkit) | Agents especializados (comments, tests, error handling, type design, code quality). |
+| [ralph-loop](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/ralph-loop) | Loops auto-referenciais pra tarefas que rodam até completar (Ralph Wiggum technique). |
+| [playground](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground) | Playgrounds HTML single-file interativos com controles visuais. |
+| [plugin-dev](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/plugin-dev) | Toolkit pra desenvolver plugins (7 skills: hooks, MCP, agents, empacotamento). |
+| [mcp-server-dev](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/mcp-server-dev) | Skills pra projetar e construir MCP servers. |
+| [agent-sdk-dev](https://github.com/anthropics/claude-plugins-public/tree/main/plugins/agent-sdk-dev) | Kit de desenvolvimento pro Claude Agent SDK. |
+| [firecrawl](https://github.com/firecrawl/firecrawl-claude-plugin) | MCP de web scraping/crawling — transforma qualquer site em markdown limpo pra LLM. |
+| [remember](https://github.com/Digital-Process-Tools/claude-remember) | Memória contínua com compressão tiered — alternativa à compactação automática. |
+| [serena](https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/serena) | MCP server de análise semântica de código (refactoring, entendimento). |
+| [semgrep](https://github.com/semgrep/mcp-marketplace) | SAST em tempo real pra código seguro desde o início. Complementa `security-guidance`. |
+| [amplitude](https://github.com/amplitude/mcp-marketplace) | MCP de Amplitude — analista expert pra descobrir oportunidades e analisar coortes. |
+| [frontend-design](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design) | Interfaces frontend production-grade, evita estéticas genéricas de IA. |
+| [context7](https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/context7) | MCP do Upstash Context7 — docs up-to-date de libraries direto dos repos. |
+
+**Level 3 — próprios (3 plugins):**
+
+| Plugin | O que faz |
+|---|---|
+| [sdd-workflow](../plugins/sdd-workflow) | Playbook de Spec-Driven Development pra projetos solo gerados 100% por IA. |
+| [humanizador](../plugins/humanizador) | Remove sinais de escrita IA em pt-BR (36 padrões, calibração de voz e registro). |
+| [portfolio-docs](../plugins/portfolio-docs) | Playbook de portfólio: dossiê canônico em 10 camadas + artefatos downstream (one-pager, battlecard, pitch deck, board update). |
 
 ---
 

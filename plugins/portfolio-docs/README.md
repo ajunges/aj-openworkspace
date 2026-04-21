@@ -1,6 +1,6 @@
 # portfolio-docs
 
-Skill de **gestão de portfólio de produtos**. Produz e mantém o dossiê canônico (documento-mãe) de cada produto — markdown estruturado que vira fonte única da verdade para posicionamento, GTM e sales enablement. Primeira versão pública (v0.1.0), sanitizada a partir de um playbook privado do autor.
+Skill de **gestão de portfólio de produtos**. Produz e mantém o dossiê canônico (documento-mãe) de cada produto — markdown estruturado que vira fonte única da verdade para posicionamento, GTM e sales enablement. Primeira versão pública (v0.1.0).
 
 ## Para quem é
 
@@ -88,7 +88,7 @@ A skill carrega os detalhes sob demanda — não inflama o contexto inicial.
 
 ## Status
 
-`em-testes` — primeira versão pública. Em uso ativo pelo autor no trabalho diário; vai virar `recomendado` depois de mais rodadas com feedback externo.
+`em-testes` — primeira versão pública.
 
 ## Autor
 
