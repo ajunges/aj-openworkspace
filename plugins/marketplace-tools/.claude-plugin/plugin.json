@@ -1,6 +1,6 @@
 {
   "name": "marketplace-tools",
-  "description": "Ferramentas para manter o marketplace aj-openworkspace — principalmente verificação de updates em plugins com SHA pinnado (Level 2).",
+  "description": "Toolkit de manutenção do marketplace aj-openworkspace — updates de plugins pinnados (Level 2), validação pré-commit, QA de saúde, publicação de plugins Level 3 e utilidades do Claude Code Desktop.",
   "author": {
     "name": "André Junges"
   },
