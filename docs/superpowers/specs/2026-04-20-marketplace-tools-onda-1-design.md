@@ -342,6 +342,21 @@ Antes de iniciar implementação da Onda 2, **avaliação explícita** se migrar
 
 Continuar em bash nas Ondas 2+. Revisitar gate ao fim de cada onda.
 
+### 7.5 Métricas coletadas pós-Onda 1 (2026-04-20)
+
+Implementação da Onda 1 concluída em uma sessão. Coleta:
+
+- **Sub-scripts em `scripts/checks/`**: 3 (baseline mantido: `version-duplicated`, `tags-valid`, `semver-valid`)
+- **Bugs de bash encontrados**: 3, todos resolvidos em < 15 min cada:
+  1. `IFS=$'\t'` colapsa tabs consecutivos → sentinela `"-"` no jq
+  2. Regex sed greedy engolia `.git` → dois sub-steps de sed
+  3. `return 2` dispara `trap ERR` → variável global `APPLY_RESULT`
+- **Nenhum bug** consumiu > 1h de debug
+- **Manipulação JSON**: confortável — apenas `jq` direto, sem cenários de merge/diff estrutural
+- **Gatilhos da seção 7.2**: **zero acionados**
+
+**Decisão**: continuar em bash na Onda 2. Revisitar gate ao fim dela.
+
 ---
 
 ## 8. Error handling
