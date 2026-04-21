@@ -340,6 +340,26 @@ O `main.log` mostra shadowing parcial: `Plugin "X" has remote MCP servers (Y). S
 - **Bootstrap do renderer mais pesado**: 53 servers carregados no startup correlaciona (hipótese) com crashes V8 observados do `Claude Helper (Renderer)` em `v8::Isolate::Dispose`
 - **Nenhuma view única** mostra as 4 camadas juntas. Auditoria requer checar cada fonte separadamente: sidebar "Plugins pessoais" (camada 2), menu Conectores (camada 1), `jq . ~/.claude/plugins/installed_plugins.json` (camada 3), `.claude/settings.json` em cada repo (camada 4)
 
+#### Case study: auditoria de 2026-04-20 (−60% MCPs)
+
+Sessão de ~3h de diagnóstico + cleanup produziu estes números:
+
+| Métrica | Antes | Depois | Delta |
+|---|---|---|---|
+| MCP servers ativos | 53 | 21 | **−60%** |
+| Plugins marketplace instalados | 34 | 30 | −4 |
+| Cowork bundles com MCP | 3 (brand-voice + productivity + data) | 0 | −100% |
+| Duplicações de serviço | 6 (Atlassian 5x, Figma 3x, GitHub 2x, Gmail 2x, Notion 2x, MS365 2x) | 0 | −100% |
+
+**Ações tomadas** (ordem priorizada por impacto):
+
+1. **Desligar Cowork bundles não usados** (sidebar "Plugins pessoais" → toggle OFF): `brand-voice` (−7), `productivity` (−10), `data` (−8) = **−25 MCPs**
+2. **Desinstalar plugins marketplace que só eram wrapper de MCP duplicado**: `github@aj-openworkspace` (0 skills perdidas), `atlassian@aj-openworkspace` (5 skills perdidas — consciente)
+3. **Dedupe de Conectores nativos**: Figma tinha 2 entries idênticas (−1); Atlassian nativo removido totalmente pois não era mais usado
+4. **Limpeza de plugins com MCP shadowed**: `microsoft-docs@aj-openworkspace` tinha MCP shadowed (duplicata com Microsoft Learn nativo implícito); `posthog@aj-openworkspace` removido por opção pessoal
+
+**Lição aprendida**: a maior redução vem de **desligar bundles inteiros da camada 2**, não de dedupe ponto-a-ponto. Um bundle `productivity` traz 10 MCPs de uma vez — perguntar antes "uso 3 ou mais desses 10?" se não, desligar o bundle inteiro. Plugins marketplace que são só wrapper de MCP (sem skills próprias) também são alvos óbvios de remoção quando o serviço já tem Conector nativo.
+
 ---
 
 ## 7. Diff Review, Undo e Checkpoints
