@@ -109,6 +109,63 @@ if [ "$MODE" = "dry-run" ]; then
   exit 0
 fi
 
-# --- Modo --apply é na Task 9 ---
-echo "ERRO: modo --apply ainda não implementado (Task 9)." >&2
-exit 1
+# --- Helper: aplica update pra um plugin (edit jq + commit) ---
+# Retorno via variável global APPLY_RESULT: "applied" | "noop" | "error"
+# (evita return != 0 que dispara trap ERR).
+apply_plugin() {
+  local name="$1" source_type="$2" url="$3" ref="$4" old_sha="$5"
+  local new_sha
+  new_sha=$(resolve_head "$source_type" "$url" "$ref")
+  if [ -z "$new_sha" ]; then
+    echo "ERRO: não consegui resolver $name" >&2
+    APPLY_RESULT="error"
+    return 0
+  fi
+  if [ "$new_sha" = "$old_sha" ]; then
+    echo "SKIP: $name já está no HEAD (${old_sha:0:12})."
+    APPLY_RESULT="noop"
+    return 0
+  fi
+
+  local tmp
+  tmp=$(mktemp) || { echo "ERRO: mktemp falhou" >&2; APPLY_RESULT="error"; return 0; }
+  jq --arg n "$name" --arg s "$new_sha" '(.plugins[] | select(.name == $n) | .source.sha) = $s' "$MKT_JSON" > "$tmp"
+  if ! jq . "$tmp" > /dev/null; then
+    echo "ERRO: JSON inválido após edit para $name" >&2
+    rm -f "$tmp"
+    APPLY_RESULT="error"
+    return 0
+  fi
+  mv "$tmp" "$MKT_JSON"
+
+  git add "$MKT_JSON"
+  git commit -m "bump $name para ${new_sha:0:12}"
+  echo "OK: $name → ${new_sha:0:12}"
+  APPLY_RESULT="applied"
+  return 0
+}
+
+# --- Modo --apply ---
+errors=0
+applied=0
+skipped=0
+for target in "${APPLY_LIST[@]}"; do
+  line=$(awk -F'\t' -v n="$target" '$1==n{print; exit}' "$TMPDIR_CHECK/l2.tsv")
+  if [ -z "$line" ]; then
+    echo "SKIP: $target não é Level 2 ou não está em $MKT_JSON" >&2
+    skipped=$((skipped + 1))
+    continue
+  fi
+  IFS=$'\t' read -r name source_type url _path_prefix ref old_sha <<< "$line"
+  APPLY_RESULT=""
+  apply_plugin "$name" "$source_type" "$url" "$ref" "$old_sha"
+  case "$APPLY_RESULT" in
+    applied) applied=$((applied + 1)) ;;
+    noop)    skipped=$((skipped + 1)) ;;
+    error)   errors=$((errors + 1)) ;;
+  esac
+done
+
+echo ""
+echo "Resumo: aplicados=$applied, skipped=$skipped, erros=$errors"
+[ "$errors" -gt 0 ] && exit 1 || exit 0
