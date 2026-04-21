@@ -1,185 +1,75 @@
 ---
-description: Verifica updates nos plugins com SHA pinnado no marketplace e aplica sob confirmação
+description: Verifica updates nos plugins com SHA pinnado no marketplace e aplica seletivamente sob confirmação
 ---
 
 # /check-marketplace-updates
 
-Verifica cada plugin Level 2 (com `source.sha`) em `.claude-plugin/marketplace.json` contra o HEAD atual do upstream e apresenta updates disponíveis. Aplica updates aceitos editando o JSON e criando commits individuais.
+Verifica cada plugin Level 2 (com `source.sha`) em `.claude-plugin/marketplace.json` contra o HEAD atual do upstream e apresenta updates disponíveis. Aplica os selecionados pelo usuário via commits individuais.
 
-## Pré-requisitos
+## Quando usar
 
-- Rodar a partir da raiz de um repo que contenha `.claude-plugin/marketplace.json`
-- `gh` CLI autenticado (checar com `gh auth status`)
-- `jq` instalado
+- Periodicamente (ex: quinzenal) pra manter SHAs pinnados atualizados
+- Antes de qualquer release ou push grande do marketplace
+- Pós-incidente (plugin upstream teve bug corrigido que precisamos absorver)
 
-## Fluxo
+## Execução em duas etapas
 
-Siga os passos abaixo em ordem. Pare no primeiro erro crítico.
+O script é non-interativo por design — a interação mora no chat entre você e eu. Fluxo:
 
-### 1. Sanity check do ambiente
-
-Garantir PATH consistente — o shell snapshot do Claude Code às vezes perde ferramentas mid-execution. Fazer **antes** de `command -v`.
+### Etapa 1 — dry-run
 
 ```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-
-test -f .claude-plugin/marketplace.json || { echo "ERRO: .claude-plugin/marketplace.json não encontrado. Rode da raiz de um repo com marketplace."; exit 1; }
-command -v gh >/dev/null || { echo "ERRO: gh CLI não instalado."; exit 1; }
-command -v jq >/dev/null || { echo "ERRO: jq não instalado."; exit 1; }
-command -v git >/dev/null || { echo "ERRO: git não instalado."; exit 1; }
-gh auth status >/dev/null 2>&1 || { echo "ERRO: gh não autenticado. Rode 'gh auth login'."; exit 1; }
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/check.sh
 ```
 
-### 2. Coletar plugins Level 2 (com SHA)
+O script emite um TSV em stdout com o header `PLUGIN OLD_SHA NEW_SHA COMMITS FILES BREAKING TOP_COMMITS`. Apresento o TSV formatado pra você (um bloco por plugin) e pergunto quais aplicar. Se não houver updates, a tabela fica com só o header.
 
-Extrair lista de plugins pinnados com metadados necessários para o check:
+### Etapa 2 — apply seletivo
+
+Após sua seleção, invoco:
 
 ```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-jq -r '.plugins[] | select((.source | type) == "object" and .source.sha) | [.name, .source.source, .source.url, .source.path // "", .source.ref // "main", .source.sha] | @tsv' .claude-plugin/marketplace.json
+bash ${CLAUDE_PLUGIN_ROOT}/scripts/check.sh --apply plugin1 plugin2 ...
 ```
 
-O `select` precisa validar que `.source` é object antes de acessar `.sha` — plugins Level 3 (locais) usam `source` como string (ex: `"./plugins/<nome>"`), e indexar string com campo aborta o `jq` inteiro.
+O script aplica em sequência — um commit por plugin no formato `bump <nome> para <short-sha>`. Erros em plugins individuais não abortam o batch (sumário final mostra quantos falharam e quantos foram no-op).
 
-Para cada linha do output (formato TSV: `name | source-type | url | path | ref | sha`), executar o check do passo 3.
+## O que o script detecta
 
-### 3. Para cada plugin pinnado, resolver HEAD atual do upstream
+Pra cada plugin Level 2 (`source.sha` pinnado):
 
-**Se `source.source == "url"` (repo próprio do plugin):**
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-CURRENT_SHA=$(git ls-remote "$URL" "$REF" | awk '{print $1}' | head -1)
-```
-
-**Se `source.source == "git-subdir"` (plugin dentro de monorepo):**
-
-Extrair `owner/repo` da URL e usar GitHub API:
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-OWNER_REPO=$(echo "$URL" | sed -E 's|https://github.com/([^/]+/[^/]+)\.git|\1|')
-CURRENT_SHA=$(gh api "repos/$OWNER_REPO/commits/$REF" --jq '.sha')
-```
-
-Se `CURRENT_SHA` é vazio ou falha, logar erro e seguir pro próximo plugin (não abortar).
-
-### 4. Comparar e extrair diff (se mudou)
-
-Se `CURRENT_SHA != OLD_SHA`, buscar o compare entre os SHAs:
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-COMPARE=$(gh api "repos/$OWNER_REPO/compare/$OLD_SHA...$CURRENT_SHA")
-```
-
-Extrair do compare:
-- Número de commits: `echo "$COMPARE" | jq '.commits | length'`
-- Arquivos alterados: `echo "$COMPARE" | jq '.files | length'`
-- Commits relevantes (filtrar por path se for git-subdir):
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-if [ -n "$PATH_PREFIX" ]; then
-  RELEVANT_FILES=$(echo "$COMPARE" | jq -r ".files[] | select(.filename | startswith(\"$PATH_PREFIX/\")) | .filename")
-else
-  RELEVANT_FILES=$(echo "$COMPARE" | jq -r '.files[].filename')
-fi
-```
-
-Se `RELEVANT_FILES` vazio (mudou o SHA mas nenhum arquivo do plugin foi afetado), pular este plugin.
-
-Extrair top 5 commit messages:
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-TOP_COMMITS=$(echo "$COMPARE" | jq -r '.commits[:5][] | "- " + (.commit.message | split("\n")[0])')
-```
-
-Detectar breaking change por keyword nas commit messages:
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-BREAKING=$(echo "$COMPARE" | jq -r '.commits[] | .commit.message | select(test("BREAKING|breaking:|!:"; "i"))')
-```
-
-### 5. Apresentar sumário ao usuário
-
-Para cada plugin com updates, apresentar:
-
-```
-### <nome do plugin>
-- SHA antigo: <short-sha-antigo>
-- SHA novo:   <short-sha-novo>
-- Commits:    <N>
-- Arquivos:   <N> (filtrados por path, se aplicável)
-- Breaking:   <sim/não>
-
-Top 5 commits:
-<lista>
-
-O que fazer? [A]plicar / [S]kip / [D]etalhar / [P]arar tudo
-```
-
-Aguardar input. Processar conforme:
-- `A` / `apply` → atualizar SHA (passo 6)
-- `S` / `skip` → não mexer, passar pro próximo plugin
-- `D` / `detail` → mostrar lista completa de arquivos alterados e commit messages, depois perguntar de novo
-- `P` / `stop` → encerrar o comando
-
-### 6. Aplicar update (se aceito)
-
-Editar o SHA no `marketplace.json` via `jq` (não regex):
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-jq --arg name "$PLUGIN_NAME" --arg new_sha "$CURRENT_SHA" \
-  '(.plugins[] | select(.name == $name) | .source.sha) = $new_sha' \
-  .claude-plugin/marketplace.json > .claude-plugin/marketplace.json.tmp \
-  && mv .claude-plugin/marketplace.json.tmp .claude-plugin/marketplace.json
-```
-
-Validar JSON após edit:
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-jq . .claude-plugin/marketplace.json > /dev/null || { echo "ERRO: JSON quebrou após edit. Restaurar via git checkout."; exit 1; }
-```
-
-Commit individual para cada plugin atualizado:
-
-```bash
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
-git add .claude-plugin/marketplace.json
-git commit -m "bump $PLUGIN_NAME para ${CURRENT_SHA:0:12}"
-```
-
-### 7. Output final
-
-Após processar todos os plugins:
-
-```
-Verificados:      <N>
-Sem updates:      <N>
-Com updates:      <N>
-Aplicados agora:  <N>
-Pulados:          <N>
-Erros:            <N>
-```
-
-Se erros > 0, listar quais plugins falharam e por quê.
+- **Resolve HEAD atual do upstream**:
+  - `source.source == "url"` → `git ls-remote`
+  - `source.source == "git-subdir"` → `gh api /repos/{owner}/{repo}/commits/{ref}`
+- **Compara com SHA pinnado**
+- **Se mudou**: fetch compare via `gh api`, extrai:
+  - Número de commits entre SHAs
+  - Número de arquivos (filtrado por `source.path` se git-subdir)
+  - Detecção de breaking via keyword em commit messages (`BREAKING`, `breaking:`, `!:`)
+  - Top 5 mensagens de commit
+- **Se SHA mudou mas nenhum arquivo relevante foi alterado**: silencia (não emite linha).
 
 ## Tratamento de erros
 
-- **Upstream inacessível**: loga (`ERRO ao checar <plugin>: <razão>`) e segue pro próximo plugin.
-- **Rate limit do gh**: mostra mensagem explicativa e aborta (usuário deve esperar reset).
-- **marketplace.json inválido após edit**: aborta imediatamente, restaura via `git checkout .claude-plugin/marketplace.json`.
-- **Conflito de merge**: nunca acontece porque cada bump é um commit isolado, sem paralelismo.
+- **Upstream inacessível**: loga erro em stderr e segue pro próximo plugin. Dry-run completa com os plugins que deu pra resolver.
+- **Rate limit do `gh`**: mensagem explicativa em stderr; plugins subsequentes podem falhar até reset.
+- **JSON inválido após edit**: aborta o plugin específico, não chega a commit.
+- **`--apply` com nome inexistente**: skip + warning em stderr, sumário final reporta.
+- **`--apply` em plugin já no HEAD**: reporta como `SKIP` e conta em `skipped` (não é erro).
 
-## Não-objetivos (v0.1)
+## Não-objetivos
 
-- Não verifica plugins Level 1 (sem SHA) — esses recebem updates automáticos do Claude Code
-- Não faz rollback automático
-- Não atualiza Level 3 (./plugins/) — esses são local-owned
+- Não checa plugins Level 1 (sem SHA) — esses recebem updates via Claude Code
+- Não atualiza plugins Level 3 (./plugins/) — use `/publish-plugin`
 - Não detecta vulnerabilidades de segurança no diff
-- Não suporta private repos que exijam auth customizada além do `gh` default
+- Não faz rollback automático
+- Não suporta repos privados que exijam auth além do default do `gh`
+
+## Testar o script isoladamente
+
+Fora do Claude Code, da raiz de um repo com marketplace:
+
+```bash
+bash plugins/marketplace-tools/scripts/check.sh                           # dry-run
+bash plugins/marketplace-tools/scripts/check.sh --apply humanizador       # apply seletivo
+```
