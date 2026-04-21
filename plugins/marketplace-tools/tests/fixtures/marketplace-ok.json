@@ -1,0 +1,18 @@
+{
+  "name": "test-mkt",
+  "owner": {"name": "Test"},
+  "metadata": {"description": "fixture"},
+  "plugins": [
+    {
+      "name": "plugin-a",
+      "source": "./plugins/plugin-a",
+      "version": "1.0.0",
+      "tags": ["recomendado"]
+    },
+    {
+      "name": "plugin-b",
+      "source": {"source": "url", "url": "https://github.com/x/y.git", "sha": "abc"},
+      "tags": ["em-testes"]
+    }
+  ]
+}

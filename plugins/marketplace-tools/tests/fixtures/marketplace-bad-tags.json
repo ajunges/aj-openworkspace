@@ -1,0 +1,13 @@
+{
+  "name": "test-mkt",
+  "owner": {"name": "Test"},
+  "metadata": {"description": "fixture"},
+  "plugins": [
+    {
+      "name": "plugin-bad",
+      "source": "./plugins/plugin-bad",
+      "version": "1.0.0",
+      "tags": ["tag-invalida"]
+    }
+  ]
+}

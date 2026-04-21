@@ -1,0 +1,13 @@
+{
+  "name": "test-mkt",
+  "owner": {"name": "Test"},
+  "metadata": {"description": "fixture"},
+  "plugins": [
+    {
+      "name": "duplicated",
+      "source": "./plugins/duplicated",
+      "version": "2.0.0",
+      "tags": ["em-testes"]
+    }
+  ]
+}
