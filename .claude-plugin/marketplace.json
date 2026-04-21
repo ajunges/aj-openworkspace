@@ -44,23 +44,6 @@
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-review"
     },
     {
-      "name": "code-simplifier",
-      "description": "Agent que refina código recém-modificado para clareza e manutenção sem mudar comportamento. Rodo no final de feature antes do commit final.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "plugins/code-simplifier",
-        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
-      },
-      "category": "productivity",
-      "tags": [
-        "recomendado",
-        "oficial-anthropic",
-        "workflow"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier"
-    },
-    {
       "name": "commit-commands",
       "description": "Slash commands /commit, /commit-push-pr e /clean_gone. Substitui digitação manual do fluxo git. Personalização: removi o Co-Authored-By: Claude do template no meu CLAUDE.md global — sou CRO do Grupo Supero (não-dev), todo código neste repo é escrito via Claude Code, e prefiro manter o author primário como eu mesmo: a IA é ferramenta, não colaborador atribuído.",
       "source": {
@@ -77,23 +60,6 @@
         "workflow"
       ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/commit-commands"
-    },
-    {
-      "name": "feature-dev",
-      "description": "Workflow de desenvolvimento de features com agents de exploração, arquitetura e review. Complementa superpowers em projetos maiores.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "plugins/feature-dev",
-        "sha": "48aa43517886014e90ee80a6461f9de75045369d"
-      },
-      "category": "development",
-      "tags": [
-        "recomendado",
-        "oficial-anthropic",
-        "workflow"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev"
     },
     {
       "name": "skill-creator",
@@ -163,58 +129,6 @@
         "meta-skills"
       ],
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup"
-    },
-    {
-      "name": "github",
-      "description": "MCP server oficial do GitHub. Core da integração com repos/issues/PRs. HEAD porque updates são estáveis.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "external_plugins/github"
-      },
-      "category": "productivity",
-      "tags": [
-        "recomendado",
-        "terceiro-oficial",
-        "mcp",
-        "git",
-        "integracao"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/github"
-    },
-    {
-      "name": "atlassian",
-      "description": "MCP server oficial da Atlassian (Jira + Confluence). Uso no trabalho diário. Tool passiva, HEAD é seguro.",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/atlassian/atlassian-mcp-server.git"
-      },
-      "category": "productivity",
-      "tags": [
-        "recomendado",
-        "terceiro-oficial",
-        "mcp",
-        "integracao",
-        "jira"
-      ],
-      "homepage": "https://github.com/atlassian/atlassian-mcp-server"
-    },
-    {
-      "name": "microsoft-docs",
-      "description": "MCP server de docs Microsoft/Azure. Em avaliação — instalado para consultas pontuais sobre stack Microsoft.",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/MicrosoftDocs/mcp.git"
-      },
-      "category": "development",
-      "tags": [
-        "em-testes",
-        "terceiro-oficial",
-        "mcp",
-        "docs",
-        "azure"
-      ],
-      "homepage": "https://github.com/microsoftdocs/mcp"
     },
     {
       "name": "pyright-lsp",
@@ -501,22 +415,6 @@
         "sast"
       ],
       "homepage": "https://github.com/semgrep/mcp-marketplace.git"
-    },
-    {
-      "name": "posthog",
-      "description": "MCP de PostHog — analytics, feature flags, experiments, error tracking e insights direto do Claude.",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/PostHog/ai-plugin.git"
-      },
-      "category": "monitoring",
-      "tags": [
-        "em-testes",
-        "terceiro-oficial",
-        "mcp",
-        "analytics"
-      ],
-      "homepage": "https://posthog.com/docs/model-context-protocol"
     },
     {
       "name": "amplitude",
