@@ -117,17 +117,11 @@ done < "$TMPDIR_QA/cache.txt"
 
 # ---------------- 3.7 Version duplicated (plugin.json vs marketplace.json) ----------------
 # Doc oficial: "avoid setting the version in both places. The plugin manifest always wins silently".
-# Se plugin.json tem version E marketplace.json tem version pra mesma entry, o plugin.json vence
-# e o bump em marketplace.json fica invisível (bug silencioso já sentido na pele).
-jq -r --arg m "$MKT_NAME" '.plugins[] | select(.source | type == "string") | "\(.name)\t\(.source)\t\(.version // "")"' "$MKT_JSON" > "$TMPDIR_QA/l3.tsv"
-while IFS=$'\t' read -r name plugin_dir mkt_ver; do
-  [ -z "$mkt_ver" ] && continue       # sem version em marketplace.json → não há duplicação possível
-  plugin_json_path="$plugin_dir/.claude-plugin/plugin.json"
-  [ -f "$plugin_json_path" ] || continue
-  pjs_ver=$(jq -r '.version // ""' "$plugin_json_path" 2>/dev/null || echo "")
-  if [ -n "$pjs_ver" ]; then
-    echo "MEDIUM|3.7|$name|version-duplicated: plugin.json=$pjs_ver marketplace.json=$mkt_ver (plugin.json vence silenciosamente)|yes" >> "$FINDINGS"
-  fi
+# Lógica extraída pra sub-script reutilizado por /validate (ver scripts/checks/version-duplicated.sh).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+jq -r '.plugins[] | select(.source | type == "string") | "\(.name)\t\(.source)"' "$MKT_JSON" > "$TMPDIR_QA/l3.tsv"
+while IFS=$'\t' read -r name plugin_dir; do
+  bash "$SCRIPT_DIR/checks/version-duplicated.sh" "$name" "$plugin_dir" "$MKT_JSON" >> "$FINDINGS" || true
 done < "$TMPDIR_QA/l3.tsv"
 
 # ---------------- Relatório ----------------
