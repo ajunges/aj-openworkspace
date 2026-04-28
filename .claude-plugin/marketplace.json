@@ -468,7 +468,7 @@
     },
     {
       "name": "humanizador",
-      "description": "Remove sinais de escrita gerada por IA em textos em português brasileiro. Detecta 36 padrões: 22 herdados do guia 'Signs of AI writing' da Wikipédia e 14 nativos do pt-BR (mesóclise artificial, nominalização abstrata, calcos do inglês, jargão corporativo composto, conectivos conclusivos empilhados, construções impessoais com -se). Inclui calibração de voz por amostra e de registro (referencial/corporativo/pessoal/acadêmico). Fork próprio inspirado em blader/humanizer e Argentoni/humanizador.",
+      "description": "Remove sinais de escrita gerada por IA em textos em português brasileiro. Detecta 37 padrões: 28 herdados do blader/humanizer v2.5.1 (via guia 'Signs of AI writing' da Wikipédia), 7 patologias nativas do pt-BR (mesóclise artificial, nominalização abstrata, calcos do inglês, conectivos conclusivos empilhados, etc.), 1 padrão de rede social (título-hook standalone) e 1 substituição (jargão corporativo composto). Aplica regra hard contra travessão (em-dash): substituir sempre por vírgula, ponto, ponto-e-vírgula ou parênteses. Inclui calibração de voz por amostra e de registro (referencial/corporativo/pessoal/acadêmico). Fork próprio inspirado em blader/humanizer e Argentoni/humanizador.",
       "source": "./plugins/humanizador",
       "category": "productivity",
       "tags": [
@@ -480,7 +480,7 @@
       "author": {
         "name": "André Junges"
       },
-      "version": "3.0.1"
+      "version": "3.1.0"
     },
     {
       "name": "portfolio-docs",

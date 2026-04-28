@@ -1,18 +1,20 @@
 ---
 name: humanizador
-version: 3.0.0
+version: 3.1.0
 description: |
   Remove sinais de escrita gerada por IA em textos em português brasileiro. Use
   ao editar ou revisar textos para torná-los mais naturais e com som de escrita
-  humana. Detecta 36 padrões: 28 herdados do blader/humanizer v2.5.1 (que por
+  humana. Detecta 37 padrões: 28 herdados do blader/humanizer v2.5.1 (que por
   sua vez deriva do guia "Signs of AI writing" da Wikipédia, WikiProject AI
   Cleanup), 7 patologias nativas do português que o guia original não cobre
   (mesóclise artificial, nominalização abstrata, calcos do inglês, construções
   impessoais com "-se", conectivos conclusivos empilhados, advérbios em "-mente"
-  empilhados, conectivos de transição frios) e 1 substituição (jargão corporativo
-  composto no lugar de "Hyphenated Word Pair Overuse", que não se aplica ao
-  pt-BR). Inclui calibração de voz (opcional, a partir de amostra do usuário) e
-  calibração de registro (referencial, corporativo, pessoal ou acadêmico). Use
+  empilhados, conectivos de transição frios), 1 padrão de rede social (título-hook
+  standalone) e 1 substituição (jargão corporativo composto no lugar de
+  "Hyphenated Word Pair Overuse", que não se aplica ao pt-BR). Aplica regra hard
+  contra travessão (em-dash): substituir sempre por vírgula, ponto, ponto-e-vírgula
+  ou parênteses. Inclui calibração de voz (opcional, a partir de amostra do usuário)
+  e calibração de registro (referencial, corporativo, pessoal ou acadêmico). Use
   quando o usuário mencionar "humanizar", "parecer humano", "tirar cara de IA",
   "reescrever naturalmente", "soar natural", "remover IA", "texto artificial",
   "parece ChatGPT", "parece robô", ou qualquer pedido para tornar um texto menos
@@ -37,7 +39,7 @@ Você é um editor de texto que identifica e remove sinais de escrita gerada por
 Ao receber um texto para humanizar:
 
 1. **Calibrar (opcional)** — se o usuário fornecer amostra de escrita ou indicar registro, use essa calibração antes de reescrever
-2. **Identificar padrões de IA** — varrer o texto em busca dos 36 padrões abaixo
+2. **Identificar padrões de IA** — varrer o texto em busca dos 37 padrões abaixo
 3. **Reescrever trechos problemáticos** — substituir os "IAísmos" por alternativas naturais no registro correto
 4. **Preservar o sentido** — manter a mensagem central intacta
 5. **Dar alma ao texto** — não basta remover padrões ruins; é preciso injetar personalidade real
@@ -76,7 +78,7 @@ Antes de começar, considere o tipo de texto. O registro muda quais padrões pes
 | Registro | Quando | Alvos prioritários |
 |---|---|---|
 | **Referencial / enciclopédico** | Verbetes, biografias, descrições institucionais, docs técnicas | Padrões 1-6 (conteúdo inflado), 7, 18 |
-| **Corporativo / social** | LinkedIn, e-mails comerciais, newsletters, marketing de conteúdo | 4, 6, 27-29, 32-35 |
+| **Corporativo / social** | LinkedIn, e-mails comerciais, newsletters, marketing de conteúdo | 4, 6, 27-29, 32-35, 37 |
 | **Pessoal / conversacional** | Opinião, blog pessoal, mensagens, posts informais | 9, 10, 23, 35, falta de alma |
 | **Acadêmico / analítico** | Relatórios, análises, papers, pareceres | 14, 15, 17, 18, 23, 34 |
 
@@ -438,15 +440,34 @@ Obs: sujeito oculto ("cheguei em casa") é normal em pt-BR — não é o alvo. O
 
 ## PADRÕES DE ESTILO
 
-### 21. Uso excessivo de travessão
+### 21. Travessão (em-dash): regra hard
 
-**Problema:** A IA usa travessões (—) mais do que humanos, imitando escrita "impactante" de vendas. Na prática, a maioria pode ser reescrita com vírgulas, pontos ou parênteses.
+**Regra:** substituir TODO travessão (`—`, em-dash) por vírgula, ponto, ponto-e-vírgula ou parênteses. Sem exceção. Nem um único travessão deve sobrar no texto final.
+
+**Problema:** O em-dash é a marca tipográfica mais delatora de IA em pt-BR. Humano em pt-BR digita travessão raramente: o teclado padrão não tem tecla direta, e nem `Word` nem `WhatsApp` autoconvertem como o `iMessage`/macOS faz. Mesmo um único `—` num texto sinaliza origem de chatbot. A IA usa demais porque foi treinada em corpus inglês onde o em-dash é comum.
+
+**Substituições por contexto:**
+
+| Função do travessão | Substituir por |
+|---|---|
+| Aposto explicativo curto | vírgulas: `X — explicação — Y` → `X, explicação, Y` |
+| Pausa enfática antes de conclusão | ponto: `X — Y` → `X. Y` |
+| Lista interna ou contraste | ponto-e-vírgula: `A — B` → `A; B` |
+| Comentário lateral | parênteses: `X — comentário — Y` → `X (comentário) Y` |
 
 **Antes:**
 > O termo é promovido principalmente por instituições holandesas — não pelo próprio povo. Você não escreve "Países Baixos, Europa" como endereço — no entanto essa rotulagem equivocada continua — mesmo em documentos oficiais.
 
 **Depois:**
 > O termo é promovido principalmente por instituições holandesas, não pelo próprio povo. Você não escreve "Países Baixos, Europa" como endereço, mas essa rotulagem equivocada continua em documentos oficiais.
+
+**Antes:**
+> A plataforma tem três recursos novos — exportação em CSV, integração com Slack e SSO — que estavam na fila desde o ano passado.
+
+**Depois:**
+> A plataforma tem três recursos novos (exportação em CSV, integração com Slack e SSO) que estavam na fila desde o ano passado.
+
+**Obs:** travessão de diálogo (`— Bom dia, disse ele.`) e em-dash em prosa literária citada são exceções legítimas; preservar quando o contexto for ficção/diálogo direto. Em qualquer outro registro (corporativo, técnico, ensaio, post, e-mail, memo), aplicar a regra hard.
 
 ---
 
@@ -671,11 +692,53 @@ Obs: "essencialmente" e "fundamentalmente" aparecem também no padrão 16 (advé
 
 ---
 
+## PADRÕES DE REDE SOCIAL
+
+### 37. Título-hook standalone
+
+**Regra:** o texto NUNCA pode começar com uma frase curta solta, separada do resto por quebra de parágrafo, com função de chamar o leitor pra continuar. Sempre abrir com parágrafo, mesmo que curto. Se a primeira linha for standalone-impactante, juntar com o próximo parágrafo ou cortar.
+
+**Sinais (estruturais, não lexicais):**
+
+- Primeira linha do texto é uma única frase
+- Separada do resto por linha em branco (parágrafo próprio)
+- Função clara de hook/isca: existe pra puxar o leitor, não pra entregar conteúdo
+- Frequentemente curta (5-15 palavras), sentenciosa, com ar de "verdade" ou provocação
+
+**Problema:** A IA imita copywriting batido de LinkedIn, Twitter e Instagram, onde virou fórmula começar com frase-isca pra forçar leitura. Em texto sério (post, ensaio, artigo, e-mail), entrega imediatamente que o autor está performando engajamento em vez de comunicar. Mesmo quando o conteúdo do hook é razoável, a estrutura standalone é o que delata.
+
+**Atenção:** o problema não é o conteúdo da frase, é o formato. A mesma frase pode funcionar bem se for primeira linha de um parágrafo que continua imediatamente. O alvo é especificamente a frase isolada por quebra de parágrafo no início.
+
+**Antes:**
+> Pare de fazer reuniões sem agenda.
+>
+> No último mês, eu medi quanto tempo a equipe passa em reuniões e o resultado me assustou. 40% das nossas reuniões não tinham agenda escrita. Dessas, metade não tinha decisão registrada no fim.
+
+**Depois:**
+> No último mês, eu medi quanto tempo a equipe passa em reuniões e o resultado me assustou. 40% das nossas reuniões não tinham agenda escrita. Dessas, metade não tinha decisão registrada no fim. A conclusão óbvia: parar de marcar reuniões sem agenda.
+
+**Antes:**
+> A maioria das pessoas erra essa parte.
+>
+> Quando você desenha um sistema distribuído, a primeira decisão importante não é qual banco usar. É como você vai lidar com falhas parciais.
+
+**Depois:**
+> Quando você desenha um sistema distribuído, a primeira decisão importante não é qual banco usar. É como você vai lidar com falhas parciais. A maioria das pessoas erra essa parte e descobre tarde, em produção.
+
+**Antes (mesmo conteúdo, formato OK):**
+> Pare de fazer reuniões sem agenda. No último mês, eu medi quanto tempo a equipe passa em reuniões e o resultado me assustou.
+
+(Aqui a frase de impacto vira início de parágrafo de verdade. Não é hook standalone, é abertura legítima.)
+
+**Como aplicar na revisão:** se a primeira linha do texto for uma frase solta antes de um `\n\n`, ou (a) juntar com o parágrafo seguinte usando ponto final ou vírgula, ou (b) movê-la pro fim do primeiro parágrafo como conclusão, ou (c) remover se for puramente decorativa.
+
+---
+
 ## Processo
 
 1. Ler o texto de entrada com atenção
 2. Identificar o registro (ou perguntar se ambíguo)
-3. Identificar todas as ocorrências dos 36 padrões
+3. Identificar todas as ocorrências dos 37 padrões
 4. Reescrever cada trecho problemático
 5. Garantir que o texto revisado:
    - Soa natural quando lido em voz alta
@@ -782,12 +845,17 @@ Influências diretas:
 - **[blader/humanizer](https://github.com/blader/humanizer)** (MIT) — skill original em inglês (v2.5.1). Forneceu a estrutura geral, os padrões 1-13, 21-32 e 34-36, além da seção "Personality and Soul" e da mecânica da passada final anti-IA.
 - **[Argentoni/humanizador](https://github.com/Argentoni/humanizador)** (MIT) — primeira adaptação para pt-BR (v2.2.0). Forneceu a base de tradução dos padrões herdados e parte dos exemplos com referências brasileiras.
 
-Adições próprias desta versão (v3.0.0):
+Adições próprias (v3.0.0):
 
 - 7 padrões nativos do pt-BR (14-20): mesóclise artificial, conectivos conclusivos em excesso, advérbios em "-mente" empilhados, nominalização abstrata, construções impessoais com "-se", calcos sintáticos do inglês, conectivos de transição frios
 - Substituição de "Hyphenated Word Pair Overuse" (não aplicável ao pt-BR) por "Jargão corporativo composto" (patologia equivalente em pt-BR)
 - Calibração de registro (referencial / corporativo / pessoal / acadêmico)
 - Exemplos em duas variantes (neutro e corporativo) para padrões sensíveis a registro
 - Expansão do vocabulário IA em pt-BR (padrão 7), das frases de preenchimento (30) e dos tropes de autoridade (34)
+
+Adições da v3.1.0:
+
+- Padrão 37 (rede social): título-hook standalone. Regra estrutural contra primeira linha solta com função de isca. Aplica-se a posts de LinkedIn, Twitter, Instagram, blog e qualquer texto que tente imitar copywriting batido de engajamento.
+- Endurecimento do padrão 21 (travessão): de "uso excessivo" para regra hard. Substituir TODO em-dash por vírgula, ponto, ponto-e-vírgula ou parênteses (exceto travessão de diálogo em ficção). Tabela de substituições por contexto.
 
 Insight central da Wikipédia: "LLMs usam algoritmos estatísticos para adivinhar o que deveria vir a seguir. O resultado tende ao resultado estatisticamente mais provável que se aplica à maior variedade de casos."

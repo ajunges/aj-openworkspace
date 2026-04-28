@@ -1,6 +1,6 @@
 # humanizador
 
-Skill para remover sinais de escrita gerada por IA em **textos em português brasileiro**. Detecta **36 padrões** — 22 herdados do guia [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) da Wikipédia e 14 nativos do pt-BR.
+Skill para remover sinais de escrita gerada por IA em **textos em português brasileiro**. Detecta **37 padrões**: 28 herdados do guia [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) da Wikipédia, 7 patologias nativas do pt-BR, 1 padrão de rede social e 1 substituição.
 
 ## O que esta versão faz diferente
 
@@ -50,7 +50,8 @@ Como parte do marketplace `aj-openworkspace`:
 
 ## Histórico
 
-- **v3.0.0** (atual) — fork próprio. Reescrita completa com 36 padrões, calibrações de voz e registro, exemplos duplos para padrões sensíveis a registro. Mantém atribuição ao blader e ao Argentoni no LICENSE, mas evolui de forma independente a partir daqui.
+- **v3.1.0** (atual) — adiciona padrão 37 (rede social): título-hook standalone, regra estrutural contra primeira linha solta de impacto. Endurece padrão 21 (travessão) de "uso excessivo" para regra hard: substituir TODO em-dash por vírgula, ponto, ponto-e-vírgula ou parênteses, exceto em diálogo de ficção. Total agora é 37 padrões.
+- **v3.0.0** — fork próprio. Reescrita completa com 36 padrões, calibrações de voz e registro, exemplos duplos para padrões sensíveis a registro. Mantém atribuição ao blader e ao Argentoni no LICENSE, mas evolui de forma independente a partir daqui.
 - **v2.2.0** — versão anterior, vendorizada do [Argentoni/humanizador](https://github.com/Argentoni/humanizador) (24 padrões, tradução do blader v2.2.0).
 
 ## Crédito
