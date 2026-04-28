@@ -215,23 +215,6 @@
       "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/learning-output-style"
     },
     {
-      "name": "hookify",
-      "description": "Cria hooks customizados para prevenir comportamentos indesejados analisando padrões de conversa. Útil pra automatizar correções que preciso repetir.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "plugins/hookify"
-      },
-      "category": "productivity",
-      "tags": [
-        "em-testes",
-        "oficial-anthropic",
-        "meta-skills",
-        "hooks"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/hookify"
-    },
-    {
       "name": "session-report",
       "description": "Gera relatório HTML explorável de uso da sessão (tokens, cache efficiency, subagents). Métrica de eficiência.",
       "source": {
@@ -398,23 +381,6 @@
         "refactoring"
       ],
       "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/serena"
-    },
-    {
-      "name": "semgrep",
-      "description": "Captura vulnerabilidades de segurança em tempo real e guia o Claude a escrever código seguro desde o início. Complementa security-guidance.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/semgrep/mcp-marketplace.git",
-        "path": "plugin"
-      },
-      "category": "security",
-      "tags": [
-        "em-testes",
-        "terceiro-oficial",
-        "seguranca",
-        "sast"
-      ],
-      "homepage": "https://github.com/semgrep/mcp-marketplace.git"
     },
     {
       "name": "amplitude",
