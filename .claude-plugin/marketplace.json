@@ -164,40 +164,6 @@
       "version": "0.1.1"
     },
     {
-      "name": "explanatory-output-style",
-      "description": "Output style que adiciona insights educacionais sobre escolhas de implementação e padrões do codebase. Bom pra entender o porquê do código gerado, não só o resultado.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "plugins/explanatory-output-style"
-      },
-      "category": "learning",
-      "tags": [
-        "em-testes",
-        "oficial-anthropic",
-        "output-style",
-        "learning"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/explanatory-output-style"
-    },
-    {
-      "name": "learning-output-style",
-      "description": "Output style de modo interativo que pede contribuições de código em pontos de decisão. Complementa o explanatory-output-style (ativo vs passivo).",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "plugins/learning-output-style"
-      },
-      "category": "learning",
-      "tags": [
-        "em-testes",
-        "oficial-anthropic",
-        "output-style",
-        "learning"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/plugins/learning-output-style"
-    },
-    {
       "name": "session-report",
       "description": "Gera relatório HTML explorável de uso da sessão (tokens, cache efficiency, subagents). Métrica de eficiência.",
       "source": {
