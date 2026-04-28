@@ -131,23 +131,6 @@
       "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup"
     },
     {
-      "name": "pyright-lsp",
-      "description": "Pyright LSP para Python. Em avaliação — uso Python ocasionalmente.",
-      "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/anthropics/claude-plugins-official.git",
-        "path": "plugins/pyright-lsp"
-      },
-      "category": "development",
-      "tags": [
-        "em-testes",
-        "oficial-anthropic",
-        "lsp",
-        "python"
-      ],
-      "homepage": "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pyright-lsp"
-    },
-    {
       "name": "marketplace-tools",
       "description": "Plugin próprio com slash command /check-marketplace-updates que verifica updates nos SHAs pinnados deste marketplace, mostra diffs e aplica sob confirmação.",
       "source": "./plugins/marketplace-tools",
@@ -381,22 +364,6 @@
         "refactoring"
       ],
       "homepage": "https://github.com/anthropics/claude-plugins-public/tree/main/external_plugins/serena"
-    },
-    {
-      "name": "amplitude",
-      "description": "MCP de Amplitude — analista expert. Instrumenta Amplitude, descobre oportunidades de produto, analisa coortes.",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/amplitude/mcp-marketplace.git"
-      },
-      "category": "monitoring",
-      "tags": [
-        "em-testes",
-        "terceiro-oficial",
-        "mcp",
-        "analytics"
-      ],
-      "homepage": "https://github.com/amplitude/mcp-marketplace"
     },
     {
       "name": "frontend-design",
