@@ -32,6 +32,22 @@ Foco principal: **refinamento de conteúdo** — a estrutura está boa, mas o pl
 2. **Secundários**: estrutura das fases (eixo 1) + suporte a stacks alternativas (eixo 4)
 3. **Terciários**: regras/gates (eixo 2) + templates dos artefatos (eixo 5)
 
+### 1.3 Relação com SDD canônico (GitHub Spec Kit)
+
+O SDD canônico mainstream é o **GitHub Spec Kit** (toolkit open source publicado em 2025), com fases `Constitution → Specify → Plan → Tasks → Verify`. Nosso fluxo aplica esses princípios na íntegra, com extensões opinativas:
+
+| Spec Kit canônico | Nosso design |
+|---|---|
+| Constitution | Pré-spec.Constitution |
+| Specify | Spec.Requirements |
+| Plan | Spec.Design + Build.Tasks |
+| Tasks | Build.Tasks (writing-plans) |
+| Verify | Ship.Audit (mais rica — 13 dimensões × 5 tiers) |
+
+**Adições nossas** (não cobertas pelo Spec Kit oficial): tier projetado, tipo_projeto + catálogo, Pré-spec.Stack com inventário de dependências, Spec.Spike opcional, Ship.Deploy, Promoção de Tier. Não são violações dos princípios SDD — são overlay opinativo pra audiência específica (não-dev dirigindo IA).
+
+Fontes: [GitHub Spec Kit](https://github.com/github/spec-kit), [Martin Fowler — Understanding SDD](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html).
+
 ---
 
 ## 2. Princípios invioláveis (após evolução)
@@ -42,9 +58,10 @@ Foco principal: **refinamento de conteúdo** — a estrutura está boa, mas o pl
 | 2 | Tier é projetado (visão final do desenvolvimento), não observado (estado atual) | novo v3.0 |
 | 3 | Defensividade sobre dependências externas — não pressupor CLI/MCP/skill/credencial sem inventário formal | novo v3.0 |
 | 4 | Gates explícitos por fase — pausa obrigatória, aprovação humana antes de avançar | herdado v2.x |
-| 5 | TDD por task — testes antes do código, rodando os testes pra confirmar que falham antes de implementar | herdado v2.x, agora estruturado via `superpowers:writing-plans` |
+| 5 | TDD canônico por task (Red → Green → Refactor) — escrever teste que falha, fazer passar com mínimo de código, refatorar mantendo o teste passando, só então commitar. Ciclo do Kent Beck preservado integralmente | herdado v2.x, agora estruturado via `superpowers:writing-plans` com Refactor explícito (ajuste SDD em 5.1.1) |
 | 6 | Decisões registradas — toda escolha estrutural (tipo_projeto, tier, stack, alvo deploy) vai pra constitution com data e motivação | novo v3.0 |
 | 7 | Promoção de tier é decisão consciente, registrada, incremental — nunca recomeço do zero | novo v3.0 |
+| 8 | Linguagem ubíqua — vocabulário compartilhado entre IA, usuário, documentos de referência, código e UI. Termos definidos em Pré-spec.Discovery e Pré-spec.Constitution propagam pra requirements, design, tasks, código e UI sem traduções intermediárias | novo v3.0 (origem: DDD/BDD) |
 
 ---
 
@@ -124,6 +141,82 @@ Pré-spec.Stack passa a ter 3 sub-componentes (todos registrados na constitution
 | Skills do marketplace | `superpowers:*`, `plugin-dev:*`, `marketplace-tools:*` | Família A (Modo 2) bloqueia se essencial faltar; Famílias B/C/D registram ausência mas continuam |
 | Acesso a serviços externos | API keys, tokens, contas | Bloquear avanço se essencial; registrar como pré-requisito |
 
+### 4.5 Camada BDD opcional pra regras de negócio
+
+O **Behavior-Driven Development** (Dan North, ~2006) refina TDD com foco em **comportamento e valor de negócio**, expressos em formato **Given-When-Then** (Gherkin) acessível a domain experts não-técnicos. Origem: [Cucumber — History of BDD](https://cucumber.io/docs/bdd/history/), [Martin Fowler — Given When Then](https://martinfowler.com/bliki/GivenWhenThen.html).
+
+A audiência do plugin SDD é exatamente esse perfil: executivo de negócio dirigindo IA, sem ler código. BDD se aplica naturalmente. Pontos onde BDD entra como **camada opcional** (recomendada pra regras de negócio críticas, opcional pro resto):
+
+#### 4.5.1 Em Spec.Requirements
+
+Regras de negócio podem ser escritas em formato Given-When-Then em vez de prosa. Exemplo:
+
+```gherkin
+Funcionalidade: Desconto progressivo por volume
+
+  Cenário: Pedido acima do threshold ganha 5%
+    Dado um carrinho com R$ 1500
+    Quando o pedido é fechado com threshold = R$ 1000
+    Então aplicar desconto de 5%
+
+  Cenário: Pedido abaixo do threshold não tem desconto
+    Dado um carrinho com R$ 800
+    Quando o pedido é fechado com threshold = R$ 1000
+    Então o total permanece R$ 800
+```
+
+Vantagem: cenários são executáveis e testáveis. Funcionam como acceptance criteria sem ambiguidade.
+
+#### 4.5.2 Em Build.Tasks 🔒 (validação contra dados reais)
+
+Tasks marcadas 🔒 (validação contra dados reais — princípio inviolável 1) ficam mais claras em Given-When-Then. Exemplo:
+
+```gherkin
+  Cenário: Cálculo bate com planilha de referência (fevereiro 2026)
+    Dado os dados reais da planilha "pedidos-fev-2026.xlsx"
+    Quando recalculo total com a nova regra de desconto progressivo
+    Então cada linha bate com a coluna "Total Final" da planilha
+    E a soma total bate com a célula F999 da planilha
+```
+
+#### 4.5.3 Em Ship.Audit dimensão 8 (Lógica de negócio)
+
+Audit pode usar os cenários Given-When-Then de Spec.Requirements como checklist executável. Cada cenário rodado contra o sistema validado.
+
+**Quando usar**:
+- Sempre que o projeto tem regras de negócio críticas (cálculos, validações, fluxos de aprovação)
+- Sempre que há documentos de referência (planilhas, PDFs, processos manuais) cujo comportamento o sistema precisa replicar
+- Opcional quando regras são triviais (CRUDs simples sem lógica de domínio)
+
+### 4.6 Camada DDD opcional pra projetos com domínio complexo
+
+**Domain-Driven Design** (Eric Evans, 2003) é abordagem de modelagem rica do domínio. Origem: [Wikipedia — DDD](https://en.wikipedia.org/wiki/Domain-driven_design), [Martin Fowler — Bounded Context](https://martinfowler.com/bliki/BoundedContext.html).
+
+DDD completo (strategic + tactical) é **overkill pra maioria dos projetos** que o plugin SDD atende. Mas conceitos pontuais agregam:
+
+#### 4.6.1 Linguagem ubíqua — princípio inviolável 8
+
+Já incorporado como **princípio 8 (seção 2)**. Aplica em todos os tipos de projeto e tiers — termos definidos na Pré-spec viram vocabulário do código, UI, docs e testes. Origem: DDD (Evans), reforçado por BDD (North).
+
+#### 4.6.2 Bounded contexts — opcional pra projetos complexos
+
+A Spec.Design pergunta se o projeto tem **bounded contexts naturais** (áreas com modelos distintos, possivelmente vocabulários diferentes). Aplicável quando:
+
+- `tier: producao_real` com domínio rico (ex: ERP, CRM, sistema multi-área de gestão)
+- `tipo_projeto: hubspot` extension grande (custom objects + workflows + UI extensions + serverless cobrindo múltiplas áreas)
+- Sistema com **grupos diferentes de usuários** usando vocabulários sutilmente diferentes (ex: "vendas" e "financeiro" chamando a mesma coisa de jeitos diferentes)
+
+**Não aplicável**:
+- `prototipo_descartavel`, `uso_interno`, `mvp` típicos
+- `claude-plugin` (não tem domain model rico — é ferramenta)
+- Projetos com domínio simples (CRUDs diretos sem lógica de negócio complexa)
+
+Se aplicável: Spec.Design propõe modelo de bounded contexts com context map. Se não: segue com modelo simples.
+
+#### 4.6.3 Tactical patterns (aggregates, entities, value objects) — fora do escopo
+
+Tactical patterns do DDD (aggregates, repositórios, domain services, etc.) são padrões de código que o `superpowers:writing-plans` ou outras skills de implementação podem cobrir. Não fazem parte do workflow SDD em si — são decisão da fase Build.Implementation conforme a stack.
+
 ---
 
 ## 5. Mapa de integração com skills externas
@@ -145,12 +238,20 @@ Passo padrão do fluxo. SKILL.md instrui "agora invoque X". Se essencial não es
 
 #### 5.1.1 Ajustes de convenção SDD sobre `superpowers:writing-plans`
 
-A skill `writing-plans` é mais granular (steps de 2-5 minutos) e técnica (paths exatos, código real, comandos com expected output) que o `tasks.md` antigo. Adotada com 4 ajustes:
+A skill `writing-plans` é mais granular (steps de 2-5 minutos) e técnica (paths exatos, código real, comandos com expected output) que o `tasks.md` antigo. Adotada com 5 ajustes:
 
 1. **Marcação 🔒** — header de task `### Task N: [Component] 🔒` ou step extra `- [ ] **Step X: 🔒 Validar contra dados reais**` antes do commit. Decoração, não conflita com formato writing-plans
 2. **Quebra por fase típica** — continua existindo no nível do gate por feature (Build.Implementation). Cada feature vira um plano writing-plans próprio. `tasks.md` vira plano-mestre indexando as features
 3. **Quality Gate 4 SDD absorvido** — gate por feature: todos os steps do plano executados + testes passando + validações 🔒 aprovadas + aprovação humana
 4. **Localização override** — planos vivem em `specs/plans/<feature>.md` no projeto (autocontido), não em `docs/superpowers/plans/`
+5. **Refactor explícito no ciclo TDD** — o template padrão do writing-plans é `write-test → run-fail → implement → run-pass → commit` (4 passos + commit). Por aderência ao **TDD canônico (Kent Beck — Red/Green/Refactor)**, adicionamos passo Refactor antes do commit:
+
+   ```
+   write test → run (FAIL) → implement → run (PASS) →
+   REFACTOR (improve design, run tests again, mantém PASS) → commit
+   ```
+
+   O step Refactor é onde o código vira "well structured", não só "working". É o passo que distingue TDD de "test-first hack". Pode ser noop quando o código já saiu limpo do step Implement — mas a decisão é consciente, não pulada. Origem: [Kent Beck — TDD](https://martinfowler.com/bliki/TestDrivenDevelopment.html), [Wikipedia — TDD](https://en.wikipedia.org/wiki/Test-driven_development).
 
 ### 5.2 Família B — Domain-específicas (Modo 1, condicional por `tipo_projeto`)
 
@@ -473,6 +574,10 @@ Aceitar → migração executada. Pular → continua na v2.x conceitualmente, se
 | Slash commands | Todos os 5 (`start`, `status`, `gate`, `audit`, `promote-tier`); namespace `sdd-workflow` | S7 (item c) |
 | Versionamento | Plugin 0.1.1 → 0.2.0; SKILL.md 2.1.0 → 3.0.0; tag `em-testes` mantida | S8 |
 | Migração | Auto-detect + perguntar; v2.x continua funcionando se não migrar | S8 |
+| Relação com SDD canônico | Aplicar Spec Kit do GitHub na íntegra com extensões opinativas (tier, tipo_projeto, deploy, promoção) | reflexão SDD/TDD/BDD/DDD |
+| TDD canônico | Adotar ciclo Red/Green/**Refactor** (Kent Beck) — Refactor explícito antes do commit | reflexão SDD/TDD/BDD/DDD |
+| BDD opcional | Given-When-Then em Spec.Requirements + Build.Tasks 🔒 + Ship.Audit lógica de negócio | reflexão SDD/TDD/BDD/DDD |
+| DDD parcial | Linguagem ubíqua como princípio 8 (sempre); bounded contexts opcional pra producao_real complexo / hubspot extension grande | reflexão SDD/TDD/BDD/DDD |
 
 ---
 
