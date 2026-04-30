@@ -296,6 +296,28 @@ A skill `writing-plans` é mais granular (steps de 2-5 minutos) e técnica (path
 
    O step Refactor é onde o código vira "well structured", não só "working". É o passo que distingue TDD de "test-first hack". Pode ser noop quando o código já saiu limpo do step Implement — mas a decisão é consciente, não pulada. Origem: [Kent Beck — TDD](https://martinfowler.com/bliki/TestDrivenDevelopment.html), [Wikipedia — TDD](https://en.wikipedia.org/wiki/Test-driven_development).
 
+#### 5.1.2 Refactor em arquivos não-código (markdown, JSON, YAML)
+
+Projetos do tipo `claude-plugin` (e qualquer projeto cujo "deliverable" é primariamente markdown/JSON, não código executável) não têm testes unit no sentido clássico. O Refactor canônico ("improve design without changing behavior") precisa de **semântica adaptada** pra esses contextos, mas continua sendo passo obrigatório do ciclo — não é exceção. A "evolução do TDD canônico" adotada aqui (princípio 5) aplica universalmente.
+
+**Adaptação semântica por tipo de arquivo**:
+
+| Tipo de arquivo | "Behavior" preservado | Refactor possível |
+|---|---|---|
+| **Markdown** (skills, templates, references, commands, READMEs) | Significado/conteúdo informacional, links válidos, estrutura semântica (hierarquia de seções) | Eliminar redundância entre seções, condensar prosa verbosa em listas/tabelas, padronizar tom imperativo dentro do arquivo, melhorar exemplos pra clareza, garantir links cruzados funcionando, ordem de seções coerente |
+| **JSON** (plugin.json, marketplace.json) | Validação de schema + valores | Reordenar campos pra ordem canônica do schema, garantir consistência de naming, eliminar campos redundantes ou obsoletos |
+| **Frontmatter YAML** (de skills/commands) | Metadados parseáveis | Padronizar quoting, ordem dos campos, indentação |
+
+**Templates de "test" adaptados**:
+
+- Markdown → grep por seções obrigatórias, `wc -l` pra detectar overflow, `mdformat`/lint quando aplicável
+- JSON → `jq .` pra parse, `claude plugin validate .` pra schema, comparação com schema esperado
+- YAML frontmatter → script Python ou `yq` pra parsing + validação de campos obrigatórios
+
+**Cuidado importante**: o step Refactor pode ser declarado **noop conscientemente** (com justificativa breve no commit ou no log da task) quando o Green saiu limpo. Isso preserva o espírito do princípio 5 (Refactor não é opcional, é etapa explícita) sem inflar artificialmente arquivos que já estão bons.
+
+**Anti-pattern**: pular o step Refactor silenciosamente sem registrar a decisão. Se foi noop, declarar; se foi feito, mostrar o diff.
+
 ### 5.2 Família B — Domain-específicas (Modo 1, condicional por `tipo_projeto`)
 
 Mencionadas como referência quando o tipo se manifesta.
