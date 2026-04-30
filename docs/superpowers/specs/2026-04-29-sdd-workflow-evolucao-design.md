@@ -141,52 +141,95 @@ Pré-spec.Stack passa a ter 3 sub-componentes (todos registrados na constitution
 | Skills do marketplace | `superpowers:*`, `plugin-dev:*`, `marketplace-tools:*` | Família A (Modo 2) bloqueia se essencial faltar; Famílias B/C/D registram ausência mas continuam |
 | Acesso a serviços externos | API keys, tokens, contas | Bloquear avanço se essencial; registrar como pré-requisito |
 
-### 4.5 Camada BDD opcional pra regras de negócio
+### 4.5 Linguagens de especificação: EARS (Requirements) + BDD (Tasks 🔒)
 
-O **Behavior-Driven Development** (Dan North, ~2006) refina TDD com foco em **comportamento e valor de negócio**, expressos em formato **Given-When-Then** (Gherkin) acessível a domain experts não-técnicos. Origem: [Cucumber — History of BDD](https://cucumber.io/docs/bdd/history/), [Martin Fowler — Given When Then](https://martinfowler.com/bliki/GivenWhenThen.html).
+Duas linguagens controladas operam em camadas diferentes do fluxo, cada uma no que faz melhor:
 
-A audiência do plugin SDD é exatamente esse perfil: executivo de negócio dirigindo IA, sem ler código. BDD se aplica naturalmente. Pontos onde BDD entra como **camada opcional** (recomendada pra regras de negócio críticas, opcional pro resto):
+- **EARS — Easy Approach to Requirements Syntax** (Alistair Mavin, Rolls-Royce, 2009): linguagem controlada com 5 padrões e poucas keywords pra **escrever requirements precisos sem ambiguidade**. 15+ anos de uso em sistemas críticos (aerospace, defesa). Em consideração pra integração no SDD canônico ([Spec Kit Issue #1356](https://github.com/github/spec-kit/issues/1356)). Origem: [Alistair Mavin — EARS](https://alistairmavin.com/ears/), [Jama Software — Adopting EARS](https://www.jamasoftware.com/requirements-management-guide/writing-requirements/adopting-the-ears-notation-to-improve-requirements-engineering/).
 
-#### 4.5.1 Em Spec.Requirements
+- **BDD — Behavior-Driven Development** com formato **Given-When-Then/Gherkin** (Dan North, ~2006): cenários executáveis pra teste de comportamento, expressando setup → ação → asserção. Mainstream em testing há quase 20 anos. Origem: [Cucumber — History of BDD](https://cucumber.io/docs/bdd/history/), [Martin Fowler — Given When Then](https://martinfowler.com/bliki/GivenWhenThen.html).
 
-Regras de negócio podem ser escritas em formato Given-When-Then em vez de prosa. Exemplo:
+A audiência do plugin SDD (executivo dirigindo IA, sem ler código) se beneficia das duas: EARS é mais preciso que prosa pra requirements, BDD é mais natural que prosa pra cenários de teste com dados reais. Aplicação por camada:
 
-```gherkin
-Funcionalidade: Desconto progressivo por volume
+#### 4.5.1 Em Spec.Requirements — EARS (recomendado)
 
-  Cenário: Pedido acima do threshold ganha 5%
-    Dado um carrinho com R$ 1500
-    Quando o pedido é fechado com threshold = R$ 1000
-    Então aplicar desconto de 5%
+Requirements são escritos em **EARS** em vez de prosa. As 5 categorias EARS:
 
-  Cenário: Pedido abaixo do threshold não tem desconto
-    Dado um carrinho com R$ 800
-    Quando o pedido é fechado com threshold = R$ 1000
-    Então o total permanece R$ 800
+| Padrão | Keyword | Estrutura |
+|---|---|---|
+| Ubiquitous | (nenhuma) | `O <sujeito> deve <comportamento>` |
+| State-driven | `Enquanto` | `Enquanto <estado>, o <sujeito> deve <comportamento>` |
+| Event-driven | `Quando` | `Quando <evento>, o <sujeito> deve <comportamento>` |
+| Optional Feature | `Onde` | `Onde <feature presente>, o <sujeito> deve <comportamento>` |
+| Unwanted Behavior | `Se / então não` | `Se <condição>, então o <sujeito> não deve <comportamento>` |
+| Complex | combinação | `Enquanto X, quando Y, o <sujeito> deve Z` |
+
+Exemplo prático:
+
+```ears
+Ubiquitous:
+  O sistema deve operar em pt-BR para textos de UI.
+
+State-driven:
+  Enquanto não houver sessão autenticada, o sistema deve redirecionar para /login.
+
+Event-driven:
+  Quando um pedido for fechado com valor maior que R$ 1000, o sistema deve aplicar
+  desconto progressivo de 5% sobre o valor excedente.
+
+Optional Feature:
+  Onde o módulo de exportação estiver habilitado, o sistema deve oferecer botão
+  "Exportar XLSX" na tela de relatórios.
+
+Unwanted Behavior:
+  Se o token JWT estiver expirado, então o sistema não deve processar a requisição
+  e deve retornar HTTP 401.
+
+Complex:
+  Enquanto o usuário tiver perfil "admin", quando ele clicar em "Promover Tier",
+  o sistema deve abrir o sub-fluxo de promoção registrando a ação no histórico.
 ```
 
-Vantagem: cenários são executáveis e testáveis. Funcionam como acceptance criteria sem ambiguidade.
+**Vantagens vs prosa**:
+- Reduz ambiguidade drasticamente (linguagem controlada com gramática rígida)
+- LLMs parseiam confiavelmente (sintaxe regular)
+- Curva de aprendizado mínima (5-6 keywords)
+- Validação humana fica trivial (cada requirement é uma frase verificável)
 
-#### 4.5.2 Em Build.Tasks 🔒 (validação contra dados reais)
+#### 4.5.2 Em Build.Tasks 🔒 (validação contra dados reais) — BDD/Given-When-Then (recomendado)
 
-Tasks marcadas 🔒 (validação contra dados reais — princípio inviolável 1) ficam mais claras em Given-When-Then. Exemplo:
+Tasks marcadas 🔒 (validação contra dados reais — princípio inviolável 1) usam Given-When-Then porque o formato setup → ação → asserção é mais natural pra cenários de teste com dados específicos. Exemplo:
 
 ```gherkin
-  Cenário: Cálculo bate com planilha de referência (fevereiro 2026)
-    Dado os dados reais da planilha "pedidos-fev-2026.xlsx"
-    Quando recalculo total com a nova regra de desconto progressivo
-    Então cada linha bate com a coluna "Total Final" da planilha
-    E a soma total bate com a célula F999 da planilha
+Cenário: Cálculo bate com planilha de referência (fevereiro 2026)
+  Dado os dados reais da planilha "pedidos-fev-2026.xlsx"
+  Quando recalculo total com a nova regra de desconto progressivo
+  Então cada linha bate com a coluna "Total Final" da planilha
+  E a soma total bate com a célula F999 da planilha
 ```
+
+**Por que BDD aqui em vez de EARS**: EARS é otimizado pra requirements (o que o sistema deve fazer), enquanto Given-When-Then é otimizado pra cenários de teste executáveis com dados específicos. As duas notações são complementares, não competem.
 
 #### 4.5.3 Em Ship.Audit dimensão 8 (Lógica de negócio)
 
-Audit pode usar os cenários Given-When-Then de Spec.Requirements como checklist executável. Cada cenário rodado contra o sistema validado.
+Audit usa **as duas notações** em pontos diferentes:
+- Cada requirement EARS de Spec.Requirements vira uma asserção verificável: "O sistema cumpre este EARS?"
+- Cada cenário Given-When-Then de Tasks 🔒 vira um teste de validação executado contra dados reais
 
-**Quando usar**:
-- Sempre que o projeto tem regras de negócio críticas (cálculos, validações, fluxos de aprovação)
-- Sempre que há documentos de referência (planilhas, PDFs, processos manuais) cujo comportamento o sistema precisa replicar
-- Opcional quando regras são triviais (CRUDs simples sem lógica de domínio)
+#### 4.5.4 Quando usar cada uma
+
+| Situação | Notação |
+|---|---|
+| Requirements (o que o sistema deve fazer/não fazer) | **EARS** |
+| Cenários de teste com dados específicos | **BDD/Given-When-Then** |
+| Regras de negócio complexas (cálculos, validações, fluxos de aprovação) | EARS pra regra + BDD pros cenários de validação |
+| CRUDs simples sem lógica de domínio | Opcional (prosa pode bastar pra projetos triviais) |
+
+#### 4.5.5 Sobre GEARS — possível evolução pra v4.0
+
+**GEARS (Generalized EARS)** foi publicado em janeiro/2026 como extensão do EARS otimizada pra IA. Promete unificar specs e tests numa sintaxe só (substituindo a separação EARS+BDD adotada aqui). Origem: [GEARS — DEV Community](https://dev.to/sublang/gears-the-spec-syntax-that-makes-ai-coding-actually-work-4f3f).
+
+**Decisão atual (v3.0)**: não adotar. GEARS é muito novo (3 meses), pouca tração comprovada, pode mudar de forma. EARS e BDD são maduros e LLMs modernos parseiam ambos sem dificuldade. GEARS fica no radar pra revisão na v4.0 (6-12 meses), quando tiver sinais de adoção mainstream e o Spec Kit eventualmente posicionar-se sobre o tema.
 
 ### 4.6 Camada DDD opcional pra projetos com domínio complexo
 
@@ -487,7 +530,8 @@ plugins/sdd-workflow/
     │       ├── inventario-dependencias.md
     │       ├── audit-dimensoes.md
     │       ├── integracao-skills.md
-    │       └── alvos-deploy.md
+    │       ├── alvos-deploy.md
+    │       └── linguagens-especificacao.md    (EARS + BDD/Given-When-Then — guia, exemplos, antipatterns)
     └── sdd-promote-tier/
         └── SKILL.md                          (sub-fluxo de Promoção — 11 passos)
 ```
@@ -497,7 +541,7 @@ plugins/sdd-workflow/
 Esqueleto proposto (~350-400 linhas, vs ~500 atuais com mais cobertura):
 
 1. Frontmatter — name, description, version 3.0.0, `disable-model-invocation: true`, triggers atualizados
-2. Princípios invioláveis (~20 linhas) — os 7 da seção 2 deste design
+2. Princípios invioláveis (~25 linhas) — os 8 da seção 2 deste design
 3. Visão geral do fluxo (~30 linhas) — 4 estágios + diagrama textual
 4. Pré-spec (~80 linhas) — Discovery (com pergunta de tipo+tier), Constitution (com formato YAML), Stack (com inventário + decisão técnica + alvo deploy)
 5. Spec (~60 linhas) — Requirements, Design, Spike (opcional)
@@ -576,7 +620,7 @@ Aceitar → migração executada. Pular → continua na v2.x conceitualmente, se
 | Migração | Auto-detect + perguntar; v2.x continua funcionando se não migrar | S8 |
 | Relação com SDD canônico | Aplicar Spec Kit do GitHub na íntegra com extensões opinativas (tier, tipo_projeto, deploy, promoção) | reflexão SDD/TDD/BDD/DDD |
 | TDD canônico | Adotar ciclo Red/Green/**Refactor** (Kent Beck) — Refactor explícito antes do commit | reflexão SDD/TDD/BDD/DDD |
-| BDD opcional | Given-When-Then em Spec.Requirements + Build.Tasks 🔒 + Ship.Audit lógica de negócio | reflexão SDD/TDD/BDD/DDD |
+| Linguagens de especificação | **EARS** (Mavin/Rolls-Royce, 2009) pra Spec.Requirements + **BDD/Given-When-Then** (North, 2006) pra Build.Tasks 🔒. Audit usa as duas. **GEARS** descartado pra v3.0 (muito novo) — fica no radar pra v4.0 | reflexão SDD/TDD/BDD/DDD + reflexão EARS/GEARS |
 | DDD parcial | Linguagem ubíqua como princípio 8 (sempre); bounded contexts opcional pra producao_real complexo / hubspot extension grande | reflexão SDD/TDD/BDD/DDD |
 
 ---
