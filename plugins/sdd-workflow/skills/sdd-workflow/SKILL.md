@@ -287,3 +287,99 @@ Skills usadas:
 ```
 
 ---
+
+## Estágio III — Build
+
+### Build.Tasks (plano-mestre)
+
+Escreva `specs/tasks.md` copiando + preenchendo `templates/tasks.md`. **Plano-mestre** = índice de features. Cada feature terá seu próprio plano detalhado em `specs/plans/<feature>.md`.
+
+Quebra típica de features (adaptar conforme `tipo_projeto`):
+
+1. **Infra e Setup** (Docker, scripts, banco)
+2. **Auth + Layout** (login, JWT, sidebar, mobile drawer) se UI
+3. **CRUDs** (entidades administrativas)
+4. **Lógica de negócio 🔒** (cálculos, validações — validação obrigatória contra dados reais)
+5. **Dashboards e visualizações** (se aplicável)
+6. **Funcionalidades específicas** (simulação, relatórios, etc.)
+7. **Polish** (isolamento, validações, responsividade)
+
+Cada feature do plano-mestre deve:
+- Ser testável independentemente
+- Ter critério claro de done
+- Indicar dependências
+- Indicar 🔒 se exige validação contra dados reais
+
+**Quality Gate Tasks** ✅:
+```
+□ Cada feature tem plano detalhado planejado em specs/plans/<feature>.md
+□ Dependências entre features claras
+□ Features 🔒 identificadas
+□ Plano-mestre revisado e aprovado
+□ progress.md atualizado com features
+```
+
+### Build.Implementation — loop por feature
+
+Pra cada feature do plano-mestre:
+
+1. **Escrever plano detalhado** em `specs/plans/<feature>.md` usando `superpowers:writing-plans` com **5 ajustes de convenção SDD**:
+
+   1. **Marcação 🔒** — header de task `### Task N: [Component] 🔒` ou step extra `- [ ] **Step X: 🔒 Validar contra dados reais**` antes do commit
+   2. **Quebra por fase típica** absorvida no nível superior (`tasks.md` plano-mestre)
+   3. **Quality Gate por feature** absorve gates antigos
+   4. **Localização**: `specs/plans/<feature>.md` no projeto (autocontido)
+   5. **Refactor explícito no ciclo TDD canônico**:
+
+      ```
+      write test → run (FAIL) → implement → run (PASS) →
+      REFACTOR (improve design, run tests, mantém PASS) → commit
+      ```
+
+      Refactor pode ser noop conscientemente declarado (não pulado silenciosamente). Pra arquivos não-código (markdown, JSON), Refactor adapta semântica — ver `references/linguagens-especificacao.md` ou seção 5.1.2 do spec do plugin.
+
+2. **Cenário BDD pra tasks 🔒** (validação contra dados reais):
+
+   ```gherkin
+   Cenário: Cálculo bate com planilha de referência
+     Dado os dados reais da planilha "<arquivo>.xlsx"
+     Quando recalculo total com a regra de negócio
+     Então cada linha bate com a coluna "Total Final" da planilha
+   ```
+
+   Formato Given/When/Then — padrão BDD Gherkin.
+
+3. **Executar plano detalhado** com:
+   - `superpowers:executing-plans` — execução inline com checkpoints, OU
+   - `superpowers:subagent-driven-development` — fresh subagent per task com review entre tasks (recomendado pra features grandes)
+
+4. **Skills durante Implementation**:
+   - `superpowers:test-driven-development` — TDD canônico Red/Green/Refactor
+   - `superpowers:systematic-debugging` — em erros (reproduzir → isolar → diagnosticar → corrigir)
+   - `superpowers:verification-before-completion` — antes de declarar task pronta
+   - `superpowers:using-git-worktrees` — quando feature precisa isolamento
+   - `superpowers:dispatching-parallel-agents` — quando subtasks independem
+   - `commit-commands:commit` — substituir commits manuais
+   - `simplify` — depois de bloco grande de implementação
+
+5. **Quality Gate por feature** (gate além do gate por task):
+   ```
+   □ Todos os steps do plano detalhado executados
+   □ Testes da feature passando (output mostrado)
+   □ Se 🔒: comparativo contra dados reais mostrado e aprovado
+   □ Refactor declarado (executado ou noop justificado)
+   □ Aprovação humana antes de marcar ✅ no progress.md
+   ```
+
+6. **Atualizar `specs/progress.md`** ao concluir feature.
+
+### Final de sessão (não é fase, é evento)
+
+Quando a sessão de trabalho encerrar (mesmo no meio da Implementation):
+
+1. **Atualizar `specs/progress.md`** com estado atual
+2. **Revisar `CLAUDE.md` do projeto** com aprendizados (`claude-md-management:revise-claude-md`)
+3. **Salvar na memória**: `remember:remember`
+4. **Relatório de sessão** (opcional): `session-report:session-report`
+
+---
