@@ -148,7 +148,7 @@
     },
     {
       "name": "sdd-workflow",
-      "description": "Playbook pessoal de Spec-Driven Development para projetos solo gerados 100% por IA. Primeira versão pública sanitizada do workflow privado do autor.",
+      "description": "Playbook Spec-Driven Development v3 pra projetos solo gerados 100% por IA. 4 estágios (Pré-spec/Spec/Build/Ship) com gates, tier projetado em 5 níveis, catálogo de tipo_projeto, inventário de dependências, EARS pra Requirements + BDD pra Tasks 🔒, integração com superpowers, TDD canônico Red/Green/Refactor, auditoria 13×5, sub-skill de Promoção de Tier, 5 commands.",
       "source": "./plugins/sdd-workflow",
       "category": "development",
       "tags": [
@@ -161,7 +161,7 @@
       "author": {
         "name": "André Junges"
       },
-      "version": "0.1.1"
+      "version": "0.2.0"
     },
     {
       "name": "session-report",
