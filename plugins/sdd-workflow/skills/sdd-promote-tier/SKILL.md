@@ -24,7 +24,7 @@ tags:
 
 Sub-fluxo dedicado pra mudar `tier` de um projeto SDD existente. Roda **incremental**: aproveita Discovery, Constitution, Requirements, Design originais. Só revisita os deltas (Stack, Design parcial, Audit focada).
 
-> **Ver também**: `skills/sdd-workflow/references/tiers.md` (5 níveis + matriz Audit), `references/audit-dimensoes.md` (13 dimensões), `references/stacks.md` (variação de stack por tier), `references/alvos-deploy.md` (variação de alvo por tier).
+> **Ver também** (paths a partir do plugin root, em `plugins/sdd-workflow/`): `skills/sdd-workflow/references/tiers.md` (5 níveis + matriz Audit), `skills/sdd-workflow/references/audit-dimensoes.md` (13 dimensões), `skills/sdd-workflow/references/stacks.md` (variação de stack por tier), `skills/sdd-workflow/references/alvos-deploy.md` (variação de alvo por tier).
 
 ---
 
@@ -92,7 +92,7 @@ Edit no `specs/constitution.md`:
 
 ### Passo 6 — Reaviva Pré-spec.Stack
 
-Pra cada delta entre stack atual e stack esperada do novo tier (consultar `references/stacks.md`):
+Pra cada delta entre stack atual e stack esperada do novo tier (consultar `skills/sdd-workflow/references/stacks.md`):
 
 > "No tier antigo, [camada X = tecnologia A]. No tier novo, recomendo [tecnologia B] porque [motivo]. Aplicar agora ou aceitar débito técnico?"
 
@@ -117,7 +117,7 @@ Pra cada feature nova decidida nos passos 6-7:
 
 Roda Ship.Audit **apenas** nas dimensões que viraram obrigatórias no novo tier (não reaudita o que já passou e segue válido).
 
-Comparar matriz do tier antigo vs novo (consultar `references/tiers.md` seção 3). Dimensões que mudaram de `—`/`opcional`/`perguntar` pra `obrigatório` entram na reauditoria.
+Comparar matriz do tier antigo vs novo (consultar `skills/sdd-workflow/references/tiers.md` seção 3). Dimensões que mudaram de `—`/`opcional`/`perguntar` pra `obrigatório` entram na reauditoria.
 
 Output: `specs/audit-<YYYY-MM-DD>-tier-upgrade.md`.
 
@@ -132,14 +132,14 @@ Com base nos achados 🔴/🟡 da reauditoria:
 
 Se Ship.Deploy ainda não tinha sido executado e o novo tier exige (ex: protótipo → MVP exige hosting gerenciado), executar agora.
 
-Se alvo mudou (ex: protótipo local → mvp em hosting gerenciado), redeploy pra novo alvo. Ver `references/alvos-deploy.md`.
+Se alvo mudou (ex: protótipo local → mvp em hosting gerenciado), redeploy pra novo alvo. Ver `skills/sdd-workflow/references/alvos-deploy.md`.
 
 ---
 
 ## Outputs
 
 - Constitution atualizada (histórico de tier expandido na seção 9)
-- `specs/plans/<feature>-tier-upgrade.md` pra features novas (ver `templates/plan-feature.md` da skill SDD principal)
+- `specs/plans/<feature>-tier-upgrade.md` pra features novas (ver `skills/sdd-workflow/templates/plan-feature.md`)
 - `specs/audit-<data>-tier-upgrade.md` focada nas dimensões novas obrigatórias
 
 ---
