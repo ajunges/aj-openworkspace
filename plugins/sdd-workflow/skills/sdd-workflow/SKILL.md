@@ -3,11 +3,12 @@ name: sdd-workflow
 description: >
   Workflow Spec-Driven Development v3.0 pra projetos solo gerados por IA.
   Use quando o usuário disser "novo projeto", "criar um sistema", "quero desenvolver",
-  "use o workflow SDD", "promover este projeto pra <tier>", ou variações.
+  "use o workflow SDD", ou variações pra iniciar/retomar projeto SDD.
   Audiência: não-programadores (executivos, etc.) dirigindo Claude Code pra construir
   software completo. 4 estágios (Pré-spec → Spec → Build → Ship), 5 níveis de tier,
   catálogo de tipo_projeto, EARS pra Requirements + BDD pra Tasks 🔒, integração com
-  superpowers (Modo 2), TDD canônico Red/Green/Refactor.
+  superpowers (Modo 2), TDD canônico Red/Green/Refactor. Pra promoção/regressão de
+  tier em projeto existente, ver sub-skill `sdd-promote-tier` (triggers próprios).
 disable-model-invocation: true
 version: 3.0.0
 triggers:
@@ -16,10 +17,7 @@ triggers:
   - criar um sistema
   - quero desenvolver
   - workflow sdd
-  - nova feature
   - status do projeto
-  - promover este projeto
-  - evoluir tier
 tags:
   - development-methodology
   - project-management
