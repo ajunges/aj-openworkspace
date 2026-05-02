@@ -48,6 +48,8 @@ Workflow completo pra desenvolvimento de novos projetos solo gerados 100% por IA
 | 7 | **Promoção de tier é decisão consciente, registrada, incremental** — nunca recomeço do zero | v3.0 |
 | 8 | **Linguagem ubíqua** — vocabulário compartilhado entre IA, usuário, documentos de referência, código e UI. Termos definidos em Pré-spec.Discovery e Pré-spec.Constitution propagam pra requirements, design, tasks, código e UI sem traduções intermediárias | v3.0 (DDD/BDD) |
 
+> **Convenção de naming do conceito do princípio 2**: o mesmo conceito aparece em formas distintas conforme contexto. `tier` (palavra simples em prosa). `tier:` (identifier YAML em código — snake_case quando composto, ex: `tier_decidido_em`). `tier-projetado` (tag YAML em frontmatter — kebab-case por convenção dos manifests Claude Code). "tier projetado" (descrição narrativa com adjetivo). Todas as formas referem o mesmo conceito; a forma muda só pra respeitar a convenção do contexto onde aparece.
+
 ---
 
 ## Visão geral do fluxo — 4 estágios nomeados
