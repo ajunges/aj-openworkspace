@@ -1,29 +1,40 @@
-# sdd-workflow
+# sdd-workflow — v3.0
 
-Playbook pessoal de **Spec-Driven Development** para desenvolvedores solo que geram 100% do código via IA. Primeira versão pública (v0.1.0), sanitizada a partir de um workflow privado do autor.
+Plugin Claude Code com playbook **Spec-Driven Development** completo. 4 estágios nomeados, tier projetado, integração com superpowers, EARS pra Requirements + BDD pra Tasks 🔒, auditoria expandida 13 dimensões × 5 tiers.
 
 ## Audiência
 
-Não-programadores (ou programadores iniciantes) que usam o Claude Code pra construir sistemas completos. O workflow compensa a falta de conhecimento técnico direto com:
+Não-programadores (executivos, etc.) e programadores iniciantes que dirigem o Claude Code pra construir sistemas completos. O workflow compensa a falta de conhecimento técnico direto com:
 
 - **Gates explícitos** em cada fase — nada avança sem aprovação
-- **TDD rigoroso** — testes escritos antes do código
-- **Auditoria em 8 dimensões** — segurança, isolamento de dados, integridade, performance, responsividade, UX, código, lógica de negócio
-- **Seed com dados reais** — nunca dados fictícios (regra inviolável)
+- **TDD canônico** Red/Green/Refactor — testes antes do código, refactor obrigatório
+- **EARS** (Easy Approach to Requirements Syntax) — requirements precisos sem ambiguidade
+- **BDD** (Given-When-Then) — cenários de teste com dados reais
+- **Auditoria expandida** em 13 dimensões com obrigatoriedade variável por tier
+- **Tier projetado** — visão final do desenvolvimento, não estado atual
+- **Princípio inviolável**: dados reais, nunca fictícios
 
-## As 7 fases
+## 4 estágios × 11 fases
 
-| # | Fase | Output |
+| Estágio | Fases | Saídas |
 |---|---|---|
-| 0 | Discovery | Entendimento documentado no chat |
-| 0.5 | Setup | Estrutura de pastas, CLAUDE.md, README.md inicial |
-| 1 | Constitution | `specs/constitution.md` com princípios, stack, quality standards |
-| 2 | Requirements | `specs/requirements.md` com módulos e regras de negócio |
-| 3 | Design | `specs/design.md` com schema, APIs, arquitetura |
-| 4 | Tasks | `specs/tasks.md` com plano incremental |
-| 5 | Implementação | Loop de task → TDD → implementar → verificar → commit |
-| 6 | Auditoria | Relatório em 8 dimensões |
-| 7 | Entrega | Sistema rodando + resumo final |
+| **I. Pré-spec** | Discovery → Constitution (com setup) → Stack | `specs/constitution.md` |
+| **II. Spec** | Requirements (EARS) → Design → Spike (opcional) | `specs/requirements.md`, `specs/design.md`, eventual `specs/spike.md` |
+| **III. Build** | Tasks (plano-mestre) → Implementation (loop por feature) | `specs/tasks.md`, `specs/plans/<feature>.md`, código entregue |
+| **IV. Ship** | Audit → Delivery → Deploy | `specs/audit-<data>.md`, sistema rodando, sistema em produção |
+
+## 5 níveis de tier
+
+`prototipo_descartavel` → `uso_interno` → `mvp` → `beta_publico` → `producao_real`
+
+Tier determina dimensões obrigatórias da Audit, recursos mínimos da stack, e rigor do Ship.Deploy. **Tier é projetado** (visão final), não observado (estado atual). Mudança = decisão consciente registrada via Promoção de Tier (sub-skill dedicada).
+
+## 4 tipos de projeto suportados
+
+- `web-saas` — sistema web full-stack (React/Vite/Tailwind/shadcn/Express/Prisma/PG)
+- `claude-plugin` — plugin Claude Code (markdown + JSON, sem build)
+- `hubspot` — extensão HubSpot (CLI, custom objects, UI extensions, serverless)
+- `outro` — Stack Decision livre
 
 ## Instalação
 
@@ -34,17 +45,30 @@ Como parte do marketplace `aj-openworkspace`:
 /plugin install sdd-workflow@aj-openworkspace
 ```
 
-## Como invocar
+## Slash commands
 
-A skill é `disable-model-invocation: true` — só ativa por triggers explícitos. Use uma das frases:
+| Command | Função |
+|---|---|
+| `/sdd-workflow:start` | Atalho pra invocar a skill principal |
+| `/sdd-workflow:status` | Lê `specs/progress.md` (read-only) |
+| `/sdd-workflow:gate` | Verifica gate da fase atual; lista pendências |
+| `/sdd-workflow:audit` | Dispara Ship.Audit standalone (`--dimensoes <lista>` opcional) |
+| `/sdd-workflow:promote-tier` | Invoca sub-skill de promoção de tier (`--alvo <tier>` opcional) |
+
+## Triggers naturais (frase em pt-BR)
 
 - "Novo projeto: [nome]. Use o workflow SDD."
 - "Quero criar um sistema para [X]. Me guie no desenvolvimento."
-- "/sdd" ou "/sdd.status" ou "/sdd.gate"
+- "Status do projeto"
+- "Promover este projeto pra [tier]"
+
+## Migração v2.x → v3.0
+
+Projetos no fluxo antigo (sem bloco YAML `tipo_projeto`/`tier` na constitution) são detectados automaticamente. A skill oferece migração que adiciona campos novos sem perder histórico.
 
 ## Status
 
-`em-testes` — primeira versão pública. Pode virar `recomendado` após rodada de uso e feedback.
+`em-testes` — primeira versão pública pós-evolução estrutural. Promove pra `recomendado` após uso real e feedback.
 
 ## Autor
 
