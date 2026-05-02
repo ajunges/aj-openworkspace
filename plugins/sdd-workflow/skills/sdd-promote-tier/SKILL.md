@@ -144,19 +144,9 @@ Se alvo mudou (ex: protótipo local → mvp em hosting gerenciado), redeploy pra
 
 ---
 
-## Quality Gate da Promoção
+## Quality Gate Promoção
 
-```
-□ Constitution atualizada com histórico
-□ Deltas de Stack decididos (aplicar / débito)
-□ Deltas de Design decididos
-□ Features novas planejadas (specs/plans/)
-□ Reauditoria executada
-□ Achados 🔴 zerados
-□ Ship.Deploy executado se aplicável
-□ progress.md atualizado
-□ Aprovação do usuário
-```
+**Quality Gate Promoção** ✅: Constitution atualizada com histórico | Deltas de Stack decididos (aplicar / débito) | Deltas de Design decididos | Features novas planejadas (`specs/plans/`) | Reauditoria executada | Achados 🔴 zerados | Ship.Deploy executado se aplicável | `progress.md` atualizado | Aprovação do usuário.
 
 ---
 
