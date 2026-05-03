@@ -14,7 +14,6 @@ Itens da autorrevisão pós-v0.2.1 que não foram aplicados porque são polish, 
 |---|---|---|---|
 | 1.1 | Mover blocos de sintaxe EARS/BDD/TDD inline (~30 linhas) pra `references/linguagens-especificacao.md` | `SKILL.md` Stage II + III | baixo |
 | 1.2 | Limpar `Aprovação do usuário` redundante em 9/11 Quality Gates (princípio 4 já cobre — aprovação é universal) | `SKILL.md` Stages I-IV | baixo |
-| 1.3 | Verificar se `plugin:context7:context7` é o namespace MCP correto (possível typo) | `SKILL.md:207` | baixo |
 | 1.4 | Adicionar 1 linha no README explicando `disable-model-invocation: true` (ajuda quem instalar entender por que a skill não dispara sozinha) | `README.md` | baixo |
 
 ---

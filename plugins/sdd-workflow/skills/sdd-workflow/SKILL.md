@@ -203,8 +203,10 @@ Escreva `specs/design.md` copiando + preenchendo `templates/design.md`. Conteúd
 Skills sugeridas:
 - `frontend-design` se UI distintiva (web-saas)
 - `claude-api` se usa API Anthropic
-- `plugin:context7:context7` pra docs atualizadas de libs
 - `plugin-dev:*` se `tipo_projeto: claude-plugin`
+
+MCP sugerido:
+- `context7` pra docs atualizadas de libs
 
 **Quality Gate Design** ✅: Schema cobre todos os módulos dos requirements | APIs têm autenticação e autorização definidas | Stack bate com constitution | Brand colors do projeto configurados (Tailwind, se UI) | Mobile-first documentado (sidebar, tabelas, cards) se UI | Decisão Spike registrada (sim/não) | Aprovação do usuário.
 

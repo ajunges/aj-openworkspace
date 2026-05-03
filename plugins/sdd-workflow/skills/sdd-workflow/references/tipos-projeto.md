@@ -43,7 +43,7 @@ Override é permitido em todos os tipos. O **checkpoint da Pré-spec.Stack** for
 ### 3.3 `hubspot`
 
 - **Stack default**: ver `references/stacks.md#hubspot`
-- **Skills B**: nenhuma nativa no marketplace — usar guia interno do plugin SDD; `plugin:context7:context7` recomendado pra docs HubSpot atualizadas
+- **Skills B**: nenhuma nativa no marketplace — usar guia interno do plugin SDD; MCP `context7` recomendado pra docs HubSpot atualizadas
 - **Particularidades**:
   - Pré-spec.Constitution **exige seção Scopes** (princípio do menor privilégio)
   - Pré-spec.Stack faz inventário explícito de ferramentas (CLI + MCP + acesso a sandbox/prod) e ajusta fluxo conforme disponibilidade
@@ -56,7 +56,7 @@ Override é permitido em todos os tipos. O **checkpoint da Pré-spec.Stack** for
 - **Stack default**: N/A — Pré-spec.Stack faz Stack Decision livre baseada nas particularidades
 - **Skills B**: caso a caso, decididas baseado em pesquisa do tipo
 - **Particularidades**:
-  - Pré-spec.Stack **obrigatoriamente** faz pesquisa de stack/padrões usando `plugin:context7:context7` (docs atualizadas) e/ou WebSearch antes de propor stack
+  - Pré-spec.Stack **obrigatoriamente** faz pesquisa de stack/padrões usando MCP `context7` (docs atualizadas) e/ou WebSearch antes de propor stack
   - Se durante a pesquisa identificar tipo conhecido (ex: "ah, é um MCP server"), oferece adicionar ao catálogo formal e migrar pra ele
 
 ---

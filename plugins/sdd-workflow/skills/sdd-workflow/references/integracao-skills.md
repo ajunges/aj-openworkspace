@@ -32,7 +32,7 @@ Mencionadas como referência quando o tipo se manifesta. Detalhe completo em `re
 |---|---|
 | `web-saas` | `frontend-design` (Spec.Design); condicional: `claude-api`, `agent-sdk-dev:new-sdk-app` |
 | `claude-plugin` | `plugin-dev:create-plugin`, `:plugin-structure`, `:command-development`, `:hook-development`, `:skill-development`, `:agent-development`, `:mcp-integration`, `:plugin-validator`; `marketplace-tools:validate`, `:publish-plugin` |
-| `hubspot` | (sem skill nativa) — guia próprio dentro do plugin SDD; `plugin:context7:context7` recomendado pra docs HubSpot atualizadas |
+| `hubspot` | (sem skill nativa) — guia próprio dentro do plugin SDD; MCP `context7` recomendado pra docs HubSpot atualizadas |
 | `outro` | livre — usuário invoca o que fizer sentido |
 
 ---
@@ -56,7 +56,7 @@ Mencionadas como referência quando o tipo se manifesta. Detalhe completo em `re
 | Quando | Skills D / ferramentas |
 |---|---|
 | Discovery/Requirements/Design precisam buscar info externa | **1ª escolha (free)**: `WebSearch` + `WebFetch` (built-in). **Páginas dinâmicas/JS**: browser MCPs (`mcp__Claude_in_Chrome__*` / `Kapture` / `Control_Chrome`). **Fallback (pago)**: `firecrawl` (`firecrawl-search`, `:scrape`, `:map`, `:crawl`, `:interact`) — só quando free não resolve |
-| Stack ou Design precisam docs atualizadas de lib | `plugin:context7:context7` |
+| Stack ou Design precisam docs atualizadas de lib | MCP `context7` |
 | Documento de referência é PDF | `anthropic-skills:pdf` |
 | Documento de referência é Excel | `anthropic-skills:xlsx` |
 | Documento de referência é Word | `anthropic-skills:docx` |

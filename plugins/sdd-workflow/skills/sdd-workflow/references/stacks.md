@@ -54,7 +54,7 @@ A stack default escala com o tier. Exemplo `web-saas`: `uso_interno` aceita Post
 ## 5. `outro`
 
 Sem default. Pré-spec.Stack obrigatoriamente:
-1. Pesquisa via `plugin:context7:context7` ou WebSearch + WebFetch
+1. Pesquisa via MCP `context7` ou WebSearch + WebFetch
 2. Avalia padrões da comunidade pra tipo identificado
 3. Propõe stack com justificativa
 4. Se durante pesquisa identificar tipo conhecido, oferece migrar pra catálogo formal
