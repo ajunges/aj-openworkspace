@@ -45,6 +45,8 @@ Como parte do marketplace `aj-openworkspace`:
 /plugin install sdd-workflow@aj-openworkspace
 ```
 
+> **Nota**: a skill principal tem `disable-model-invocation: true` — não dispara automaticamente em conversas casuais. Ative por trigger explícito (frase em pt-BR ou slash command abaixo).
+
 ## Slash commands
 
 | Command | Função |

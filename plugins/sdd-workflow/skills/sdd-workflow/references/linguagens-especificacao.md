@@ -1,6 +1,6 @@
-# Linguagens de especificação — EARS + BDD
+# Linguagens e notações — EARS + BDD + TDD
 
-Reference do plugin `sdd-workflow` (v3.0). Duas linguagens controladas operam em camadas diferentes do fluxo, cada uma no que faz melhor.
+Reference do plugin `sdd-workflow` (v3.0). Duas linguagens controladas (EARS pra requirements, BDD pra cenários de teste com dados específicos) e a notação canônica do ciclo TDD operam em camadas diferentes do fluxo, cada uma no que faz melhor.
 
 ## 1. EARS — Easy Approach to Requirements Syntax
 
@@ -95,7 +95,43 @@ EARS é otimizado pra requirements (o que o sistema deve fazer). Given-When-Then
 
 ---
 
-## 3. GEARS — possível evolução pra v4.0 (não adotado em v3.0)
+## 3. TDD — ciclo canônico Red/Green/Refactor
+
+**Quando usar**: Build.Implementation (princípio inviolável 5). Notação compacta do ciclo:
+
+```
+write test → run (FAIL) → implement → run (PASS) → REFACTOR (improve design, run tests, mantém PASS) → commit
+```
+
+### 3.1 Etapas
+
+| Etapa | O que acontece |
+|---|---|
+| **write test** | Escrever teste cobrindo o comportamento desejado |
+| **run (FAIL)** | Executar — deve falhar (Red). Confirma que o teste cobre algo que ainda não existe |
+| **implement** | Implementar o mínimo de código pra fazer o teste passar |
+| **run (PASS)** | Executar — deve passar (Green) |
+| **REFACTOR** | Melhorar design (nomes, duplicação, estrutura) mantendo todos os testes passando. **Pode ser noop conscientemente declarado** — nunca pulado silenciosamente |
+| **commit** | Commit atômico (1 commit = 1 ciclo completo) |
+
+### 3.2 Refactor pra arquivos não-código
+
+Markdown, JSON, YAML — Refactor adapta semântica:
+
+- **Markdown**: melhorar headings, linkagem, eliminar repetição, consolidar seções relacionadas
+- **JSON/YAML**: ordenar chaves por convenção do schema, remover redundância, agrupar relacionados
+
+Mesma regra: refactor só roda **depois** do PASS, e não pode quebrar a forma vigente.
+
+### 3.3 Anti-patterns TDD
+
+- Pular Red (escrever teste já passando) — perde a confirmação de que o teste detecta a ausência do comportamento
+- Pular Refactor (commit no Green) — acumula débito que vira refactor caro depois
+- Refactor que muda comportamento — refactor é só design; mudança de comportamento exige novo ciclo
+
+---
+
+## 4. GEARS — possível evolução pra v4.0 (não adotado em v3.0)
 
 **GEARS (Generalized EARS)** foi publicado em janeiro/2026 como extensão do EARS otimizada pra IA. Promete unificar specs e tests numa sintaxe só (substituindo a separação EARS+BDD adotada aqui).
 
@@ -105,10 +141,12 @@ GEARS fica no radar pra revisão na v4.0 (6-12 meses), quando tiver sinais de ad
 
 ---
 
-## 4. Fontes
+## 5. Fontes
 
 - [Alistair Mavin — EARS](https://alistairmavin.com/ears/)
 - [Jama Software — Adopting EARS](https://www.jamasoftware.com/requirements-management-guide/writing-requirements/adopting-the-ears-notation-to-improve-requirements-engineering/)
 - [Cucumber — History of BDD](https://cucumber.io/docs/bdd/history/)
 - [Martin Fowler — Given When Then](https://martinfowler.com/bliki/GivenWhenThen.html)
+- [Kent Beck — Test-Driven Development: By Example](https://www.oreilly.com/library/view/test-driven-development/0321146530/)
+- [Martin Fowler — Refactoring](https://martinfowler.com/books/refactoring.html)
 - [GEARS — DEV Community](https://dev.to/sublang/gears-the-spec-syntax-that-makes-ai-coding-actually-work-4f3f)

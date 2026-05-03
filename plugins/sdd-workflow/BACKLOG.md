@@ -2,7 +2,7 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-02 (criação inicial pós-v0.2.1).
+Atualizado em: 2026-05-03 (pós-v0.2.4 — seção 1 esvaziada).
 
 ---
 
@@ -10,11 +10,7 @@ Atualizado em: 2026-05-02 (criação inicial pós-v0.2.1).
 
 Itens da autorrevisão pós-v0.2.1 que não foram aplicados porque são polish, não correção. Acumular e aplicar em batch ou isolados conforme conveniência.
 
-| # | Item | Local de impacto | Esforço |
-|---|---|---|---|
-| 1.1 | Mover blocos de sintaxe EARS/BDD/TDD inline (~30 linhas) pra `references/linguagens-especificacao.md` | `SKILL.md` Stage II + III | baixo |
-| 1.2 | Limpar `Aprovação do usuário` redundante em 9/11 Quality Gates (princípio 4 já cobre — aprovação é universal) | `SKILL.md` Stages I-IV | baixo |
-| 1.4 | Adicionar 1 linha no README explicando `disable-model-invocation: true` (ajuda quem instalar entender por que a skill não dispara sozinha) | `README.md` | baixo |
+(Sem itens pendentes no momento.)
 
 ---
 

@@ -72,6 +72,8 @@ Cada estágio tem fases internas com **gates explícitos**. Cada gate é pausa o
 
 References e templates disponíveis estão indexados no **Apêndice** ao final desta SKILL.md (progressive disclosure — IA carrega sob demanda).
 
+> **Nota sobre Quality Gates**: cada gate ✅ exige **aprovação humana antes de avançar** (princípio 4). As listas abaixo enumeram **critérios específicos** de cada gate sem repetir esse passo universal — exceto quando a aprovação tem semântica adicional (ex: "validou fluxos rodando" no Delivery).
+
 ---
 
 ## Estágio I — Pré-spec
@@ -102,7 +104,7 @@ Se documentos de referência foram fornecidos (Excel, PDF, etc.), analisar antes
 
 Use `superpowers:brainstorming` pra explorar problema/requisitos quando útil.
 
-**Quality Gate Discovery** ✅: Problema/usuários/dados/referência/escopo entendidos | tipo_projeto e tier respondidos com justificativa | Documentos de referência analisados (se houver) | Aprovação verbal do usuário.
+**Quality Gate Discovery** ✅: Problema/usuários/dados/referência/escopo entendidos | tipo_projeto e tier respondidos com justificativa | Documentos de referência analisados (se houver).
 
 ### Pré-spec.Constitution (com Setup absorvido)
 
@@ -138,7 +140,7 @@ git add .
 git commit -m "init: $PROJECT_NAME — setup + constitution"
 ```
 
-**Quality Gate Constitution** ✅: Bloco YAML preenchido | Stack default (ou override) justificada | Princípios não conflitam com `/CLAUDE.md` raiz | Brand colors definidos (se UI) | progress.md criado (template) | Commit init feito | Aprovação do usuário.
+**Quality Gate Constitution** ✅: Bloco YAML preenchido | Stack default (ou override) justificada | Princípios não conflitam com `/CLAUDE.md` raiz | Brand colors definidos (se UI) | progress.md criado (template) | Commit init feito.
 
 ### Pré-spec.Stack — checkpoint explícito (3 sub-componentes)
 
@@ -154,7 +156,7 @@ Os 3 sub-componentes a registrar na constitution:
 
 3. **Alvo de deploy** — ver `references/alvos-deploy.md`. **Decisão explícita do projeto**, não derivada de tipo+tier. IA pergunta "onde o produto vai viver?".
 
-**Quality Gate Stack** ✅: Inventário registrado (todas as categorias) | Stack confirmada ou override registrado com justificativa | Alvo de deploy registrado (decisão explícita) | Particularidades de Discovery consideradas (anti-pattern: aceitar default sem reflexão) | Aprovação do usuário.
+**Quality Gate Stack** ✅: Inventário registrado (todas as categorias) | Stack confirmada ou override registrado com justificativa | Alvo de deploy registrado (decisão explícita) | Particularidades de Discovery consideradas (anti-pattern: aceitar default sem reflexão).
 
 ---
 
@@ -162,16 +164,7 @@ Os 3 sub-componentes a registrar na constitution:
 
 ### Spec.Requirements (formato EARS)
 
-Escreva `specs/requirements.md` copiando + preenchendo `templates/requirements.md`. **Formato EARS** (ver `references/linguagens-especificacao.md`) pra cada regra de negócio:
-
-```ears
-Ubiquitous:    O <sujeito> deve <comportamento>.
-State-driven:  Enquanto <estado>, o <sujeito> deve <comportamento>.
-Event-driven:  Quando <evento>, o <sujeito> deve <comportamento>.
-Optional:      Onde <feature presente>, o <sujeito> deve <comportamento>.
-Unwanted:      Se <condição>, então o <sujeito> não deve <comportamento>.
-Complex:       Enquanto X, quando Y, o <sujeito> deve Z.
-```
+Escreva `specs/requirements.md` copiando + preenchendo `templates/requirements.md`. **Formato EARS** pra cada regra de negócio — 5 padrões (Ubiquitous, State-driven, Event-driven, Optional Feature, Unwanted Behavior) + Complex pra combinações. Sintaxe e exemplos: `references/linguagens-especificacao.md` seção 1.
 
 Conteúdo obrigatório do `requirements.md`:
 
@@ -184,7 +177,7 @@ Conteúdo obrigatório do `requirements.md`:
 - Dados iniciais (seed) — extraídos dos documentos reais
 - Fora do escopo V1
 
-**Quality Gate Requirements** ✅: Cada módulo tem requirements EARS bem-formados | Regras de negócio com exemplos de dados reais | Documentos de referência analisados e linkados | Isolamento de dados entre perfis definido (se aplicável) | Aprovação do usuário.
+**Quality Gate Requirements** ✅: Cada módulo tem requirements EARS bem-formados | Regras de negócio com exemplos de dados reais | Documentos de referência analisados e linkados | Isolamento de dados entre perfis definido (se aplicável).
 
 ### Spec.Design
 
@@ -208,7 +201,7 @@ Skills sugeridas:
 MCP sugerido:
 - `context7` pra docs atualizadas de libs
 
-**Quality Gate Design** ✅: Schema cobre todos os módulos dos requirements | APIs têm autenticação e autorização definidas | Stack bate com constitution | Brand colors do projeto configurados (Tailwind, se UI) | Mobile-first documentado (sidebar, tabelas, cards) se UI | Decisão Spike registrada (sim/não) | Aprovação do usuário.
+**Quality Gate Design** ✅: Schema cobre todos os módulos dos requirements | APIs têm autenticação e autorização definidas | Stack bate com constitution | Brand colors do projeto configurados (Tailwind, se UI) | Mobile-first documentado (sidebar, tabelas, cards) se UI | Decisão Spike registrada (sim/não).
 
 ### Spec.Spike (opcional)
 
@@ -228,7 +221,7 @@ Skills usadas:
 - `superpowers:test-driven-development` (validar hipóteses com testes)
 - `superpowers:systematic-debugging` (quando spike der erro)
 
-**Quality Gate Spike** ✅: Hipóteses validadas (ou negadas com pivot decidido) | Riscos resolvidos ou aceitos com justificativa | Decisão registrada (constitution histórico) | Aprendizados extraídos pra constitution | Aprovação do usuário.
+**Quality Gate Spike** ✅: Hipóteses validadas (ou negadas com pivot decidido) | Riscos resolvidos ou aceitos com justificativa | Decisão registrada (constitution histórico) | Aprendizados extraídos pra constitution.
 
 ---
 
@@ -254,7 +247,7 @@ Cada feature do plano-mestre deve:
 - Indicar dependências
 - Indicar 🔒 se exige validação contra dados reais
 
-**Quality Gate Tasks** ✅: Cada feature tem plano detalhado planejado em `specs/plans/<feature>.md` | Dependências entre features claras | Features 🔒 identificadas | Plano-mestre revisado e aprovado | progress.md atualizado com features.
+**Quality Gate Tasks** ✅: Cada feature tem plano detalhado planejado em `specs/plans/<feature>.md` | Dependências entre features claras | Features 🔒 identificadas | Plano-mestre revisado | progress.md atualizado com features.
 
 ### Build.Implementation — loop por feature
 
@@ -266,25 +259,9 @@ Pra cada feature do plano-mestre:
    2. **Quebra por fase típica** absorvida no nível superior (`tasks.md` plano-mestre)
    3. **Quality Gate por feature** absorve gates antigos
    4. **Localização**: `specs/plans/<feature>.md` no projeto (autocontido)
-   5. **Refactor explícito no ciclo TDD canônico**:
+   5. **Refactor explícito no ciclo TDD canônico** — `write test → run (FAIL) → implement → run (PASS) → REFACTOR → commit`. Refactor pode ser noop conscientemente declarado (não pulado silenciosamente); pra arquivos não-código (markdown, JSON) adapta semântica. Notação completa e anti-patterns: `references/linguagens-especificacao.md` seção 3.
 
-      ```
-      write test → run (FAIL) → implement → run (PASS) →
-      REFACTOR (improve design, run tests, mantém PASS) → commit
-      ```
-
-      Refactor pode ser noop conscientemente declarado (não pulado silenciosamente). Pra arquivos não-código (markdown, JSON), Refactor adapta semântica — ver `references/linguagens-especificacao.md` ou seção 5.1.2 do spec do plugin.
-
-2. **Cenário BDD pra tasks 🔒** (validação contra dados reais):
-
-   ```gherkin
-   Cenário: Cálculo bate com planilha de referência
-     Dado os dados reais da planilha "<arquivo>.xlsx"
-     Quando recalculo total com a regra de negócio
-     Então cada linha bate com a coluna "Total Final" da planilha
-   ```
-
-   Formato Given/When/Then — padrão BDD Gherkin.
+2. **Cenário BDD pra tasks 🔒** (validação contra dados reais) — formato Given/When/Then com dados reais específicos (planilha, exportação, dataset). Estrutura completa e exemplo: `references/linguagens-especificacao.md` seção 2.
 
 3. **Executar plano detalhado** com:
    - `superpowers:executing-plans` — execução inline com checkpoints, OU
@@ -299,7 +276,7 @@ Pra cada feature do plano-mestre:
    - `commit-commands:commit` — substituir commits manuais
    - `simplify` — depois de bloco grande de implementação
 
-5. **Quality Gate por feature** ✅ (gate além do gate por task): Todos os steps do plano detalhado executados | Testes da feature passando (output mostrado) | Se 🔒: comparativo contra dados reais mostrado e aprovado | Refactor declarado (executado ou noop justificado) | Aprovação humana antes de marcar ✅ no progress.md.
+5. **Quality Gate por feature** ✅ (gate além do gate por task): Todos os steps do plano detalhado executados | Testes da feature passando (output mostrado) | Se 🔒: comparativo contra dados reais mostrado e aprovado | Refactor declarado (executado ou noop justificado) | progress.md marcado ✅.
 
 6. **Atualizar `specs/progress.md`** ao concluir feature.
 
@@ -331,7 +308,7 @@ Fluxo da Audit:
 4. **Compila relatório** em `specs/audit-<YYYY-MM-DD>.md` copiando + preenchendo `templates/audit.md`. Achados classificados 🔴 (críticos — bloqueiam Delivery), 🟡 (importantes), 🟢 (melhorias).
 5. **`superpowers:requesting-code-review`** — review humana antes da Audit começar, se aplicável
 
-**Quality Gate Audit** ✅: Todas as dimensões `obrigatório` do tier executadas | Dimensões `perguntar` decididas e registradas na constitution | Achados 🔴 zerados ou tratados antes de avançar | Achados 🟡 corrigidos ou aceitos com justificativa registrada | Lógica de negócio validada contra dados reais (dimensão 8 sempre obrigatória) | progress.md atualizado | Aprovação do usuário.
+**Quality Gate Audit** ✅: Todas as dimensões `obrigatório` do tier executadas | Dimensões `perguntar` decididas e registradas na constitution | Achados 🔴 zerados ou tratados antes de avançar | Achados 🟡 corrigidos ou aceitos com justificativa registrada | Lógica de negócio validada contra dados reais (dimensão 8 sempre obrigatória) | progress.md atualizado.
 
 ### Ship.Delivery
 
@@ -423,7 +400,7 @@ Aceitar → migração executada. Pular → continua na v2.x conceitualmente, se
 | `references/audit-dimensoes.md` | 13 dimensões + override por tipo |
 | `references/integracao-skills.md` | 4 famílias + 2 modos de integração |
 | `references/alvos-deploy.md` | Alvos típicos por tipo + tier |
-| `references/linguagens-especificacao.md` | EARS + BDD + GEARS no radar |
+| `references/linguagens-especificacao.md` | EARS + BDD + ciclo TDD canônico + GEARS no radar |
 
 ### Templates (IA copia + preenche pro `specs/` do projeto-alvo)
 
