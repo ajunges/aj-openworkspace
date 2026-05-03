@@ -65,6 +65,32 @@ MKT_NAME=$(jq -r '.name' .claude-plugin/marketplace.json)
 CLONE_PATH="$HOME/.claude/plugins/marketplaces/$MKT_NAME"
 BRANCH=$(git branch --show-current)
 
+# --- Safety: detectar bump manual prévio ---
+# Se a version local difere da version em origin/main, é sintoma típico
+# de bump manual já feito (e ainda não pushado). Bumpar de novo aqui causa
+# bump duplo + commit "bump version" vazio. Avisar e oferecer abort.
+git fetch origin main --quiet 2>/dev/null || true
+if git show-ref --verify --quiet refs/remotes/origin/main; then
+  PUBLISHED_VERSION=$(git show origin/main:.claude-plugin/marketplace.json 2>/dev/null \
+    | jq -r --arg n "$PLUGIN_NAME" '.plugins[] | select(.name == $n) | .version' 2>/dev/null \
+    || echo "")
+  if [ -n "$PUBLISHED_VERSION" ] && [ "$PUBLISHED_VERSION" != "$CURR" ]; then
+    echo ""
+    echo "⚠️  AVISO: version local ($CURR) difere de origin/main ($PUBLISHED_VERSION)."
+    echo "    Sintoma típico: version já foi bumpada manualmente e ainda não publicada."
+    echo "    Se continuar, este script vai bumpar DE NOVO ($CURR → $NEW),"
+    echo "    criando bump duplo + commit \"Bump\" extra no histórico do marketplace."
+    echo ""
+    echo "    Recomendação: aborte aqui e use o fallback manual"
+    echo "    (push direto + pull no clone + re-cache via cp -R)."
+    echo "    Ver \"Fallback manual\" em plugins/marketplace-tools/commands/publish-plugin.md."
+    echo ""
+    echo "Continuar mesmo assim, aceitando bump duplo? [y/N]"
+    read -r ack
+    [ "$ack" = "y" ] || [ "$ack" = "Y" ] || { echo "Abortado."; exit 0; }
+  fi
+fi
+
 # --- Apresentar plano ---
 echo "Plugin:          $PLUGIN_NAME"
 echo "Diretório:       $PLUGIN_DIR"

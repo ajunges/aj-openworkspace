@@ -40,6 +40,7 @@ Este repo hospeda um marketplace Claude Code (`ajunges/aj-openworkspace`) com 29
 - Para plugins com `source: "./plugins/..."`, **`version` vive no `marketplace.json`**, não no `plugin.json`. Se duplicar, o `plugin.json` vence silenciosamente (warning oficial da Anthropic) e facilita drift entre os dois arquivos.
 - **Toda mudança de comportamento em plugin Level 3 exige bump de `version`** no `marketplace.json`. Sem bump, o cache do Claude Code não é invalidado e o app continua servindo a versão antiga — comportamento documentado em [docs oficiais](https://code.claude.com/docs/en/plugins-reference#version-management) ("If you change your plugin's code but don't bump the version… existing users won't see your changes due to caching").
 - SemVer: patch para bugfix sem mudar API, minor para feature nova (comando/skill), major para breaking change.
+- ⚠️ **Quem bumpa a version é o `/marketplace-tools:publish-plugin`, NUNCA o autor manualmente.** Bumpar antes de invocar o script causa bump duplo (script bumpa por design, sempre, sem detectar bump prévio) e cria commit "bump version" vazio no histórico do marketplace público. Fluxo correto: aplicar mudanças → commit dos ajustes (sem tocar em `marketplace.json`) → invocar `/marketplace-tools:publish-plugin <nome> <patch|minor|major>`. Se cair na armadilha (bump manual já feito), pular o script e executar manualmente os passos 4-6 do fluxo (push + pull no clone + re-cache via `cp -R`) — ver "Fallback manual" no command `publish-plugin.md`.
 
 ### Bugs conhecidos no ciclo de update
 

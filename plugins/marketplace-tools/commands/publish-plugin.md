@@ -6,9 +6,19 @@ description: Publica mudanças em plugin Level 3 — bump version, commit, push,
 
 Fecha o ciclo completo de "publicar" uma mudança num plugin Level 3 (`source: "./plugins/..."`) do marketplace. Encapsula os passos manuais que os bugs [#13799](https://github.com/anthropics/claude-code/issues/13799), [#14061](https://github.com/anthropics/claude-code/issues/14061), [#46081](https://github.com/anthropics/claude-code/issues/46081) do Claude Code forçam.
 
+## Pré-requisito crítico — NÃO bumpe a version manualmente antes
+
+> ⚠️ **Regra do fluxo**: o script é o **único** lugar que bumpa a `version` do plugin no `marketplace.json`. Se você bumpar manualmente antes de invocar o script (ex: incluindo o bump no mesmo pacote dos ajustes), o script vai bumpar de novo — resultado: **bump duplo + commit "bump version" vazio + ruído no histórico do marketplace público**.
+>
+> **Fluxo correto**: aplicar mudanças no plugin → commit dos ajustes (sem tocar em `marketplace.json`) → invocar `/marketplace-tools:publish-plugin <nome> <bump>` → o script bumpa, comita o bump, pusha, sincroniza clone, re-cacheia.
+>
+> **Se você já bumpou manualmente** (caiu na armadilha): pule o script e execute manualmente os passos 4-6 (push direto + pull no clone + re-cache via `cp -R`). Não tente "consertar" com bump duplo.
+
 ## Quando usar
 
 Use sempre que mexer em arquivos dentro de `plugins/<nome>/` (skills, commands, agents, plugin.json, etc.) e quiser que o plugin instalado localmente reflita a mudança.
+
+**Não use** quando: já bumpou a version manualmente (ver regra acima); plugin é Level 1/2 (use `/marketplace-tools:check-marketplace-updates`); só quer validar sem publicar (use `/marketplace-tools:validate`).
 
 ## Execução
 
@@ -36,7 +46,7 @@ Os 6 passos, em ordem:
 
 1. **Valida args + Level 3 check** — garante que o plugin existe e tem `source` string local
 2. **Detecta mudanças** — conta commits afetando `plugins/<nome>/` desde o último bump (informacional, não aborta)
-3. **Bumpa version em `marketplace.json`** — via `jq`, nunca regex
+3. **Bumpa version em `marketplace.json`** — via `jq`, nunca regex. **Sempre bumpa, sempre.** Não tem flag pra pular nem detecção de "já bumpado" (ver pré-requisito crítico no topo).
 4. **Commit + push**:
    - Se branch atual é `main`: push direto
    - Caso contrário: merge FF em main via worktree temporário, push
@@ -77,11 +87,35 @@ Ou rodar `/marketplace-tools:marketplace-qa` pra sanity completo.
 ## Não-objetivos (v0.3)
 
 - Não detecta tipo de bump automaticamente via análise de commits. Usuário escolhe.
+- Não detecta se a version já foi bumpada manualmente antes da invocação. Sempre bumpa.
 - Não roda `claude plugin validate` antes do commit.
 - Não reinicia o Claude Code Desktop.
 - Não atualiza changelog.
 - Não lida com plugins Level 1/2.
 - Não suporta publicar múltiplos plugins numa chamada.
+
+## Fallback manual (quando o script não pode rodar)
+
+Se cair em situação onde o script não serve (bump já feito manualmente, conflito no clone que precisa resolução manual, etc.), executar os passos equivalentes:
+
+```bash
+# 1. Push do que está local em main
+git push origin main
+
+# 2. Sync do clone do marketplace
+git -C ~/.claude/plugins/marketplaces/<mkt>/ pull --ff-only
+
+# 3. Backup + remover entry do plugin no installed_plugins.json
+cp ~/.claude/plugins/installed_plugins.json ~/.claude/plugins/installed_plugins.json.bak.$(date +%Y%m%d-%H%M%S)
+jq 'del(.plugins["<plugin>@<mkt>"])' ~/.claude/plugins/installed_plugins.json > /tmp/inst.tmp && mv /tmp/inst.tmp ~/.claude/plugins/installed_plugins.json
+
+# 4. Limpar cache antigo + copiar versão atual
+rm -rf ~/.claude/plugins/cache/<mkt>/<plugin>/*
+mkdir -p ~/.claude/plugins/cache/<mkt>/<plugin>/<new-version>
+cp -R ~/.claude/plugins/marketplaces/<mkt>/plugins/<plugin>/. ~/.claude/plugins/cache/<mkt>/<plugin>/<new-version>/
+
+# 5. Restart do Claude Code Desktop
+```
 
 ## Testar o script isoladamente
 
