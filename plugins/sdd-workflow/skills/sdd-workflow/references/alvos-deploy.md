@@ -1,6 +1,6 @@
 # Alvos de deploy — catálogo por tipo + tier
 
-Reference do plugin `sdd-workflow` (v3.0). Alvo de deploy é **decisão explícita do projeto**, perguntada na Pré-spec.Stack e registrada na constitution. Tipo+tier nunca determinam alvo automaticamente — eles **sugerem** opções.
+Reference do plugin `sdd-workflow` (v1.0). Alvo de deploy é **decisão explícita do projeto**, perguntada na Pré-spec.Stack e registrada na constitution. Tipo+tier nunca determinam alvo automaticamente — eles **sugerem** opções.
 
 ## 1. Princípio: alvo é decisão, não derivação
 

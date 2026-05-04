@@ -2,7 +2,7 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-04 (pós-v1.0.1 — itens 1.1 (shadcn/ui setup operacional) e 1.2 (matriz Drizzle vs Prisma) da seção Polish resolvidos; itens 4.1.x permanecem pendentes).
+Atualizado em: 2026-05-04 (pós-v1.0.1 — itens originais 1.1 (shadcn/ui setup operacional) e 1.2 (matriz Drizzle vs Prisma) resolvidos + cleanup mecânico de drift v0.x→v1.0.0 em SKILL.md/start.md/promote-tier.md/alvos-deploy.md/inventario-dependencias.md/plugin.json description; novo polish 1.1 do README.md flagado pra patch v1.0.2; itens 4.1.x permanecem pendentes).
 
 ---
 
@@ -10,7 +10,9 @@ Atualizado em: 2026-05-04 (pós-v1.0.1 — itens 1.1 (shadcn/ui setup operaciona
 
 Itens de polish pós-v1.0.0 — não são correção, são refinamento operacional. Acumular e aplicar em batch ou isolados conforme conveniência.
 
-_Atualmente vazio. Adicionar próximo polish aqui (manter formato tabela com colunas # / Item / Local de impacto / Esforço)._
+| # | Item | Local de impacto | Esforço |
+|---|---|---|---|
+| 1.1 | Refresh do `README.md` pós-v1.0.0 — header "v3.0" → v1.0, description antiga ("13 dimensões × 5 tiers", "Princípio inviolável: dados reais", emoji 🔒), stack `web-saas` legacy (React/Vite/Express/Prisma/PG → Next.js/Supabase/Prisma/Tailwind v4/shadcn CLI v4/MCP), tabela slash commands faltando `migrate-v1`, seção "Migração v2.x → v3.0" defasada. Trabalho editorial real (decisão sobre quanto detalhe de governança em 3 camadas mencionar) | `plugins/sdd-workflow/README.md` | médio |
 
 ---
 

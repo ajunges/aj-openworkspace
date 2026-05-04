@@ -48,5 +48,5 @@ A sub-skill executa 11 passos (ver `skills/sdd-promote-tier/SKILL.md` no plugin)
 
 ## Pré-requisitos
 
-- Projeto SDD existente com `specs/constitution.md` válida (bloco YAML com `tipo_projeto` e `tier` atual)
-- Se v2.x sem bloco YAML, oferece migração v2.x → v3.0 antes
+- Projeto SDD existente com `specs/constitution.md` válida (bloco YAML v1.0 com `tipo_projeto`, `tier` e demais campos)
+- Se v0.x/v2.x legado (sem bloco YAML completo), oferece migração via sub-skill `sdd-migrate-v1` antes

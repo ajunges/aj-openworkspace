@@ -8,10 +8,10 @@ Atalho pra invocar a skill `sdd-workflow`. Equivalente a digitar "use o workflow
 
 A skill principal é responsável por:
 
-- Detectar se há projeto SDD existente em `specs/` (e se está em v2.x ou v3.0)
+- Detectar se há projeto SDD existente em `specs/` (e qual versão: v0.x/v2.x legado ou v1.0)
 - Se não há, iniciar Pré-spec.Discovery
-- Se há projeto v3.0, retomar pela fase em andamento (consultar `specs/progress.md`)
-- Se há projeto v2.x, oferecer migração v2.x → v3.0
+- Se há projeto v1.0, retomar pela fase em andamento (consultar `specs/progress.md`)
+- Se há projeto v0.x ou v2.x legado, oferecer migração via sub-skill `sdd-migrate-v1`
 
 ## Uso
 

@@ -1,6 +1,6 @@
 # Inventário de dependências — checagem na Pré-spec.Stack
 
-Reference do plugin `sdd-workflow` (v3.0). Princípio inviolável 3: **defensividade sobre dependências externas** — não pressupor CLI/MCP/skill/credencial sem inventário formal.
+Reference do plugin `sdd-workflow` (v1.0). Heurística H6: **defensividade sobre dependências externas** — não pressupor CLI/MCP/skill/credencial sem inventário formal.
 
 ## 1. Quando acontece
 

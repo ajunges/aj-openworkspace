@@ -24,7 +24,7 @@ tags:
 
 Sub-fluxo dedicado pra mudar `tier` de um projeto SDD existente. Roda **incremental**: aproveita Discovery, Constitution, Requirements, Design originais. Só revisita os deltas (Stack, Design parcial, Audit focada).
 
-> **Ver também** (paths a partir do plugin root, em `plugins/sdd-workflow/`): `skills/sdd-workflow/references/tiers.md` (5 níveis + matriz Audit), `skills/sdd-workflow/references/audit-dimensoes.md` (13 dimensões), `skills/sdd-workflow/references/stacks.md` (variação de stack por tier), `skills/sdd-workflow/references/alvos-deploy.md` (variação de alvo por tier).
+> **Ver também** (paths a partir do plugin root, em `plugins/sdd-workflow/`): `skills/sdd-workflow/references/tiers.md` (5 níveis + matriz Audit), `skills/sdd-workflow/references/audit-dimensoes.md` (14 dimensões), `skills/sdd-workflow/references/stacks.md` (variação de stack por tier), `skills/sdd-workflow/references/alvos-deploy.md` (variação de alvo por tier).
 
 ---
 

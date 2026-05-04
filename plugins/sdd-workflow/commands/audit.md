@@ -24,9 +24,11 @@ Dispara a fase **Ship.Audit** standalone, fora do fluxo principal do SDD. Útil 
 /sdd-workflow:audit --dimensoes seguranca,observabilidade
 ```
 
-Dimensões aceitas (correspondem às 13 dimensões da Ship.Audit):
+Dimensões aceitas (correspondem às 14 dimensões da Ship.Audit):
 
-`seguranca, isolamento, integridade, performance, responsividade, ux, codigo, logica-negocio, acessibilidade, observabilidade, conformidade, doc-operacional, manutenibilidade`
+`seguranca, isolamento, integridade, performance, responsividade, ux, codigo, logica-negocio, acessibilidade, observabilidade, conformidade, doc-operacional, manutenibilidade, defesa-prompt-injection`
+
+Dim 14 (`defesa-prompt-injection`) só roda em projeto com LLM no caminho. Em projeto sem LLM, a dimensão é pulada mesmo se solicitada explicitamente.
 
 ## Output
 
