@@ -33,7 +33,7 @@ A Camada 2 (princípios arquiteturais por tipo) **ativa em `mvp+`**. Em tier 1-2
   - Spec.Design tem seção Mobile-first obrigatória (375/768/1440)
   - Build.Implementation segue ordem típica Infra → Auth+Layout → CRUDs → Lógica → Dashboards → Polish
   - Brand colors definidas na constitution e refletidas no `tailwind.config.ts` ou shadcn presets
-  - shadcn/ui CLI v4 + MCP `shadcn.io` configurados (reduz API guessing pela metade)
+  - shadcn/ui CLI v4 + MCP `shadcn.io` configurados — setup operacional em `references/stacks.md` seção 2
 
 #### Princípios da Camada 2 (`web-saas`)
 

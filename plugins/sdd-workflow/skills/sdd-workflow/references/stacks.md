@@ -36,6 +36,34 @@ Stack default opinada baseada em pesquisa de convergência de mercado pra desenv
 | Mobile-first | 375 / 768 / 1440 | particularidade do tipo `web-saas` |
 | Janela de revisão | Q3-Q4 2026 | TanStack Start 1.0 pode justificar abertura de override tier-1 |
 
+### Setup operacional shadcn/ui CLI v4 + MCP shadcn.io
+
+Aplicar antes do primeiro componente shadcn (idealmente no Build.Implementation passo Infra).
+
+1. **Skill (docs offline pra Claude Code):**
+   ```
+   npx shadcn@latest skill add
+   ```
+   Adiciona skill `shadcn/ui` em `.claude/skills/` do projeto. Carrega catálogo de componentes, presets de tema e docs do CLI.
+
+2. **MCP server `shadcn.io` (queries online):**
+   Adicionar ao `.claude.json` do projeto (ou `~/.claude.json` pra global):
+   ```json
+   {
+     "mcpServers": {
+       "shadcn": {
+         "command": "npx",
+         "args": ["-y", "shadcn@latest", "mcp"]
+       }
+     }
+   }
+   ```
+   Reiniciar Claude Code Desktop pra carregar.
+
+3. **Verificação:** perguntar pra IA "lista componentes shadcn disponíveis" — deve responder via MCP em vez de adivinhar.
+
+Skill + MCP juntos reduzem materialmente alucinações de API e versão de componente shadcn.
+
 ### Por que Prisma e não Drizzle (default)
 
 Pesquisa de mercado aponta Drizzle ganhando momentum (PlanetScale acquisition mar/2026, T3 Turbo migrou). Mas a audiência primária do plugin é leigo dirigindo IA — Prisma "magic" reduz curva de aprendizado: schema declarativo legível, queries em objeto JS, mensagens de erro explicativas. Drizzle vence em critérios técnicos (cold start edge, type inference instantâneo, SQL legível) que importam **menos** quando o usuário não audita SQL diretamente.
