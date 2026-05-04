@@ -1,6 +1,6 @@
 # Audit — [Projeto] — [Tier] — [YYYY-MM-DD]
 
-> Output da Ship.Audit. Referência pras 13 dimensões: `references/audit-dimensoes.md` da skill SDD. Matriz de obrigatoriedade por tier: `references/tiers.md` seção 3.
+> Output da Ship.Audit. Referência pras 14 dimensões: `references/audit-dimensoes.md` da skill SDD. Matriz de obrigatoriedade por tier: `references/tiers.md` seção 3.
 
 ## 1. Contexto
 
@@ -25,8 +25,11 @@
 | 11 | Conformidade legal | opcional | 🟢 | 0 |
 | 12 | Documentação operacional | obrigatório | 🟡 | 1 |
 | 13 | Manutenibilidade | perguntar (não) | — | (pulado) |
+| 14 | Defesa contra prompt injection | obrigatório (sim — produto tem LLM) | 🟢 | 0 |
 
 (Se `tipo_projeto: claude-plugin`, dimensões 1-7 são substituídas pelo checklist do `plugin-dev:plugin-validator`. Mantém 8 e 12.)
+
+(Dim 14 condicional a "produto tem LLM no caminho?". Se não tem LLM, dimensão é `—` em todos os tiers. Se tem LLM apenas interno em `mvp+`, vira `perguntar`. Se tem LLM usuário-facing em `mvp+`, vira `obrigatório`.)
 
 ## 3. Achados 🔴 críticos (bloqueiam Delivery)
 

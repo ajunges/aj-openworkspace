@@ -1,8 +1,8 @@
-# Auditoria — 13 dimensões × 5 tiers
+# Auditoria — 14 dimensões × 5 tiers
 
-Reference do plugin `sdd-workflow` (v3.0). Detalhe das dimensões da Ship.Audit. Matriz de obrigatoriedade vive em `references/tiers.md` seção 3.
+Reference do plugin `sdd-workflow` (v1.0.0). Detalhe das dimensões da Ship.Audit. Matriz de obrigatoriedade vive em `references/tiers.md` seção 3.
 
-## 1. As 13 dimensões
+## 1. As 14 dimensões
 
 ### 1.1 Segurança
 Senhas hardcoded, tokens expostos, CORS mal configurado, rotas desprotegidas, variáveis sensíveis no código, rate limiting, headers HTTP (helmet em Node).
@@ -10,8 +10,12 @@ Senhas hardcoded, tokens expostos, CORS mal configurado, rotas desprotegidas, va
 ### 1.2 Isolamento de dados
 Confirmar que um perfil/tenant NÃO consegue acessar dados de outro via API. Testar com curl direto na API (não só via UI).
 
+**Quando stack usa Supabase com RLS:** auditoria valida políticas RLS — toda tabela tem `enable row level security` ativo, política por linha cobre os perfis previstos, testes com tokens de tenants diferentes confirmam isolamento. RLS substitui middleware customizado quando bem configurado.
+
 ### 1.3 Integridade de dados
 Validações de input no backend: valores negativos onde não deveria, campos obrigatórios, tipos errados, ranges (year/month, etc.).
+
+**Quando stack usa Supabase + Drizzle/Prisma:** schema com `NOT NULL`, `CHECK constraints`, `FOREIGN KEY` configurados são primeira linha de defesa. Validação adicional na camada de aplicação cobre regras que SQL não expressa bem.
 
 ### 1.4 Performance
 Queries N+1, `await` em loop (usar `Promise.all`), imports desnecessários, bundle size do frontend, índices faltando no banco.
@@ -42,6 +46,23 @@ README cobre setup/run/deploy/troubleshooting, CHANGELOG, ADRs (Architecture Dec
 
 ### 1.13 Manutenibilidade
 TODO/FIXME órfãos sem issue, duplicação significativa, arquivos/funções muito grandes, cobertura de teste mínima.
+
+### 1.14 Defesa contra prompt injection (se LLM no caminho)
+Aplica condicionalmente quando o produto tem componente LLM em produção (chatbot, processamento de dados via LLM, agente exposto a usuário). Cobre OWASP LLM Top 10 (LLM01-LLM10). Detalhe operacional em `references/disciplinas-tier.md` seção D-pr5.
+
+**Checks principais:**
+- Inputs de usuário sanitizados antes de chegar ao LLM (sem instruction injection óbvia)
+- System prompt isolado de user prompt com delimitadores robustos
+- Outputs do LLM passam por validação antes de ação destrutiva (não executa código direto, não envia email direto sem confirmação)
+- Logs de prompts pra auditoria (sem PII)
+- Rate limiting específico em endpoints LLM-driven
+
+**Aplicabilidade:**
+- Sem LLM no caminho → `—` (não rodada)
+- LLM apenas interno em `mvp+` → `perguntar`
+- LLM usuário-facing em `mvp+` → `obrigatório`
+
+**Sub-agente:** `security-review` (built-in) com prompt customizado pra OWASP LLM Top 10.
 
 ---
 

@@ -1,10 +1,12 @@
 # Tiers — escala de maturidade do produto
 
-Reference do plugin `sdd-workflow` (v3.0). A escolha do tier determina dimensões obrigatórias da Audit, recursos mínimos da stack, e rigor do Ship.Deploy.
+Reference do plugin `sdd-workflow` (v1.0.0). A escolha do tier determina dimensões obrigatórias da Audit, recursos mínimos da stack, rigor do Ship.Deploy, e disciplinas operacionais ativas (Camada 3 — ver `references/disciplinas-tier.md`).
 
-## 1. Princípio: tier projetado, não estado atual
+## 1. Premissa: tier projetado, não estado atual
 
 O tier é a **visão final** do desenvolvimento, não o estado atual. Se eu começo um sistema sabendo que será MVP em 3 meses, o tier é `mvp` desde o dia 1 — mesmo que hoje o código seja só protótipo. Os gates da Audit são executados pra esse tier alvo.
+
+Esta é a **premissa fundadora do plugin** (v1.0.0): rigor escala pelo destino, não pelo estado atual. Não é princípio inviolável — é a tese que sustenta a estrutura. Quem não concorda da tese provavelmente está no plugin errado.
 
 Mudança de tier = decisão consciente, registrada via Promoção de Tier (sub-skill `sdd-promote-tier`).
 
@@ -24,7 +26,7 @@ Mudança de tier = decisão consciente, registrada via Promoção de Tier (sub-s
 
 ---
 
-## 3. Matriz de obrigatoriedade da Audit (13 dimensões × 5 tiers)
+## 3. Matriz de obrigatoriedade da Audit (14 dimensões × 5 tiers)
 
 | Dimensão | protótipo | interno | MVP | beta púb. | prod real |
 |---|---|---|---|---|---|
@@ -41,12 +43,15 @@ Mudança de tier = decisão consciente, registrada via Promoção de Tier (sub-s
 | 11. Conformidade legal | — | — | opcional | obrigatório | obrigatório |
 | 12. Documentação operacional | perguntar | obrigatório | obrigatório | obrigatório | obrigatório |
 | 13. Manutenibilidade | — | — | perguntar | perguntar | obrigatório |
+| 14. Defesa contra prompt injection (se LLM) | — | — | perguntar | obrigatório | obrigatório |
 
 **Legenda**:
 - `obrigatório`: gate falha sem cobertura. Achados 🔴 bloqueiam Delivery.
 - `opcional`: IA recomenda e roda; achados informativos, não bloqueiam.
 - `perguntar`: IA pergunta no início da Audit; resposta registrada na constitution.
 - `—`: dimensão não rodada nesse tier; explicitamente pulada.
+
+**Dim 14 condicional** a "produto tem LLM no caminho?". Se não tem LLM, dim 14 é sempre `—`. Se tem LLM apenas interno, segue a matriz. Se tem LLM usuário-facing, eleva pra `obrigatório` em todos os tiers `mvp+`.
 
 ---
 
@@ -56,9 +61,11 @@ Mudança de tier = decisão consciente, registrada via Promoção de Tier (sub-s
 |---|---|
 | Pré-spec.Stack | Define recursos mínimos (DB gerenciado vs SQLite, etc.) |
 | Spec.Design | Define rate limiting, escalabilidade, observabilidade |
-| Build.Implementation | Define cobertura mínima de testes |
+| Build.Implementation | Define cobertura mínima de testes; ativa disciplinas da Camada 3 |
 | Ship.Audit | Define dimensões obrigatórias (matriz acima) |
 | Ship.Deploy | Define rollback, monitoramento, alertas |
+| Camada 2 (princípios arquiteturais por tipo) | Ativa em `mvp+`; informativa em `prototipo_descartavel` e `uso_interno` |
+| Camada 3 (disciplinas operacionais) | Cumulativa por tier — ver `references/disciplinas-tier.md` |
 
 ---
 
