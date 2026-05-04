@@ -2,7 +2,7 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-03 (pós-v0.2.4 — seção 1 esvaziada, seção 4 adicionada com inspirações do Spec Kit).
+Atualizado em: 2026-05-03 (pós-v1.0.0 — major bump aplicado: governança em 3 camadas + stack web-saas reescrita; itens 4.2.1, 4.2.2, 4.2.3, 4.2.5 cobertos por v1.0.0; 4.2.4 reformulado pra v1.1; itens 4.1.x permanecem pendentes).
 
 ---
 
@@ -61,15 +61,15 @@ Resultado do levantamento comparativo contra o GitHub Spec Kit (referência [git
 
 ### 4.2 Refinamentos estruturais do brainstorming Spec Kit (decisões de design)
 
-Itens que surgiram do confronto com Spec Kit mas **não** são portes diretos — são respostas aos gaps que apareceram comparando os dois.
+Status pós-v1.0.0:
 
-| # | Item | Tensão que endereça | Hipótese de implementação |
-|---|---|---|---|
-| 4.2.1 | **Tier flexível** — adicionar campo `tier_observado` ao lado de `tier:` (projetado), atualizado a cada Quality Gate; IA propõe Promoção quando observado encosta no projetado | Tier projetado ambicioso desde dia 1 cria fricção; subdeclaração estratégica pula gates obrigatórios | YAML: `tier: mvp` + `tier_observado: uso_interno` + `tier_decidido_em: …` |
-| 4.2.2 | **Tier preliminar** — `tier_preliminar: mvp` permite declarar com baixa confiança; IA aplica gates do tier inferior por janela definida e força definição firme até Build.Tasks | Mesma tensão acima — fricção dia 1 leva a abandono ou ritual quebrado | Janela = "até Build.Tasks ou 14 dias, o que vier antes"; IA pergunta confirmação no Pré-spec.Stack |
-| 4.2.3 | **Detector heurístico de subdeclaração** — IA pergunta sinais ("vai cobrar dinheiro?", "armazenar dado pessoal?", "ficar online 24/7?") na Discovery e contrasta com tier declarado | Subdeclaração estratégica passa silenciosamente | Não bloqueia, força reflexão — registro na constitution se aceita inconsistência |
-| 4.2.4 | **Catálogo aberto de `tipo_projeto`** — mover cada tipo pra `tipos/<nome>.md` autocontido com seções padronizadas (stack default, skills B, particularidades, override Audit); plugin escaneia o diretório no Pré-spec.Discovery | Catálogo fechado de 4 tipos engessa conforme universo cresce (mobile, CLI, ML, data eng, MCP server, agente autônomo) | Manter `web-saas`/`claude-plugin`/`hubspot` como tipos oficiais; novo arquivo por tipo; usuário pode adicionar; critério "2+ em 6 meses" vira promoção pra oficial, não barreira de entrada |
-| 4.2.5 | **Library-First condicional** — não como princípio universal, mas como recomendação opcional na Spec.Design pra `tipo_projeto: outro` quando o tipo descoberto for "CLI tool / lib / SDK / data pipeline" e pra `producao_real` complexo | Library-First do Spec Kit é forte mas opinativo demais pra audiência leiga + stacks típicas (`web-saas`, `hubspot`); descartar inteiramente perde ativo | Citar como inspiração na seção sobre Bounded Contexts (já opcional no Design); nova nota "Quando Library-First faz sentido?" |
+| # | Item | Status |
+|---|---|---|
+| 4.2.1 | Tier flexível (campo `tier_observado` separado) | **Descartado por excesso de complexidade** — análise concluiu que custo > benefício pra audiência leiga em projetos curtos. Reconsiderar quando aparecer caso real de projeto longo onde autor perdeu o tier de vista |
+| 4.2.2 | Tier preliminar | **Coberto em v1.0.0 de forma simplificada** — substituído pelo campo `tier_confianca: alta\|media\|baixa` no YAML da constitution. Sem janela temporal, sem campo separado, sem novo conceito |
+| 4.2.3 | Detector heurístico de subdeclaração | **Coberto em v1.0.0** — perguntas de Discovery "audiencia / gera_receita / armazena dado pessoal / fica online 24/7" contrastam com tier declarado. Inconsistências viram ADR via H5 |
+| 4.2.4 | Catálogo aberto de `tipo_projeto` | **Reformulado pra v1.1** — em v1.0.0 a Camada 2 (princípios arquiteturais por tipo) está inline em `tipos-projeto.md` por tipo. Próximo passo é decompor em arquivos `tipos/<nome>.md` autocontidos quando aparecer demanda real (catálogo aberto) |
+| 4.2.5 | Library-First condicional | **Coberto em v1.0.0** — virou P-cp1 (princípio explícito da Camada 2 pra `claude-plugin`) e P-ou2 (princípios propostos pela IA pra `outro` quando descoberto é "CLI tool / lib / SDK / data pipeline") |
 
 ### 4.3 Decisão consciente de NÃO adotar (registrar pra não revisitar sem novo trigger)
 

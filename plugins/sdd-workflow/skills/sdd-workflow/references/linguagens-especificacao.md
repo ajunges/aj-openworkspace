@@ -1,6 +1,8 @@
 # Linguagens e notações — EARS + BDD + TDD
 
-Reference do plugin `sdd-workflow` (v3.0). Duas linguagens controladas (EARS pra requirements, BDD pra cenários de teste com dados específicos) e a notação canônica do ciclo TDD operam em camadas diferentes do fluxo, cada uma no que faz melhor.
+Reference do plugin `sdd-workflow` (v1.0.0). Duas linguagens controladas (EARS pra requirements, BDD pra cenários de teste com dados específicos) e a notação canônica do ciclo TDD operam em camadas diferentes do fluxo, cada uma no que faz melhor.
+
+> **Nota v1.0.0**: TDD canônico universal é a heurística H9 da Camada 1 — sempre ativa, todos os tipos, todos os tiers (incluindo arquivos não-código com refactor adaptado). Detalhe operacional consolidado aqui na seção 3. Ver `references/heuristicas.md` pra contexto da governança em 3 camadas.
 
 ## 1. EARS — Easy Approach to Requirements Syntax
 
@@ -97,7 +99,7 @@ EARS é otimizado pra requirements (o que o sistema deve fazer). Given-When-Then
 
 ## 3. TDD — ciclo canônico Red/Green/Refactor
 
-**Quando usar**: Build.Implementation (princípio inviolável 5). Notação compacta do ciclo:
+**Quando usar**: Build.Implementation (heurística H9 — TDD canônico universal). Notação compacta do ciclo:
 
 ```
 write test → run (FAIL) → implement → run (PASS) → REFACTOR (improve design, run tests, mantém PASS) → commit
