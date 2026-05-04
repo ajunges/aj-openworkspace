@@ -2,15 +2,18 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-03 (pós-v1.0.0 — major bump aplicado: governança em 3 camadas + stack web-saas reescrita; itens 4.2.1, 4.2.2, 4.2.3, 4.2.5 cobertos por v1.0.0; 4.2.4 reformulado pra v1.1; itens 4.1.x permanecem pendentes).
+Atualizado em: 2026-05-03 (pós-v1.0.0 — major bump aplicado: governança em 3 camadas + stack web-saas reescrita; itens 4.2.1, 4.2.2, 4.2.3, 4.2.5 cobertos por v1.0.0; 4.2.4 reformulado pra v1.1; resíduos da pesquisa de stack adicionados como 1.1, 1.2, 3.2, 4.1.8; itens 4.1.x permanecem pendentes).
 
 ---
 
-## 1. Polish (🟢 — patches v0.2.x)
+## 1. Polish (🟢 — patches v1.0.x)
 
-Itens da autorrevisão pós-v0.2.1 que não foram aplicados porque são polish, não correção. Acumular e aplicar em batch ou isolados conforme conveniência.
+Itens de polish pós-v1.0.0 — não são correção, são refinamento operacional. Acumular e aplicar em batch ou isolados conforme conveniência.
 
-(Sem itens pendentes no momento.)
+| # | Item | Local de impacto | Esforço |
+|---|---|---|---|
+| 1.1 | Instrução operacional concreta de **shadcn/ui CLI v4 Skill + MCP `shadcn.io`** inline no fluxo (`npx shadcn@latest skill add` + configuração do MCP no início do projeto). Hoje é "obrigatório" mas sem como-fazer | `references/stacks.md` seção 2 (web-saas) e/ou `references/tipos-projeto.md` seção 3.1 | baixo |
+| 1.2 | Detalhamento operacional do **override Drizzle vs Prisma** — matriz "quando preferir Drizzle" com critérios concretos (edge runtime crítico? cold start dominante? edge functions Cloudflare/Vercel?). Hoje é vago ("`producao_real` edge ou `outro` edge-heavy") | `references/stacks.md` seção 2 (web-saas) e/ou `references/overrides-matrix.md` seção nova "ORM" | baixo |
 
 ---
 
@@ -41,6 +44,17 @@ Casos típicos que mereceriam recomendação explícita:
 
 **Sugestão de implementação**: adicionar sub-seção em "Como invocar" do SKILL principal, após a tabela de slash commands, com matriz "quando rodar `/sdd-workflow:audit`".
 
+### 3.2 Trigger pra revisitar Stripe Managed Payments
+
+`overrides-matrix.md` seção 3 cita Stripe Managed Payments como "em expansão (preview público fev/2026)". Hoje sem gatilho explícito de revisão — fica fácil esquecer.
+
+**Casos pra revisitar:**
+- Stripe anuncia GA (general availability) do Managed Payments
+- Algum projeto real chega a ARR onde MoR (Merchant of Record) muda economia (~$100k+ ARR)
+- Lemon Squeezy é deprecada (acquisition pela Stripe pode acelerar isso)
+
+**Sugestão de implementação**: agendar lembrete via `/schedule` (skill scheduled-tasks) pra revisar `overrides-matrix.md` seção billing em Q4 2026. Ou criar entrada formal numa "tabela de revisões agendadas" em `references/stacks.md` (junto da janela Q3-Q4 2026 do TanStack Start).
+
 ---
 
 ## 4. Inspirações do Spec Kit a digerir (🟣 — pesquisa, não TODO ativo)
@@ -58,6 +72,7 @@ Resultado do levantamento comparativo contra o GitHub Spec Kit (referência [git
 | 4.1.5 | Drift detection (Spec Sync / Verify Tasks) | Extensões `spec-kit-sync`, `spec-kit-reconcile`, `spec-kit-verify-tasks` | TDD ajuda mas não previne drift e "phantom completion" (task marcada done sem implementação) | Conjunto de slash commands de manutenção ou sub-skill única `sdd-reconcile`? |
 | 4.1.6 | TinySpec mode | Extensão `spec-kit-tinyspec` | Endereça crítica de "heavy process always-on". Leigos vão querer fazer coisa pequena sem ritual completo | Slash command `/sdd-workflow:lite` que pula direto a Build pra `tier: prototipo_descartavel`? Ou mecanismo no `start`? |
 | 4.1.7 | Templates como prompt engineering ativo | Doutrina central do Spec Kit: cada template é "unit test" do spec com checklists embutidos, marcadores de ambiguidade, gates concretos | Nossos templates são "preencha aqui". Tornar cada um auto-validador multiplica qualidade | Refactor incremental dos 8 templates ou template-meta novo que outros referenciam? |
+| 4.1.8 | Reference `custos-por-tier.md` consolidada | Pesquisa de stack v1.0.0 trouxe tabela detalhada Stack A vs B vs C com 1k MAU vs 10k MAU. Hoje fica implícito espalhado em `overrides-matrix.md` | Leigo precisa saber "quanto vou pagar" antes de comprometer com stack. Mas manter números atualizados é overhead — só vale se virar dor recorrente | Aguardar 2-3 projetos reais pedirem antes de virar reference oficial. Origem: `docs/superpowers/research/sdd-stack-research-2026-05.md` seção P8 |
 
 ### 4.2 Refinamentos estruturais do brainstorming Spec Kit (decisões de design)
 
