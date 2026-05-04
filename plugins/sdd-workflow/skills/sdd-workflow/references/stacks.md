@@ -72,6 +72,8 @@ Pesquisa de mercado aponta Drizzle ganhando momentum (PlanetScale acquisition ma
 - `producao_real` com edge runtime crítico (cold start dominante)
 - `tipo_projeto: outro` quando descoberto é edge-heavy (CLI tool, MCP server, etc.)
 
+Matriz operacional de override (sinais checáveis + triggers concretos + anti-padrões) em `references/overrides-matrix.md` seção 10.
+
 ### Vercel Pro vs Hobby
 
 | Tier do projeto | Vercel plan |

@@ -118,3 +118,32 @@ Alternativas a Sentry: BetterStack, Highlight, Logflare, Axiom. Override registr
 | Supabase Edge Functions + cron | Background dentro do Supabase |
 
 Default: usar Vercel Cron + Supabase Edge Functions enquanto cabe. Trigger/Inngest entram como override quando jobs viram parte central do produto.
+
+## 10. ORM — Prisma default, Drizzle como override
+
+Default `web-saas`: Prisma. Justificativa pedagógica em `references/stacks.md` seção 2 ("Por que Prisma e não Drizzle").
+
+### Sinais de override pra Drizzle
+
+| Sinal | Drizzle preferível | Prisma OK |
+|---|---|---|
+| Runtime principal | Edge (Cloudflare Workers, Vercel Edge Functions, Deno Deploy) | Node.js (Vercel Pro region serverless, Railway, Fly.io) |
+| Cold start medido | >300ms p95 e dominante na latência total | <300ms ou não dominante |
+| Bundle size | Constraint duro (<2MB) ou cold start cobra cada KB | Sem constraint duro |
+| Audiência | Dev experiente (lê/escreve SQL livremente) | Leigo dirigindo IA (prefere schema declarativo) |
+| Tipo de projeto | `outro` edge-heavy (MCP server, CLI tool serverless, pipeline edge) | `web-saas` standard, `claude-plugin`, `hubspot` |
+| Queries complexas | Custom SQL frequente, query builder vence ORM | CRUD + joins simples cobrem 80% |
+
+### Triggers concretos pra override
+
+1. **Edge runtime obrigatório** — produto roda em Cloudflare Workers, Vercel Edge Functions, Deno Deploy ou similar como **deploy primário** (não fallback). Prisma adiciona ~10MB de bundle e tem cold start mais alto vs Drizzle 0-config.
+2. **Cold start já medido como dominante** — não suposição: número real (Sentry/Vercel observability) mostra cold start >300ms p95 sendo o gargalo de UX.
+3. **`tipo_projeto: outro`** com perfil edge-heavy detectado em Pré-spec.Stack (MCP server, CLI tool serverless, data pipeline edge).
+
+### Quando NÃO trocar (mesmo tentado)
+
+- `mvp`/`beta_publico` em Vercel Pro region serverless (Node runtime) — cold start raramente dominante; Prisma DX vence.
+- Solo dev leigo dirigindo IA — schema declarativo Prisma + queries-em-objeto reduzem curva vs Drizzle SQL-first.
+- Antes de medir cold start em produção — override sem evidência é otimização prematura (viola H4 — Anti-abstração prematura).
+
+Override registrado via H5 (ADR) na seção Stack da constitution.
