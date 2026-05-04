@@ -1,6 +1,8 @@
 # Spike Técnico — [Nome do Risco]
 
 > Spike é fase **opcional** entre Spec.Design e Build.Tasks. Entra quando o Design identificou risco técnico (integração externa nova, lib desconhecida, dependência crítica). Objetivo: validar hipótese antes de quebrar tasks. Box temporal sugerido: 1-3 dias.
+>
+> **Heurísticas relevantes**: H4 (anti-abstração prematura — 3+ casos antes de abstrair: o spike pode revelar que a abstração planejada é prematura), H6 (defensividade sobre dependências externas — spike típico envolve API externa), H9 (TDD canônico universal — testes do spike seguem Red/Green/Refactor mesmo se em prova de conceito). Ver `references/heuristicas.md`.
 
 ## 1. Risco técnico identificado
 

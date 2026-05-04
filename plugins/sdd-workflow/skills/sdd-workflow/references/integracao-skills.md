@@ -1,6 +1,8 @@
 # Integração com skills externas
 
-Reference do plugin `sdd-workflow` (v3.0). Foco principal da evolução v3.0 (eixo 3 do brainstorming). Modo híbrido por família — A em **Modo 2** (instrução imperativa), demais em **Modo 1** (referência condicional/informativa).
+Reference do plugin `sdd-workflow` (v1.0.0). Modo híbrido por família — A em **Modo 2** (instrução imperativa), demais em **Modo 1** (referência condicional/informativa).
+
+> **Nota de governança v1.0.0**: a integração com skills externas é independente da taxonomia de Camadas (heurísticas, princípios arquiteturais, disciplinas operacionais). Famílias e Modos definem **como invocar** skills externas; Camadas definem **o que decidir** durante o fluxo. As duas estruturas se complementam.
 
 ## 1. Modos de integração
 

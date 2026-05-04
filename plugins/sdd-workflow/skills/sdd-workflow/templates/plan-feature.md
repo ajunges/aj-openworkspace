@@ -2,12 +2,12 @@
 
 > **Para agentic workers**: REQUIRED SUB-SKILL — Use `superpowers:subagent-driven-development` (recomendado) ou `superpowers:executing-plans` pra executar este plano task-by-task. Steps usam checkbox (`- [ ]`).
 >
-> **Convenção SDD**: este plano segue o template do `superpowers:writing-plans` com **5 ajustes** de convenção SDD (ver SKILL.md principal seção 5.1.1):
-> 1. Marcação 🔒 em tasks de validação contra dados reais (princípio inviolável 1)
+> **Convenção SDD v1.0.0**: este plano segue o template do `superpowers:writing-plans` com **5 ajustes** de convenção SDD:
+> 1. Marcação 🔒 em tasks de validação contra dados reais (heurística **H1** — Dados reais sempre)
 > 2. Quebra por feature acontece no nível superior (`tasks.md` plano-mestre)
-> 3. Quality Gate por feature absorve gates SDD antigos
+> 3. Quality Gate por feature absorve gates SDD
 > 4. Localização: `specs/plans/<feature>.md` no projeto
-> 5. **Refactor explícito** no ciclo TDD canônico (Red/Green/**Refactor**)
+> 5. **Refactor explícito** no ciclo TDD canônico Red/Green/**Refactor** (heurística **H9** — TDD canônico universal; ver `references/heuristicas.md` e `references/linguagens-especificacao.md` seção 3)
 
 **Goal:** [Uma frase descrevendo o que essa feature constrói]
 
