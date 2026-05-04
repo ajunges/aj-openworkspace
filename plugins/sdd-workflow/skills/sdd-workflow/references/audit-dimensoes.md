@@ -30,7 +30,7 @@ Brand colors do projeto (constitution), loading states (Skeleton), empty states,
 Imports errados ou não usados, `console.log` esquecidos, TODOs pendentes não trackados, try/catch em route handlers, error boundaries no React.
 
 ### 1.8 Lógica de negócio
-Conferir cálculos e regras de negócio contra **dados reais** dos documentos de referência. Validar que resultados batem. **Esta dimensão é obrigatória em todos os tiers** porque é o coração do princípio inviolável 1.
+Conferir cálculos e regras de negócio contra **dados reais** dos documentos de referência. Validar que resultados batem. **Esta dimensão é obrigatória em todos os tiers** porque é o coração da heurística H1 (Dados reais sempre).
 
 ### 1.9 Acessibilidade (a11y)
 Contraste WCAG AA (4.5:1 pra texto normal), labels em inputs, alt em imagens, foco visível, navegação teclado, ARIA em componentes complexos.

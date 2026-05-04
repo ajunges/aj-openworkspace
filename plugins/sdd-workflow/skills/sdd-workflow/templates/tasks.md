@@ -26,7 +26,7 @@
 
 ## 3. Marcação 🔒 — features de validação contra dados reais
 
-Features marcadas 🔒 exigem validação obrigatória contra dados reais dos documentos de referência (princípio inviolável 1). Quality Gate por feature inclui mostrar comparativo ao usuário antes de avançar.
+Features marcadas 🔒 exigem validação obrigatória contra dados reais dos documentos de referência (heurística H1 — Dados reais sempre, ver `references/heuristicas.md`). Quality Gate por feature inclui mostrar comparativo ao usuário antes de avançar.
 
 Exemplos típicos: cálculos financeiros, motor de regras de negócio, importadores/exportadores que devem replicar comportamento de planilha existente.
 
