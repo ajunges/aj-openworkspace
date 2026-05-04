@@ -2,7 +2,7 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-03 (pós-v1.0.0 — major bump aplicado: governança em 3 camadas + stack web-saas reescrita; itens 4.2.1, 4.2.2, 4.2.3, 4.2.5 cobertos por v1.0.0; 4.2.4 reformulado pra v1.1; resíduos da pesquisa de stack adicionados como 1.1, 1.2, 3.2, 4.1.8; itens 4.1.x permanecem pendentes).
+Atualizado em: 2026-05-04 (pós-v1.0.1 — itens 1.1 (shadcn/ui setup operacional) e 1.2 (matriz Drizzle vs Prisma) da seção Polish resolvidos; itens 4.1.x permanecem pendentes).
 
 ---
 
@@ -10,10 +10,7 @@ Atualizado em: 2026-05-03 (pós-v1.0.0 — major bump aplicado: governança em 3
 
 Itens de polish pós-v1.0.0 — não são correção, são refinamento operacional. Acumular e aplicar em batch ou isolados conforme conveniência.
 
-| # | Item | Local de impacto | Esforço |
-|---|---|---|---|
-| 1.1 | Instrução operacional concreta de **shadcn/ui CLI v4 Skill + MCP `shadcn.io`** inline no fluxo (`npx shadcn@latest skill add` + configuração do MCP no início do projeto). Hoje é "obrigatório" mas sem como-fazer | `references/stacks.md` seção 2 (web-saas) e/ou `references/tipos-projeto.md` seção 3.1 | baixo |
-| 1.2 | Detalhamento operacional do **override Drizzle vs Prisma** — matriz "quando preferir Drizzle" com critérios concretos (edge runtime crítico? cold start dominante? edge functions Cloudflare/Vercel?). Hoje é vago ("`producao_real` edge ou `outro` edge-heavy") | `references/stacks.md` seção 2 (web-saas) e/ou `references/overrides-matrix.md` seção nova "ORM" | baixo |
+_Atualmente vazio. Adicionar próximo polish aqui (manter formato tabela com colunas # / Item / Local de impacto / Esforço)._
 
 ---
 
