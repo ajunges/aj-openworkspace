@@ -2,7 +2,7 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-04 (pós-v1.0.1 — itens originais 1.1 (shadcn/ui setup operacional) e 1.2 (matriz Drizzle vs Prisma) resolvidos + cleanup mecânico de drift v0.x→v1.0.0 em SKILL.md/start.md/promote-tier.md/alvos-deploy.md/inventario-dependencias.md/plugin.json description; novo polish 1.1 do README.md flagado pra patch v1.0.2; itens 4.1.x permanecem pendentes).
+Atualizado em: 2026-05-05 (pós-v1.0.1 — itens originais 1.1 (shadcn/ui setup operacional) e 1.2 (matriz Drizzle vs Prisma) resolvidos + cleanup mecânico de drift v0.x→v1.0.0 em SKILL.md/start.md/promote-tier.md/alvos-deploy.md/inventario-dependencias.md/plugin.json description; novo polish 1.1 do README.md flagado pra patch v1.0.2; novos polish 1.2 (cleanup de emojis alinhado a preferência global zero-emojis) e 1.3 (otimizar SKILL.md principal — 480 linhas) adicionados após avaliação minuciosa do plugin; nova seção 4.4 cataloga dimensões pendentes pra brainstormar 4.1.3-4.1.6 (Brownfield/Bugfix/Drift/TinySpec); itens 4.1.x permanecem pendentes).
 
 ---
 
@@ -13,6 +13,8 @@ Itens de polish pós-v1.0.0 — não são correção, são refinamento operacion
 | # | Item | Local de impacto | Esforço |
 |---|---|---|---|
 | 1.1 | Refresh do `README.md` pós-v1.0.0 — header "v3.0" → v1.0, description antiga ("13 dimensões × 5 tiers", "Princípio inviolável: dados reais", emoji 🔒), stack `web-saas` legacy (React/Vite/Express/Prisma/PG → Next.js/Supabase/Prisma/Tailwind v4/shadcn CLI v4/MCP), tabela slash commands faltando `migrate-v1`, seção "Migração v2.x → v3.0" defasada. Trabalho editorial real (decisão sobre quanto detalhe de governança em 3 camadas mencionar) | `plugins/sdd-workflow/README.md` | médio |
+| 1.2 | Cleanup de emojis no plugin alinhado a preferência global "zero emojis" do autor. **Semânticos** (precisam virar marcadores textuais estáveis sem perder significado): 🔒 (valida dados reais — em SKILL/templates/references) → ex. `[VALIDA_DADOS_REAIS]` ou keyword inline; 🔴🟡🟢 (severity de achados na Audit) → `crítico/importante/melhoria`; ✅❌⏸️🔄📋 (status de gate/feature/promoção) → `atendido/pendente/aguardando/em-andamento/aceito-com-justificativa`. **Decorativos** (podem ser removidos): 📊 e ●●●○○ na status line do `progress.md`; 🟢🔵🟣 nos cabeçalhos das seções deste BACKLOG. **Trade-off**: emojis funcionam como anchor visual pra IA fazer scanning rápido — substituição precisa preservar legibilidade automática. **Decisão de escopo pendente**: cleanup completo (todos os emojis) vs. cleanup só dos decorativos (mantém os semânticos como convenção interna do plugin) — escolher quando aplicar | `SKILL.md` principal + templates (`tasks`, `plan-feature`, `audit`, `progress`) + references (`audit-dimensoes`, `disciplinas-tier`, `linguagens-especificacao`) + `BACKLOG.md` + outros referenciados | alto |
+| 1.3 | Otimizar tamanho da `SKILL.md` principal — 480 linhas, perto do limite saudável de progressive disclosure. Candidato natural a mover pra reference(s): descrição detalhada dos 4 estágios (~265 linhas, seções "Estágio I — Pré-spec" até "Estágio IV — Ship") representam ~55% do arquivo e só são consultadas quando IA está numa fase específica. SKILL principal mantém: premissa fundadora, governança em 3 camadas (resumo), gates configuráveis, visão geral do fluxo (tabela), apêndice de references/templates, seção "Como invocar". **Trade-off**: progressive disclosure melhora (carregamento condicional por estágio reduz tokens fora da fase ativa), mas IA precisa carregar reference extra toda vez que entra numa fase nova (latência + contagem de tool calls). **Decisão de design pendente**: 1 reference único `references/fluxo-detalhado.md` vs. 4 references por estágio (`fluxo-pre-spec`, `fluxo-spec`, `fluxo-build`, `fluxo-ship`) vs. status quo. Meta: SKILL principal em ~250-300 linhas | `SKILL.md` principal + novo(s) reference(s) em `skills/sdd-workflow/references/` | médio-alto |
 
 ---
 
@@ -73,6 +75,8 @@ Resultado do levantamento comparativo contra o GitHub Spec Kit (referência [git
 | 4.1.7 | Templates como prompt engineering ativo | Doutrina central do Spec Kit: cada template é "unit test" do spec com checklists embutidos, marcadores de ambiguidade, gates concretos | Nossos templates são "preencha aqui". Tornar cada um auto-validador multiplica qualidade | Refactor incremental dos 8 templates ou template-meta novo que outros referenciam? |
 | 4.1.8 | Reference `custos-por-tier.md` consolidada | Pesquisa de stack v1.0.0 trouxe tabela detalhada Stack A vs B vs C com 1k MAU vs 10k MAU. Hoje fica implícito espalhado em `overrides-matrix.md` | Leigo precisa saber "quanto vou pagar" antes de comprometer com stack. Mas manter números atualizados é overhead — só vale se virar dor recorrente | Aguardar 2-3 projetos reais pedirem antes de virar reference oficial. Origem: `docs/superpowers/research/sdd-stack-research-2026-05.md` seção P8 |
 
+> Os itens **4.1.3, 4.1.4, 4.1.5 e 4.1.6** têm dimensões pendentes adicionais catalogadas em **4.4** abaixo — ler antes de promover qualquer um destes 4 pra prioridade ou virar spec.
+
 ### 4.2 Refinamentos estruturais do brainstorming Spec Kit (decisões de design)
 
 Status pós-v1.0.0:
@@ -96,6 +100,52 @@ Status pós-v1.0.0:
 | Estrutura por branch numerada `001-feature-name` | Nossa `specs/plans/<feature>.md` cobre o caso; branch numerada vira friction em projeto solo informal |
 
 Trigger pra revisitar 4.3: ecossistema externo virar dominante (Claude Code perder share) ou demanda recorrente (3+ usuários reais pedindo) por algum item.
+
+### 4.4 Lacunas pendentes pra desenvolver inspirações estratégicas (4.1.3-4.1.6)
+
+Os 4 itens **4.1.3** (Brownfield/`sdd-bootstrap`), **4.1.4** (`sdd-bugfix`), **4.1.5** (Drift detection/`sdd-reconcile`) e **4.1.6** (TinySpec mode) ficaram catalogados na tabela 4.1 com 1 pergunta-chave cada. Quando algum virar prioridade, estas dimensões precisam ser respondidas antes de virar spec. Não são TODOs — é checklist de "está pronto pra brainstormar" pra cada item.
+
+#### 4.4.1 — Brownfield (`sdd-bootstrap`)
+
+- **Detecção de brownfield**: sinais a checar (código existente sem `specs/`? `package.json` antigo? CLAUDE.md presente? código rodando em prod?)
+- **Retroengenharia da constitution**: IA inspeciona o código e propõe `tipo_projeto`/`tier`, ou usuário declara como em greenfield?
+- **Audit retroativo**: sub-skill roda audit pra rotular o estado atual antes de propor o tier projetado?
+- **Tier real vs projetado**: projeto em prod existente não é `prototipo_descartavel` — como sinalizar divergência entre tier observado e projetado
+- **Triggers naturais sugeridos**: "tenho um projeto pronto, quero usar SDD do meio pra frente", "importar projeto pro fluxo SDD"
+
+#### 4.4.2 — Bugfix (`sdd-bugfix`)
+
+- **Critério de invocação**: bugfix retroativo (após Ship.Delivery/Deploy) vs durante Build.Implementation (loop por feature já cobre o caso comum)
+- **Trace pra spec**: nova regra EARS em `requirements.md`? cenário BDD em `tasks.md` ou no plano da feature original? ADR via H5 com causa raiz?
+- **Integração com `superpowers:systematic-debugging`**: sub-skill orquestra os 4 passos canônicos (reproduzir → isolar → diagnosticar → corrigir) ou só invoca?
+- **Reaudit**: ativa Ship.Audit nas dimensões impactadas após fix? Condicional ao tier?
+- **Triggers naturais sugeridos**: "fix em produção", "bug encontrado pós-delivery"
+
+#### 4.4.3 — Drift detection (`sdd-reconcile`)
+
+- **Tipologia de drift (5 tipos a cobrir)**:
+  - spec → código (requirement EARS sem implementação correspondente)
+  - código → spec (impl sem requirement)
+  - tasks → implementação ("phantom completion" — task marcada done sem código real)
+  - constitution → realidade (decisão registrada obsoleta)
+  - tier projetado → tier real (promoção informal não registrada)
+- **Mecânica de detecção**: grep + heurística, AST, IA lendo ambos? Custo em tokens importa
+- **Cadência**: periódico (mensal?), gate da Audit, ou só trigger manual?
+- **Output**: relatório com classificação (intencional / débito técnico / erro) e proposta de reconciliação
+
+#### 4.4.4 — TinySpec mode
+
+- **Definição operacional de "tiny"**: LOC < N? features < N? só `prototipo_descartavel`? ou inclui `uso_interno`?
+- **Fases enxugadas**: Discovery curto, Constitution só com YAML + 2 seções, Stack sem checkpoint crítico, Requirements como bullets em prosa em vez de EARS estruturado, Audit reduzido a dim 8 (Lógica de negócio)
+- **Promoção pra fluxo completo**: gatilho automático quando projeto cresce ou migração manual? Como spec light vira spec completa sem retrabalho?
+- **Risco existencial**: tinyspec abre exceção à tese fundadora ("rigor escala pelo destino"). Cabe ou contradiz?
+
+#### 4.4.5 — Lacunas transversais entre os 4
+
+- **Dependências**: bootstrap depende de drift detection (importar projeto = reconciliar com spec gerada). Bugfix pode usar drift detection (bug como manifestação de drift)
+- **Prioridade relativa**: qual viria primeiro se algum virasse dor real? Hoje os 4 estão em paralelo sem ranking
+- **Critério de "vira prioridade"**: quantos projetos reais pedindo? Sinal explícito (ex: 3+ usuários, 1 incidente que tinyspec teria evitado)
+- **Sobreposição com sub-skills existentes**: bootstrap pode reaproveitar parte do `sdd-migrate-v1`? bugfix replicaria parte do loop de Build.Implementation?
 
 ---
 
