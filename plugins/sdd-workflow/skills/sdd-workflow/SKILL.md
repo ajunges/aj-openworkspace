@@ -8,7 +8,7 @@ description: >
   pra construir software completo. 4 estágios (Pré-spec → Spec → Build → Ship), 5 níveis
   de tier, catálogo de tipo_projeto, governança em 3 camadas (9 heurísticas universais
   + princípios arquiteturais por tipo + disciplinas operacionais por tier), EARS pra
-  Requirements + BDD pra Tasks 🔒, integração com superpowers (Modo 2), TDD canônico
+  Requirements + BDD pra Tasks [H1], integração com superpowers (Modo 2), TDD canônico
   Red/Green/Refactor universal. Pra promoção/regressão de tier em projeto existente,
   ver sub-skill `sdd-promote-tier`. Pra migrar projeto v0.x → v1.0.0, ver sub-skill
   `sdd-migrate-v1`.
@@ -131,7 +131,7 @@ Cada estágio tem fases internas com **gates explícitos**. Cada gate é pausa o
 
 References e templates disponíveis estão indexados no **Apêndice** ao final desta SKILL.md (progressive disclosure — IA carrega sob demanda).
 
-> **Nota sobre Quality Gates**: cada gate ✅ pausa conforme o modo de gates configurado na constitution (ver "Gates configuráveis" acima). As listas abaixo enumeram **critérios específicos** de cada gate sem repetir o passo de aprovação humana, que é universal e adapta ao modo declarado — exceto quando a aprovação tem semântica adicional (ex: "validou fluxos rodando" no Delivery).
+> **Nota sobre Quality Gates**: cada Quality Gate pausa conforme o modo de gates configurado na constitution (ver "Gates configuráveis" acima). As listas abaixo enumeram **critérios específicos** de cada gate sem repetir o passo de aprovação humana, que é universal e adapta ao modo declarado — exceto quando a aprovação tem semântica adicional (ex: "validou fluxos rodando" no Delivery).
 
 ---
 
@@ -163,7 +163,7 @@ Se documentos de referência foram fornecidos (Excel, PDF, etc.), analisar antes
 
 Use `superpowers:brainstorming` pra explorar problema/requisitos quando útil.
 
-**Quality Gate Discovery** ✅: Problema/usuários/dados/referência/escopo entendidos | tipo_projeto e tier respondidos com justificativa | Documentos de referência analisados (se houver).
+**Quality Gate Discovery**: Problema/usuários/dados/referência/escopo entendidos | tipo_projeto e tier respondidos com justificativa | Documentos de referência analisados (se houver).
 
 ### Pré-spec.Constitution (com Setup absorvido)
 
@@ -199,7 +199,7 @@ git add .
 git commit -m "init: $PROJECT_NAME — setup + constitution"
 ```
 
-**Quality Gate Constitution** ✅: Bloco YAML preenchido | Stack default (ou override) justificada | Princípios não conflitam com `/CLAUDE.md` raiz | Brand colors definidos (se UI) | progress.md criado (template) | Commit init feito.
+**Quality Gate Constitution**: Bloco YAML preenchido | Stack default (ou override) justificada | Princípios não conflitam com `/CLAUDE.md` raiz | Brand colors definidos (se UI) | progress.md criado (template) | Commit init feito.
 
 ### Pré-spec.Stack — checkpoint explícito (3 sub-componentes)
 
@@ -215,7 +215,7 @@ Os 3 sub-componentes a registrar na constitution:
 
 3. **Alvo de deploy** — ver `references/alvos-deploy.md`. **Decisão explícita do projeto**, não derivada de tipo+tier. IA pergunta "onde o produto vai viver?".
 
-**Quality Gate Stack** ✅: Inventário registrado (todas as categorias) | Stack confirmada ou override registrado com justificativa | Alvo de deploy registrado (decisão explícita) | Particularidades de Discovery consideradas (anti-pattern: aceitar default sem reflexão).
+**Quality Gate Stack**: Inventário registrado (todas as categorias) | Stack confirmada ou override registrado com justificativa | Alvo de deploy registrado (decisão explícita) | Particularidades de Discovery consideradas (anti-pattern: aceitar default sem reflexão).
 
 ---
 
@@ -236,7 +236,7 @@ Conteúdo obrigatório do `requirements.md`:
 - Dados iniciais (seed) — extraídos dos documentos reais
 - Fora do escopo V1
 
-**Quality Gate Requirements** ✅: Cada módulo tem requirements EARS bem-formados | Regras de negócio com exemplos de dados reais | Documentos de referência analisados e linkados | Isolamento de dados entre perfis definido (se aplicável).
+**Quality Gate Requirements**: Cada módulo tem requirements EARS bem-formados | Regras de negócio com exemplos de dados reais | Documentos de referência analisados e linkados | Isolamento de dados entre perfis definido (se aplicável).
 
 ### Spec.Design
 
@@ -260,7 +260,7 @@ Skills sugeridas:
 MCP sugerido:
 - `context7` pra docs atualizadas de libs
 
-**Quality Gate Design** ✅: Schema cobre todos os módulos dos requirements | APIs têm autenticação e autorização definidas | Stack bate com constitution | Brand colors do projeto configurados (Tailwind, se UI) | Mobile-first documentado (sidebar, tabelas, cards) se UI | Decisão Spike registrada (sim/não).
+**Quality Gate Design**: Schema cobre todos os módulos dos requirements | APIs têm autenticação e autorização definidas | Stack bate com constitution | Brand colors do projeto configurados (Tailwind, se UI) | Mobile-first documentado (sidebar, tabelas, cards) se UI | Decisão Spike registrada (sim/não).
 
 ### Spec.Spike (opcional)
 
@@ -280,7 +280,7 @@ Skills usadas:
 - `superpowers:test-driven-development` (validar hipóteses com testes)
 - `superpowers:systematic-debugging` (quando spike der erro)
 
-**Quality Gate Spike** ✅: Hipóteses validadas (ou negadas com pivot decidido) | Riscos resolvidos ou aceitos com justificativa | Decisão registrada (constitution histórico) | Aprendizados extraídos pra constitution.
+**Quality Gate Spike**: Hipóteses validadas (ou negadas com pivot decidido) | Riscos resolvidos ou aceitos com justificativa | Decisão registrada (constitution histórico) | Aprendizados extraídos pra constitution.
 
 ---
 
@@ -295,7 +295,7 @@ Quebra típica de features (adaptar conforme `tipo_projeto`):
 1. **Infra e Setup** (Docker, scripts, banco)
 2. **Auth + Layout** (login, JWT, sidebar, mobile drawer) se UI
 3. **CRUDs** (entidades administrativas)
-4. **Lógica de negócio 🔒** (cálculos, validações — validação obrigatória contra dados reais)
+4. **Lógica de negócio [H1]** (cálculos, validações — validação obrigatória contra dados reais)
 5. **Dashboards e visualizações** (se aplicável)
 6. **Funcionalidades específicas** (simulação, relatórios, etc.)
 7. **Polish** (isolamento, validações, responsividade)
@@ -304,9 +304,9 @@ Cada feature do plano-mestre deve:
 - Ser testável independentemente
 - Ter critério claro de done
 - Indicar dependências
-- Indicar 🔒 se exige validação contra dados reais
+- Marcar com [H1] se exige validação contra dados reais
 
-**Quality Gate Tasks** ✅: Cada feature tem plano detalhado planejado em `specs/plans/<feature>.md` | Dependências entre features claras | Features 🔒 identificadas | Plano-mestre revisado | progress.md atualizado com features.
+**Quality Gate Tasks**: Cada feature tem plano detalhado planejado em `specs/plans/<feature>.md` | Dependências entre features claras | Features [H1] identificadas | Plano-mestre revisado | progress.md atualizado com features.
 
 ### Build.Implementation — loop por feature
 
@@ -314,13 +314,13 @@ Pra cada feature do plano-mestre:
 
 1. **Escrever plano detalhado** em `specs/plans/<feature>.md` usando `superpowers:writing-plans` com **5 ajustes de convenção SDD**:
 
-   1. **Marcação 🔒** — header de task `### Task N: [Component] 🔒` ou step extra `- [ ] **Step X: 🔒 Validar contra dados reais**` antes do commit
+   1. **Marcação [H1]** — header de task `### Task N: [Component] [H1]` ou step extra `- [ ] **Step X: validar contra dados reais [H1]**` antes do commit
    2. **Quebra por fase típica** absorvida no nível superior (`tasks.md` plano-mestre)
    3. **Quality Gate por feature** absorve gates antigos
    4. **Localização**: `specs/plans/<feature>.md` no projeto (autocontido)
    5. **Refactor explícito no ciclo TDD canônico** — `write test → run (FAIL) → implement → run (PASS) → REFACTOR → commit`. Refactor pode ser noop conscientemente declarado (não pulado silenciosamente); pra arquivos não-código (markdown, JSON) adapta semântica. Notação completa e anti-patterns: `references/linguagens-especificacao.md` seção 3.
 
-2. **Cenário BDD pra tasks 🔒** (validação contra dados reais) — formato Given/When/Then com dados reais específicos (planilha, exportação, dataset). Estrutura completa e exemplo: `references/linguagens-especificacao.md` seção 2.
+2. **Cenário BDD pra tasks [H1]** (validação contra dados reais) — formato Given/When/Then com dados reais específicos (planilha, exportação, dataset). Estrutura completa e exemplo: `references/linguagens-especificacao.md` seção 2.
 
 3. **Executar plano detalhado** com:
    - `superpowers:executing-plans` — execução inline com checkpoints, OU
@@ -335,7 +335,7 @@ Pra cada feature do plano-mestre:
    - `commit-commands:commit` — substituir commits manuais
    - `simplify` — depois de bloco grande de implementação
 
-5. **Quality Gate por feature** ✅ (gate além do gate por task): Todos os steps do plano detalhado executados | Testes da feature passando (output mostrado) | Se 🔒: comparativo contra dados reais mostrado e aprovado | Refactor declarado (executado ou noop justificado) | progress.md marcado ✅.
+5. **Quality Gate por feature** (gate além do gate por task): Todos os steps do plano detalhado executados | Testes da feature passando (output mostrado) | Se [H1]: comparativo contra dados reais mostrado e aprovado | Refactor declarado (executado ou noop justificado) | progress.md marcado [atendido].
 
 6. **Atualizar `specs/progress.md`** ao concluir feature.
 
@@ -364,16 +364,16 @@ Fluxo da Audit:
    - `code-review:code-review` — dimensão Código
    - `security-review` (built-in) — dimensão Segurança
    - `plugin-dev:plugin-validator` — substitui dimensões 1-7 em `claude-plugin`
-4. **Compila relatório** em `specs/audit-<YYYY-MM-DD>.md` copiando + preenchendo `templates/audit.md`. Achados classificados 🔴 (críticos — bloqueiam Delivery), 🟡 (importantes), 🟢 (melhorias).
+4. **Compila relatório** em `specs/audit-<YYYY-MM-DD>.md` copiando + preenchendo `templates/audit.md`. Achados classificados em críticos (bloqueiam Delivery), importantes e melhorias.
 5. **`superpowers:requesting-code-review`** — review humana antes da Audit começar, se aplicável
 
-**Quality Gate Audit** ✅: Todas as dimensões `obrigatório` do tier executadas | Dimensões `perguntar` decididas e registradas na constitution | Achados 🔴 zerados ou tratados antes de avançar | Achados 🟡 corrigidos ou aceitos com justificativa registrada | Lógica de negócio validada contra dados reais (dimensão 8 sempre obrigatória) | progress.md atualizado.
+**Quality Gate Audit**: Todas as dimensões `obrigatório` do tier executadas | Dimensões `perguntar` decididas e registradas na constitution | Achados críticos zerados ou tratados antes de avançar | Achados importantes corrigidos ou aceitos com justificativa registrada | Lógica de negócio validada contra dados reais (dimensão 8 sempre obrigatória) | progress.md atualizado.
 
 ### Ship.Delivery
 
 Sistema rodando em ambiente de avaliação. Pré-deploy.
 
-1. **Aplicar fixes** dos achados 🔴 e 🟡 da Audit
+1. **Aplicar fixes** dos achados críticos e importantes da Audit
 2. **Commit final** das correções
 3. **Subir o sistema**: Docker compose ou equivalente conforme `tipo_projeto`
 4. **Validar fluxos principais** com o usuário
@@ -381,7 +381,7 @@ Sistema rodando em ambiente de avaliação. Pré-deploy.
 6. **`commit-commands:commit-push-pr`** se PR aberto
 7. **`pr-review-toolkit:review-pr`** se aplicável
 
-**Quality Gate Delivery** ✅: Zero 🔴 da Audit | Seeds funcionando do zero (limpar banco + popular com dados reais) | Sistema rodando e acessível em ambiente de avaliação | README.md atualizado com instruções de setup e uso | Usuário validou fluxos principais | progress.md atualizado.
+**Quality Gate Delivery**: Zero achados críticos da Audit | Seeds funcionando do zero (limpar banco + popular com dados reais) | Sistema rodando e acessível em ambiente de avaliação | README.md atualizado com instruções de setup e uso | Usuário validou fluxos principais | progress.md atualizado.
 
 ### Ship.Deploy — parametrizado por tier
 
@@ -400,7 +400,7 @@ Pra `claude-plugin` no marketplace:
 - Se `marketplace-tools:publish-plugin` está instalado, usar o plugin (automatiza fluxo dos 6 passos com workaround dos bugs de cache)
 - Senão, fluxo manual: bump version no `marketplace.json` → commit → push → invalidar cache local
 
-**Quality Gate Deploy** ✅: Env de prod separado (secrets fora do código) | Rollback plan documentado (mvp+) ou declarado noop (prototipo/uso_interno) | Monitoramento básico configurado (mvp+) ou declarado noop | Domínio configurado (se aplicável) | Fluxos validados em prod (smoke test pelo menos) | progress.md em 100%.
+**Quality Gate Deploy**: Env de prod separado (secrets fora do código) | Rollback plan documentado (mvp+) ou declarado noop (prototipo/uso_interno) | Monitoramento básico configurado (mvp+) ou declarado noop | Domínio configurado (se aplicável) | Fluxos validados em prod (smoke test pelo menos) | progress.md em 100%.
 
 ### Promoção de Tier (sub-fluxo dedicado)
 
