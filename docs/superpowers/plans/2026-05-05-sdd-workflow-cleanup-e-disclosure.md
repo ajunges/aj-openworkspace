@@ -1093,7 +1093,7 @@ Localizar `version: 1.0.0` no frontmatter (linha ~16) e mudar pra `version: 1.1.
 - [ ] **Step 8: Validar resultado final**
 
 Run: `wc -l plugins/sdd-workflow/skills/sdd-workflow/SKILL.md`
-Expected: 300-360 linhas (meta revisada)
+Expected: 380-420 linhas (resultado real de B5: 411) (meta revisada)
 
 Run: `grep -c "references/fluxo-" plugins/sdd-workflow/skills/sdd-workflow/SKILL.md`
 Expected: 8+ (4 pointers no fim de cada estágio + 4 entries no Apêndice)
@@ -1170,7 +1170,7 @@ git commit -m "sdd-workflow: cleanup BACKLOG após aplicação do refactor (tabe
 - [ ] **Step 1: Smoke test factual — SKILL principal dentro da meta revisada**
 
 Run: `wc -l plugins/sdd-workflow/skills/sdd-workflow/SKILL.md`
-Expected: 300-360 linhas
+Expected: 380-420 linhas (resultado real de B5: 411)
 
 - [ ] **Step 2: Smoke test factual — pointers presentes em cada estágio**
 
