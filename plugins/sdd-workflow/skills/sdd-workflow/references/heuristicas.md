@@ -164,3 +164,48 @@ H5 resolve. Toda exceção a outra heurística é registrada como ADR — vira d
 - **Camada 3 (disciplinas operacionais):** ativas conforme tier, cumulativas
 
 As três camadas operam em conjunto. Heurísticas guiam o **como pensar**, princípios definem o **como construir** pra cada tipo, disciplinas definem o **rigor mínimo** pra cada tier.
+
+---
+
+## Convenções textuais (anchors estáveis)
+
+Substitutos textuais para anchors visuais que apareciam como emoji em versões anteriores do plugin (até v1.0.2). IA usa estes prefixos como marcadores estáveis em scanning rápido. Convenção é fixa — não inventar variantes fora dos contextos previstos.
+
+### `[H1]` — Marcação de validação contra dados reais
+
+Aparece em headers de task/feature, steps de plano detalhado, mensagens de commit e bullets de instrução de marcação. Referência direta à heurística H1 (Dados reais sempre).
+
+| Contexto | Exemplo |
+|---|---|
+| Header de task | `### Task 5: Cálculo de comissão [H1]` |
+| Step de plano | `- [ ] **Step 6: validar contra dados reais [H1]**` |
+| Coluna de tabela (header) | `\| # \| Feature \| Plano \| H1 \| Status \|` (sem colchetes em cabeçalhos de tabela, por concisão) |
+| Mensagem de commit | `feat: cálculo de comissão [H1] validado contra planilha-q1.xlsx` |
+| Bullet de instrução | `- Marcar com [H1] se exige validação contra dados reais` |
+
+Em prosa narrativa (sem necessidade de anchor), usar texto natural: "exige validação contra dados reais".
+
+### `[crítico]` / `[importante]` / `[melhoria]` — Severity de achados na Audit
+
+Aparece em listas/resumos de achados na Ship.Audit. Em prosa narrativa, usar texto natural ("Achados críticos zerados antes de Delivery").
+
+| Contexto | Exemplo |
+|---|---|
+| Lista de achados | `- [crítico] UX/Layout: navegação mobile quebrada` |
+| Coluna de severity em tabela | `\| 6 \| UX/Layout \| obrigatório \| crítico \| 1 \|` (texto natural em células) |
+| Resumo agregado | `Críticos: 1 — bloqueia Delivery; Importantes: 7; Melhorias: 0` |
+
+### `[atendido]` / `[pendente]` / `[aceito]` / `[aguardando]` / `[em-andamento]` — Status
+
+Aparece em listas de status de gates, features e promoções. **Conjunto base** — contextos específicos podem usar variantes (`[bloqueada]` em features com dependência não resolvida; `[corrigido]` em fixes de achados da Audit). Variantes seguem o mesmo padrão `[palavra-curta-em-minusculas]`.
+
+| Contexto | Exemplo |
+|---|---|
+| Status de feature | `\| 2 \| [Feature 2] \| sim \| [em-andamento] \| 60% \|` |
+| Resultado de Quality Gate | `[atendido] Bloco YAML preenchido` |
+| Status de fix de achado | `**Status**: [pendente] \| [corrigido] \| [aceito]` |
+| Feature com dependência | `\| 4 \| [Feature 4] \| sim \| [bloqueada] \| 0% \| Depende: Feature 3 \|` |
+
+### Quality Gates (sem prefixo)
+
+Antes da v1.0.3, Quality Gates eram marcados com `✅` no cabeçalho. A partir da v1.0.3, o cabeçalho `**Quality Gate X**:` é o anchor — o nome do gate já é a referência.
