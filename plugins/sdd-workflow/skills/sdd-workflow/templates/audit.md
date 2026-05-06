@@ -12,44 +12,44 @@
 
 | # | Dimensão | Obrigatório no tier? | Status | Achados |
 |---|---|---|---|---|
-| 1 | Segurança | obrigatório | 🟢 | 0 |
-| 2 | Isolamento dados | obrigatório | 🟢 | 0 |
-| 3 | Integridade dados | obrigatório | 🟡 | 2 |
-| 4 | Performance | perguntar (sim) | 🟡 | 1 |
-| 5 | Responsividade | obrigatório | 🟢 | 0 |
-| 6 | UX/Layout | obrigatório | 🔴 | 1 |
-| 7 | Código | obrigatório | 🟢 | 0 |
-| 8 | Lógica de negócio | obrigatório | 🟢 | 0 |
+| 1 | Segurança | obrigatório | melhoria | 0 |
+| 2 | Isolamento dados | obrigatório | melhoria | 0 |
+| 3 | Integridade dados | obrigatório | importante | 2 |
+| 4 | Performance | perguntar (sim) | importante | 1 |
+| 5 | Responsividade | obrigatório | melhoria | 0 |
+| 6 | UX/Layout | obrigatório | crítico | 1 |
+| 7 | Código | obrigatório | melhoria | 0 |
+| 8 | Lógica de negócio | obrigatório | melhoria | 0 |
 | 9 | Acessibilidade | perguntar (não) | — | (pulado) |
-| 10 | Observabilidade | opcional | 🟡 | 3 |
-| 11 | Conformidade legal | opcional | 🟢 | 0 |
-| 12 | Documentação operacional | obrigatório | 🟡 | 1 |
+| 10 | Observabilidade | opcional | importante | 3 |
+| 11 | Conformidade legal | opcional | melhoria | 0 |
+| 12 | Documentação operacional | obrigatório | importante | 1 |
 | 13 | Manutenibilidade | perguntar (não) | — | (pulado) |
-| 14 | Defesa contra prompt injection | obrigatório (sim — produto tem LLM) | 🟢 | 0 |
+| 14 | Defesa contra prompt injection | obrigatório (sim — produto tem LLM) | melhoria | 0 |
 
 (Se `tipo_projeto: claude-plugin`, dimensões 1-7 são substituídas pelo checklist do `plugin-dev:plugin-validator`. Mantém 8 e 12.)
 
 (Dim 14 condicional a "produto tem LLM no caminho?". Se não tem LLM, dimensão é `—` em todos os tiers. Se tem LLM apenas interno em `mvp+`, vira `perguntar`. Se tem LLM usuário-facing em `mvp+`, vira `obrigatório`.)
 
-## 3. Achados 🔴 críticos (bloqueiam Delivery)
+## 3. Achados críticos (bloqueiam Delivery)
 
 ### 3.1 [Título do achado]
 
 - **Dimensão**: [#]
 - **Onde**: [arquivo:linha]
 - **Recomendação**: [fix concreto]
-- **Status**: ❌ pendente
+- **Status**: [pendente]
 
-## 4. Achados 🟡 importantes
+## 4. Achados importantes
 
 ### 4.1 [Título]
 
 - **Dimensão**: [#]
 - **Onde**: [arquivo:linha]
 - **Recomendação**: [fix concreto]
-- **Status**: ❌ pendente | ✅ corrigido | 📋 aceito com justificativa
+- **Status**: [pendente] | [corrigido] | [aceito]
 
-## 5. Achados 🟢 melhorias (nice-to-have)
+## 5. Achados melhorias (nice-to-have)
 
 [Lista de melhorias opcionais]
 
@@ -60,10 +60,10 @@
 
 ## 7. Resumo
 
-- 🔴 críticos: 1 — **bloqueia Delivery**
-- 🟡 importantes: 7 (1 corrigido, 6 pendentes)
-- 🟢 melhorias: 0
+- Críticos: 1 — **bloqueia Delivery**
+- Importantes: 7 (1 corrigido, 6 pendentes)
+- Melhorias: 0
 
 ## 8. Próximo passo
 
-→ Corrigir 🔴 críticos antes de Ship.Delivery. 🟡 podem ser aceitos com justificativa registrada na constitution.
+→ Corrigir críticos antes de Ship.Delivery. Importantes podem ser aceitos com justificativa registrada na constitution.
