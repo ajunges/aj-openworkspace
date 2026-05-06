@@ -3,7 +3,7 @@
 > **Para agentic workers**: REQUIRED SUB-SKILL — Use `superpowers:subagent-driven-development` (recomendado) ou `superpowers:executing-plans` pra executar este plano task-by-task. Steps usam checkbox (`- [ ]`).
 >
 > **Convenção SDD v1.0.0**: este plano segue o template do `superpowers:writing-plans` com **5 ajustes** de convenção SDD:
-> 1. Marcação 🔒 em tasks de validação contra dados reais (heurística **H1** — Dados reais sempre)
+> 1. Marcação `[H1]` em tasks de validação contra dados reais (heurística **H1** — Dados reais sempre)
 > 2. Quebra por feature acontece no nível superior (`tasks.md` plano-mestre)
 > 3. Quality Gate por feature absorve gates SDD
 > 4. Localização: `specs/plans/<feature>.md` no projeto
@@ -67,12 +67,12 @@ git commit -m "feat: <descrição da task>"
 
 ---
 
-## Task N+1: [Componente seguinte] 🔒 (se exige validação contra dados reais)
+## Task N+1: [Componente seguinte] [H1] (se exige validação contra dados reais)
 
 **Files:**
 - [...]
 
-**Cenário BDD de validação 🔒** (formato Given-When-Then — ver `references/linguagens-especificacao.md`):
+**Cenário BDD de validação [H1]** (formato Given-When-Then — ver `references/linguagens-especificacao.md`):
 
 ```gherkin
 Cenário: [Nome do cenário]
@@ -84,7 +84,7 @@ Cenário: [Nome do cenário]
 
 - [ ] **Step 1-5**: ciclo TDD canônico (mesmo padrão da Task N acima)
 
-- [ ] **Step 6: Validação 🔒 contra dados reais**
+- [ ] **Step 6: Validação contra dados reais [H1]**
 
 Run: script que executa o cenário BDD acima contra dados reais
 Expected: cada asserção bate com `<arquivo>.xlsx`. Mostrar comparativo ao usuário.
@@ -95,7 +95,7 @@ Expected: cada asserção bate com `<arquivo>.xlsx`. Mostrar comparativo ao usu�
 
 ```bash
 git add tests/path/test.py src/path/file.ext
-git commit -m "feat: <descrição> 🔒 validado contra <arquivo>"
+git commit -m "feat: <descrição> [H1] validado contra <arquivo>"
 ```
 
 ---
