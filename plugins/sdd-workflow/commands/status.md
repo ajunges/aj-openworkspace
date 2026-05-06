@@ -24,8 +24,8 @@ Lê `specs/progress.md` do projeto atual e mostra:
 Output em formato de tabela + status line:
 
 ```
-📊 [Feature Atual] ([Estágio.Fase]) → Próxima: [Feature Seguinte]
-   Progresso: [●●●○○] X% | Concluídas: N/Total | Bloqueios: [Status]
+[Feature Atual] ([Estágio.Fase]) → Próxima: [Feature Seguinte]
+   Progresso: X% | Concluídas: N/Total | Bloqueios: [Status]
 ```
 
 ## Pré-requisitos

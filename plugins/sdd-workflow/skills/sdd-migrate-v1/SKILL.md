@@ -185,7 +185,7 @@ E pergunta ao usuário se quer commit da mudança no repo do projeto:
 
 ## Quality Gate Migração
 
-**Quality Gate Migração** ✅: Constitution atualizada com governança v1.0.0 | YAML inicial tem todos os campos novos | Seção 10 "Emendas" presente | Decisão sobre stack registrada (ADR ou plano de migração) | Decisão registrada na seção 9 | Aprovação do usuário no diff final.
+**Quality Gate Migração**: Constitution atualizada com governança v1.0.0 | YAML inicial tem todos os campos novos | Seção 10 "Emendas" presente | Decisão sobre stack registrada (ADR ou plano de migração) | Decisão registrada na seção 9 | Aprovação do usuário no diff final.
 
 ---
 

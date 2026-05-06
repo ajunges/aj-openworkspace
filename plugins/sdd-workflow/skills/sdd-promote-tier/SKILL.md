@@ -123,10 +123,10 @@ Output: `specs/audit-<YYYY-MM-DD>-tier-upgrade.md`.
 
 ### Passo 10 — Aplica fixes
 
-Com base nos achados 🔴/🟡 da reauditoria:
+Com base nos achados críticos/importantes da reauditoria:
 
-- 🔴 críticos: corrigir antes de avançar (bloqueiam Ship.Delivery)
-- 🟡 importantes: corrigir ou aceitar com justificativa registrada na constitution
+- Críticos: corrigir antes de avançar (bloqueiam Ship.Delivery)
+- Importantes: corrigir ou aceitar com justificativa registrada na constitution
 
 ### Passo 11 — Ship.Deploy (se aplicável)
 
@@ -146,7 +146,7 @@ Se alvo mudou (ex: protótipo local → mvp em hosting gerenciado), redeploy pra
 
 ## Quality Gate Promoção
 
-**Quality Gate Promoção** ✅: Constitution atualizada com histórico | Deltas de Stack decididos (aplicar / débito) | Deltas de Design decididos | Features novas planejadas (`specs/plans/`) | Reauditoria executada | Achados 🔴 zerados | Ship.Deploy executado se aplicável | `progress.md` atualizado | Aprovação do usuário.
+**Quality Gate Promoção**: Constitution atualizada com histórico | Deltas de Stack decididos (aplicar / débito) | Deltas de Design decididos | Features novas planejadas (`specs/plans/`) | Reauditoria executada | Achados críticos zerados | Ship.Deploy executado se aplicável | `progress.md` atualizado | Aprovação do usuário.
 
 ---
 

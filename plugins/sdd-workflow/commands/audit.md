@@ -34,7 +34,7 @@ Dim 14 (`defesa-prompt-injection`) só roda em projeto com LLM no caminho. Em pr
 
 `specs/audit-<YYYY-MM-DD>.md` (formato do `templates/audit.md` da skill principal)
 
-Achados classificados 🔴 / 🟡 / 🟢. 🔴 bloqueiam Delivery se a Audit é parte do fluxo principal.
+Achados classificados como crítico / importante / melhoria. Críticos bloqueiam Delivery se a Audit é parte do fluxo principal.
 
 ## Pré-requisitos
 

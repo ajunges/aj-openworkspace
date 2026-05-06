@@ -37,7 +37,7 @@ A sub-skill executa 11 passos (ver `skills/sdd-promote-tier/SKILL.md` no plugin)
 7. Reaviva Spec.Design parcialmente (deltas)
 8. Atualiza tasks.md / cria novos `specs/plans/<feature>-tier-upgrade.md`
 9. Reauditoria focada (só dimensões novas obrigatórias)
-10. Aplica fixes 🔴/🟡
+10. Aplica fixes críticos/importantes
 11. Ship.Deploy se aplicável
 
 ## Outputs

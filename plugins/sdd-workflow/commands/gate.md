@@ -18,17 +18,17 @@ Verifica o **Quality Gate** da fase atual do projeto SDD. Lista os critérios do
 
 Pra cada item do checklist da fase atual:
 
-- `✅ [item]` — atendido
-- `❌ [item]` — pendente
-- `📋 [item]` — aceito com justificativa registrada
+- `[atendido] [item]`
+- `[pendente] [item]`
+- `[aceito] [item]` — aceito com justificativa registrada
 
 Resumo final:
 
 ```
 Gate da fase <fase>:
-  ✅ N atendidos
-  ❌ M pendentes
-  📋 K aceitos com justificativa
+  N atendidos
+  M pendentes
+  K aceitos com justificativa
 
 Status: [LIBERADO PRA AVANÇAR | BLOQUEADO]
 ```
