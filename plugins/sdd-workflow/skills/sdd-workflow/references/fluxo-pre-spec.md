@@ -1,6 +1,8 @@
 # Fluxo detalhado — Estágio I (Pré-spec)
 
 > Reference detalhado do Estágio I do workflow SDD. Carregado pela SKILL principal `sdd-workflow/SKILL.md` quando IA está atuando em alguma das 3 fases do Pré-spec. Contém o passo-a-passo, exemplos, comandos shell, listagem completa de skills auxiliares e Quality Gates por fase.
+>
+> **Sequencialidade**: as fases deste estágio são sequenciais — Discovery → Constitution → Stack. Execute na ordem; se invocado fora de sequência (ex: Stack sem Constitution), retornar à fase anterior antes de prosseguir.
 
 ## 1. Pré-spec.Discovery
 

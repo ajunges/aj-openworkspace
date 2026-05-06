@@ -1,6 +1,8 @@
 # Fluxo detalhado — Estágio III (Build)
 
 > Reference detalhado do Estágio III. Carregado pela SKILL principal quando IA está em Build.Tasks ou no loop de Build.Implementation por feature.
+>
+> **Sequencialidade**: Build.Tasks (plano-mestre) é pré-requisito de Build.Implementation — não implementar sem plano-mestre revisado. Se invocado em Implementation sem Tasks pronto, retornar à fase anterior. Final de sessão é evento, não fase.
 
 ## 1. Build.Tasks (plano-mestre)
 

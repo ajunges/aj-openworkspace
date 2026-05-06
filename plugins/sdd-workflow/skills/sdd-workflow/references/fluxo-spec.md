@@ -1,6 +1,8 @@
 # Fluxo detalhado — Estágio II (Spec)
 
 > Reference detalhado do Estágio II do workflow SDD. Carregado pela SKILL principal quando IA está atuando em Spec.Requirements, Spec.Design ou Spec.Spike (opcional).
+>
+> **Sequencialidade**: Requirements → Design são sequenciais; Spike é opcional, condicional a Design ter identificado risco técnico. Se invocado fora de sequência (ex: Design sem Requirements), retornar à fase anterior antes de prosseguir.
 
 ## 1. Spec.Requirements (formato EARS)
 

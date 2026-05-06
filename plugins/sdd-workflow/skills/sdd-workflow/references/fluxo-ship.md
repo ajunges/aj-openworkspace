@@ -1,6 +1,8 @@
 # Fluxo detalhado — Estágio IV (Ship)
 
 > Reference detalhado do Estágio IV. Carregado pela SKILL principal quando IA está em Ship.Audit, Ship.Delivery ou Ship.Deploy. Para Promoção de Tier (sub-fluxo dedicado), ver sub-skill `sdd-promote-tier`.
+>
+> **Sequencialidade**: Audit → Delivery → Deploy são sequenciais. Audit identifica achados que devem ser zerados (críticos) ou aceitos (importantes) antes de Delivery; Delivery valida sistema rodando antes de Deploy. Se invocado fora de sequência, retornar à fase anterior. Promoção de Tier é sub-fluxo independente.
 
 ## 1. Ship.Audit — 14 dimensões × 5 tiers
 
