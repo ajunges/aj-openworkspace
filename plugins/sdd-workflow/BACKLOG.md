@@ -2,17 +2,13 @@
 
 Inventário consolidado de itens pendentes pra evoluções futuras do plugin. Não é roadmap rígido — é checkpoint pra retomada de contexto sem precisar redescobrir o que já foi catalogado.
 
-Atualizado em: 2026-05-05 (pós-v1.0.3 — polish 1.1 (cleanup de emojis no plugin alinhado a "zero emojis") aplicado e removido; ex-polish 1.2 (otimizar SKILL.md principal — 480 linhas) renumerado pra 1.1; convenções textuais [H1]/[crítico]/[atendido] documentadas em references/heuristicas.md; seção 4.4 e itens 4.1.x permanecem pendentes).
+Atualizado em: 2026-05-06 (pós-v1.0.4 — polish 1.1 (otimizar SKILL.md via progressive disclosure) aplicado: 4 references novos por estágio (fluxo-pre-spec, fluxo-spec, fluxo-build, fluxo-ship) + SKILL principal reduzida pra 411 linhas (-14% vs 480) preservando listas críticas inline; frontmatter da SKILL bumpado pra 1.1.0; tabela de polish vazia (todos os 3 itens originais aplicados em v1.0.2/1.0.3/1.0.4); seção 4.4 e itens 4.1.x permanecem pendentes).
 
 ---
 
 ## 1. Polish (patches v1.0.x)
 
-Itens de polish pós-v1.0.0 — não são correção, são refinamento operacional. Acumular e aplicar em batch ou isolados conforme conveniência.
-
-| # | Item | Local de impacto | Esforço |
-|---|---|---|---|
-| 1.1 | Otimizar tamanho da `SKILL.md` principal — 480 linhas, perto do limite saudável de progressive disclosure. Candidato natural a mover pra reference(s): descrição detalhada dos 4 estágios (~265 linhas, seções "Estágio I — Pré-spec" até "Estágio IV — Ship") representam ~55% do arquivo e só são consultadas quando IA está numa fase específica. SKILL principal mantém: premissa fundadora, governança em 3 camadas (resumo), gates configuráveis, visão geral do fluxo (tabela), apêndice de references/templates, seção "Como invocar". **Trade-off**: progressive disclosure melhora (carregamento condicional por estágio reduz tokens fora da fase ativa), mas IA precisa carregar reference extra toda vez que entra numa fase nova (latência + contagem de tool calls). **Decisão de design pendente**: 1 reference único `references/fluxo-detalhado.md` vs. 4 references por estágio (`fluxo-pre-spec`, `fluxo-spec`, `fluxo-build`, `fluxo-ship`) vs. status quo. Meta: SKILL principal em ~250-300 linhas | `SKILL.md` principal + novo(s) reference(s) em `skills/sdd-workflow/references/` | médio-alto |
+> **Sem polishs ativos.** Itens 1.1 (refresh README), 1.2 (cleanup emojis) e 1.3 (otimizar SKILL.md) foram aplicados em v1.0.2/1.0.3/1.0.4 respectivamente. Adicionar novos itens conforme aparecerem.
 
 ---
 
