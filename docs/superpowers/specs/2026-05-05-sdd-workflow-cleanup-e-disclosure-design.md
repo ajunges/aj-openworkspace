@@ -22,7 +22,15 @@ Ambos modificam `skills/sdd-workflow/SKILL.md` — ordem de execução matters.
 ### 1.2 Motivação consolidada
 
 - **1.1**: preferência global do autor (`~/.claude/CLAUDE.md`) é "zero emojis". O README do plugin foi reescrito sem emojis no commit `3426b65` sem perda de função semântica. Resta aplicar o mesmo padrão ao resto do plugin.
-- **1.2**: a SKILL principal carregada por trigger explícito (`disable-model-invocation: true`) consome ~480 linhas de tokens em cada invocação, mesmo quando IA está num único estágio do fluxo. Os 4 estágios concentram ~261 linhas (54% do arquivo) e são consultados em isolamento — candidato natural a progressive disclosure.
+- **1.2**: a SKILL principal carregada por trigger explícito (`disable-model-invocation: true`) consome ~480 linhas de tokens em cada invocação. Aritmética real do ganho com progressive disclosure (3 cenários):
+
+| Cenário | Antes | Depois (estimado) | Δ |
+|---|---|---|---|
+| Status check (`/sdd-workflow:status`, diagnóstico) | 480 linhas | ~315 linhas (só SKILL principal) | **−34%** |
+| Trabalho numa fase específica (Discovery, Implementation, etc.) | 480 | 315 + ~80 (reference da fase) = ~395 | **−18%** |
+| Workflow do início ao fim em uma sessão (todos os 4 estágios consultados) | 480 | 315 + ~270 (4 references) = ~585 | **+22%** |
+
+O ganho de tokens é real apenas pra **invocações de diagnóstico** (frequentes via slash commands de status). Pra workflow contínuo, o refactor **piora** a contagem de tokens. **A justificativa principal não é tokens — é manutenibilidade**: cada arquivo fica mais focado, mais fácil de ler isoladamente, mais fácil de evoluir sem cascata de edits cruzados.
 
 ---
 
@@ -61,9 +69,21 @@ Total: ~50 ocorrências.
 - `fluxo-build.md` (Tasks, Implementation, Final de sessão)
 - `fluxo-ship.md` (Audit, Delivery, Deploy, Promoção de Tier)
 
-A SKILL principal mantém, para cada fase: **resumo de 1-2 parágrafos + critérios do Quality Gate inline + ponteiro para o reference correspondente**. Detalhe operacional (passo-a-passo, comandos shell, listagem completa de skills sugeridas, exemplos) move para os references.
+A SKILL principal mantém, para cada fase: **resumo + listas críticas + Quality Gate inline + pointer para o reference correspondente**. Detalhe operacional (procedimentos, comandos shell, listagens extensas de skills, exemplos longos) move para os references.
 
-**Razão**: o plugin tem `disable-model-invocation: true`, então IA só carrega quando trigger é explícito — geralmente já com fase específica em mente (ex: "Status do projeto", "promover este projeto pra MVP", invocação direta no meio de Build.Implementation). Carregar só o reference da fase ativa elimina ~200 linhas de tokens por invocação na fase mais comum.
+**Razão**: o ganho de tokens é modesto e situacional (ver tabela em 1.2 acima). O ganho real é **estrutural** — cada arquivo fica mais focado e fácil de manter, e a SKILL principal passa a ser navegável como playbook auto-suficiente em alto nível, com detalhe operacional acessível sob demanda.
+
+**Método pra decidir o que vive onde** (aplicado em 5.1 abaixo):
+
+| Tipo de conteúdo | Vive em | Razão |
+|---|---|---|
+| Listas estruturadas críticas (perguntas Discovery, sub-componentes Stack, ajustes de convenção SDD, fases típicas, critérios de feature) | **SKILL principal** | IA precisa do checklist à mão sem fetch extra; perder a lista = risco de IA improvisar |
+| Quality Gates | **SKILL principal** | Curtos, dão estrutura, anchor de fim de fase |
+| Tabelas comparativas curtas (ex: comportamento de Deploy por tier) | **SKILL principal** | Decisão crítica, scanning rápido |
+| Comandos shell (mkdir, git init, etc.) | **reference** | Procedimento, não decisão |
+| Listagem extensa de skills auxiliares (5+ skills) | **reference** | Operacional, IA carrega quando precisa |
+| Exemplos extensos (YAML completo, BDD scenarios, comandos de build) | **reference** | Detalhe não-essencial pra entender o fluxo em alto nível |
+| Casos especiais (ex: claude-plugin no marketplace usa publish-plugin) | **reference** | Não aplica universalmente |
 
 **Alternativas rejeitadas**:
 
@@ -138,7 +158,9 @@ Decisão: **registrar em `heuristicas.md`** (1 seção nova ao final), não cria
 
 ## 5. Estrutura proposta da SKILL.md pós-refactor (item 1.2)
 
-### 5.1 SKILL.md principal (~250-300 linhas)
+### 5.1 SKILL.md principal (~315 linhas)
+
+Aplicando o método de classificação (3.2):
 
 ```
 Frontmatter (33 linhas)                                    # mantém
@@ -152,29 +174,40 @@ Header (4 linhas)                                          # mantém
 
 ## Visão geral do fluxo (21 linhas)                        # mantém — ASCII art + tabela
 
-## Estágio I — Pré-spec (resumo: ~20 linhas)               # NOVO formato
-   - Discovery: 1 parágrafo + Quality Gate inline
-   - Constitution: 1 parágrafo + Quality Gate inline
-   - Stack: 1 parágrafo + Quality Gate inline
-   > Detalhe operacional em `references/fluxo-pre-spec.md`
+## Estágio I — Pré-spec (~35 linhas)                       # listas críticas preservadas
+   - Discovery: prosa + 7 perguntas (lista) + skills doc-analysis + Quality Gate
+   - Constitution: prosa enxugada + Quality Gate (comandos shell movidos)
+   - Stack: prosa + 3 sub-componentes (lista) + Quality Gate
+   > Pointer pra references/fluxo-pre-spec.md (procedimentos, exemplo YAML)
 
-## Estágio II — Spec (resumo: ~15 linhas)                  # NOVO formato
-   - Requirements / Design / Spike, mesmo padrão
-   > Detalhe operacional em `references/fluxo-spec.md`
+## Estágio II — Spec (~35 linhas)                          # listas críticas preservadas
+   - Requirements: prosa + 8 itens obrigatórios (lista) + Quality Gate
+   - Design: prosa + 9 itens obrigatórios (lista) + Quality Gate (skills sugeridas movidas)
+   - Spike: prosa + 7 itens da estrutura (lista) + Quality Gate
+   > Pointer pra references/fluxo-spec.md (skills, MCP, BDD examples)
 
-## Estágio III — Build (resumo: ~15 linhas)                # NOVO formato
-   > Detalhe operacional em `references/fluxo-build.md`
+## Estágio III — Build (~45 linhas)                        # listas críticas preservadas
+   - Tasks: prosa + 7 features típicas + 4 critérios de feature + Quality Gate
+   - Implementation: prosa + 5 ajustes de convenção SDD (lista crítica) + Quality Gate por feature
+   - Final de sessão: 4 passos curtos
+   > Pointer pra references/fluxo-build.md (lista de skills durante Implementation, exemplos)
 
-## Estágio IV — Ship (resumo: ~15 linhas)                  # NOVO formato
-   > Detalhe operacional em `references/fluxo-ship.md`
+## Estágio IV — Ship (~35 linhas)                          # listas críticas preservadas
+   - Audit: prosa + 5 passos do fluxo + Quality Gate
+   - Delivery: prosa + 7 passos pré-deploy (lista) + Quality Gate
+   - Deploy: prosa + comportamento por 5 tiers (tabela) + Quality Gate
+   - Promoção de Tier: ponteiro curto pra sub-skill
+   > Pointer pra references/fluxo-ship.md (sub-agentes, caso especial claude-plugin)
 
 ## Como invocar (30 linhas)                                # mantém
 
-## Apêndice (atualizado: ~45 linhas)                       # mantém + adiciona 4 entries
+## Apêndice (atualizado: ~50 linhas)                       # mantém + adiciona 4 entries
    - Adicionar fluxo-pre-spec, fluxo-spec, fluxo-build, fluxo-ship à tabela de references
 ```
 
-**Total estimado**: 33 + 4 + 15 + 46 + 11 + 21 + 20 + 15 + 15 + 15 + 30 + 45 = **270 linhas**. Atinge meta de 250-300.
+**Total estimado**: 33 + 4 + 15 + 46 + 11 + 21 + 35 + 35 + 45 + 35 + 30 + 50 = **~360 linhas**. Acima da meta inicial de 270, mas **35% menor que 480 atuais** e **preserva listas críticas** que são checkpoint mental — perdê-las forçaria IA a sempre carregar o reference, perdendo robustez do playbook.
+
+A meta revisada é **300-360 linhas**, não 250-300. A redução real de 25% (vs 44% original) é o trade-off honesto de manter as listas críticas inline.
 
 ### 5.2 4 references novos
 
@@ -187,21 +220,33 @@ Cada um carrega o detalhe operacional **completo** das fases do estágio (passo-
 | `fluxo-build.md` | Tasks (plano-mestre) + Implementation (loop por feature) + Final de sessão | ~70 linhas |
 | `fluxo-ship.md` | Audit (14×5) + Delivery + Deploy + Promoção de Tier | ~60 linhas |
 
-### 5.3 Resumo + Quality Gate inline (formato proposto)
+### 5.3 Formato proposto: prosa + lista crítica + Quality Gate + pointer
 
-Exemplo do formato resumido na SKILL principal para Pré-spec.Discovery:
+Exemplo aplicando o método de 3.2 a Pré-spec.Discovery:
 
 ```markdown
 ### Pré-spec.Discovery
 
-Faz perguntas estruturadas pra capturar problema, usuários, dados, referências, escopo V1, `tipo_projeto` e `tier`. Documentos de referência (Excel/PDF/Word/PowerPoint) são analisados via skills `anthropic-skills:*` antes de avançar.
+Faça perguntas ao usuário pra entender:
+
+1. **Problema**: que dor operacional este projeto resolve?
+2. **Usuários**: quem vai usar? quantas pessoas? em que dispositivo?
+3. **Dados**: que dados entram, como são processados, o que sai?
+4. **Referência**: existe planilha, documento ou processo manual que será substituído?
+5. **Escopo V1**: o que é essencial vs. nice-to-have?
+6. **`tipo_projeto`**: `web-saas` | `claude-plugin` | `hubspot` | `outro` (ver `references/tipos-projeto.md`)
+7. **`tier` projetado** (visão final, não estado atual): `prototipo_descartavel` | `uso_interno` | `mvp` | `beta_publico` | `producao_real` (ver `references/tiers.md`)
+
+Documentos de referência (Excel/PDF/Word/PowerPoint) analisados via skills `anthropic-skills:*` antes de avançar. Pode usar `superpowers:brainstorming`.
 
 **Quality Gate Discovery**: Problema/usuários/dados/referência/escopo entendidos | tipo_projeto e tier respondidos com justificativa | Documentos de referência analisados (se houver).
 
-> Passo-a-passo, lista completa de perguntas e skills auxiliares: `references/fluxo-pre-spec.md` seção 1.
+> Detalhe operacional (incluindo mapeamento de skills por tipo de documento e exemplos): `references/fluxo-pre-spec.md` seção 1.
 ```
 
-Aproximadamente 5-7 linhas por fase. Para 11 fases, ~55-77 linhas total para a parte por-estágio.
+A lista das 7 perguntas é **preservada** — é o checklist crítico de Discovery. Perdê-la força IA a sempre carregar o reference, e introduz risco de "improvisar perguntas" se o pointer for ignorado.
+
+Aproximadamente 13-18 linhas por fase. Para 11 fases, ~145-200 linhas total para a parte por-estágio.
 
 ---
 
@@ -217,12 +262,13 @@ Aproximadamente 5-7 linhas por fase. Para 11 fases, ~55-77 linhas total para a p
 ### v1.0.4 — refactor estrutural (item 1.2)
 
 - Criar 4 references novos com o conteúdo dos estágios extraído
-- Reescrever as seções "Estágio I/II/III/IV" da SKILL principal no formato resumo + Quality Gate inline
+- Reescrever as seções "Estágio I/II/III/IV" da SKILL principal aplicando o método de 3.2 (preservar listas críticas, mover procedimentos)
 - Atualizar tabela do Apêndice com as 4 references novas
+- **Bumpar `version: 1.0.0` → `version: 1.1.0` no frontmatter da SKILL** (interface da skill mudou — 4 references novos. Frontmatter estava em drift desde v1.0.0 do plugin; consolidamos agora)
 - Atualizar `BACKLOG.md` removendo o item 1.1 (ex-1.2) renumerado
-- Bump via `/marketplace-tools:publish-plugin sdd-workflow patch`
+- Bump do plugin via `/marketplace-tools:publish-plugin sdd-workflow patch` (1.0.3 → 1.0.4)
 
-**Por que dois patches separados, não um minor `1.1.0` batched**: cleanup e refactor têm escopos disjuntos e taxas de risco diferentes. Cleanup é mecânico (baixo risco). Refactor é estrutural (médio risco — IA pode falhar em encontrar a fase ativa se a navegação SKILL → reference quebrar). Bumps separados permitem revert do refactor sem perder o cleanup.
+**Por que dois patches do plugin, não um minor `1.1.0` batched**: cleanup e refactor têm escopos disjuntos e taxas de risco diferentes. Cleanup é mecânico (baixo risco). Refactor é estrutural (médio risco — IA pode falhar em encontrar a fase ativa se a navegação SKILL → reference quebrar). Bumps separados do plugin permitem revert do refactor sem perder o cleanup. O frontmatter da SKILL bumpa só na v1.0.4 do plugin porque é onde a interface da skill (lista de references) muda.
 
 ---
 
@@ -260,13 +306,16 @@ Aproximadamente 5-7 linhas por fase. Para 11 fases, ~55-77 linhas total para a p
 
 ### Para v1.0.4 (refactor)
 
-- 4 references criados em `skills/sdd-workflow/references/fluxo-{pre-spec,spec,build,ship}.md`
-- SKILL.md principal entre 250 e 300 linhas (validar com `wc -l`)
+- 4 references criados em `skills/sdd-workflow/references/fluxo-{pre-spec,spec,build,ship}.md` (já criados em commits c13f20c, cd3ef23, 3507ed6, 6ef10cb)
+- SKILL.md principal entre 300 e 360 linhas (validar com `wc -l`)
 - Cada seção de estágio na SKILL principal tem o pointer `> Detalhe operacional em "references/fluxo-X.md"` ao final
+- Listas críticas preservadas inline (validar): 7 perguntas Discovery, 3 sub-componentes Stack, 8 itens Requirements, 9 itens Design, 7 itens Spike, 7 features típicas Tasks, 5 ajustes convenção SDD Implementation, 5 passos fluxo Audit, 7 passos Delivery, comportamento Deploy por 5 tiers
 - Apêndice da SKILL atualizado com as 4 references novas
+- Frontmatter `version: 1.0.0` → `version: 1.1.0` na SKILL principal
 - `BACKLOG.md` atualizado (item ex-1.2 / agora 1.1 removido)
 - Plugin publicado via `/marketplace-tools:publish-plugin sdd-workflow patch` → cache mostra v1.0.4
-- Smoke test: invocar a skill com trigger "novo projeto" em projeto fictício; verificar que IA carrega `fluxo-pre-spec.md` corretamente quando entra em Discovery
+- **Smoke test factual nesta sessão**: `wc -l` da SKILL principal entre 300-360, 4 pointers presentes (`grep -c "references/fluxo-"`), 4 entries novos no Apêndice, contagem de listas críticas preservadas
+- **Smoke test comportamental como follow-up do user pós-restart do Desktop**: invocar trigger natural ("novo projeto") em projeto fictício, observar carregamento dos references corretos por fase
 
 ---
 
