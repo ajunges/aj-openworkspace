@@ -6,33 +6,33 @@ Atualizado em: YYYY-MM-DD
 
 | Estágio | Fase | Status | Gate |
 |---|---|---|---|
-| Pré-spec | Discovery | ✅ | ✅ |
-| Pré-spec | Constitution (com Setup) | ✅ | ✅ |
-| Pré-spec | Stack | ✅ | ✅ |
-| Spec | Requirements | ✅ | ✅ |
-| Spec | Design | 🔄 Em andamento | — |
-| Spec | Spike (opcional) | ⏸️ Aguardando | — |
-| Build | Tasks | ⏸️ Aguardando | — |
-| Build | Implementation | ⏸️ Aguardando | — |
-| Ship | Audit | ⏸️ Aguardando | — |
-| Ship | Delivery | ⏸️ Aguardando | — |
-| Ship | Deploy | ⏸️ Aguardando | — |
+| Pré-spec | Discovery | [atendido] | [atendido] |
+| Pré-spec | Constitution (com Setup) | [atendido] | [atendido] |
+| Pré-spec | Stack | [atendido] | [atendido] |
+| Spec | Requirements | [atendido] | [atendido] |
+| Spec | Design | [em-andamento] | — |
+| Spec | Spike (opcional) | [aguardando] | — |
+| Build | Tasks | [aguardando] | — |
+| Build | Implementation | [aguardando] | — |
+| Ship | Audit | [aguardando] | — |
+| Ship | Delivery | [aguardando] | — |
+| Ship | Deploy | [aguardando] | — |
 
 ## 2. Features
 
-| # | Feature | Plano | 🔒 | Status | Progresso | Bloqueios |
+| # | Feature | Plano | H1 | Status | Progresso | Bloqueios |
 |---|---|---|---|---|---|---|
-| 1 | [Feature 1] | `specs/plans/01-...md` | não | ✅ | 100% | — |
-| 2 | [Feature 2] | `specs/plans/02-...md` | sim | 🔄 | 60% | — |
-| 3 | [Feature 3] | `specs/plans/03-...md` | não | ⏸️ | 0% | Depende: Feature 2 |
+| 1 | [Feature 1] | `specs/plans/01-...md` | não | [atendido] | 100% | — |
+| 2 | [Feature 2] | `specs/plans/02-...md` | sim | [em-andamento] | 60% | — |
+| 3 | [Feature 3] | `specs/plans/03-...md` | não | [aguardando] | 0% | Depende: Feature 2 |
 
 ## 3. Status Line
 
 (Inclui no final de cada resposta da IA durante implementação)
 
 ```
-📊 [Feature Atual] ([Estágio.Fase]) → Próxima: [Feature Seguinte]
-   Progresso: [●●●○○] X% | Concluídas: N/Total | Bloqueios: [Status]
+[Feature Atual] ([Estágio.Fase]) → Próxima: [Feature Seguinte]
+   Progresso: X% | Concluídas: N/Total | Bloqueios: [Status]
 ```
 
 ## 4. Cálculo de Progresso
