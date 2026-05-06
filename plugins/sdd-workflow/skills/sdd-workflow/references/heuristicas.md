@@ -171,6 +171,20 @@ As três camadas operam em conjunto. Heurísticas guiam o **como pensar**, princ
 
 Substitutos textuais para anchors visuais que apareciam como emoji em versões anteriores do plugin (até v1.0.2). IA usa estes prefixos como marcadores estáveis em scanning rápido. Convenção é fixa — não inventar variantes fora dos contextos previstos.
 
+### Regra geral: quando usar colchetes vs texto natural
+
+| Padrão | Aplica colchetes? | Exemplos |
+|---|---|---|
+| Headers de task/feature/seção | **Sim** | `### Task 5: Cálculo de comissão [H1]` |
+| Steps de plano (`- [ ] **Step X: ...**`) | **Sim** | `- [ ] **Step 6: validar contra dados reais [H1]**` |
+| Células de tabela | **Sim** | `\| 2 \| Feature 2 \| sim \| [em-andamento] \| 60% \|` |
+| Cabeçalhos de coluna em tabela | **Não** (concisão) | `\| H1 \| Status \|` |
+| Listas pipe-separadas (Quality Gates, legendas) | **Sim** | `Features [H1] identificadas \| Plano-mestre revisado` |
+| Mensagens de commit | **Sim** | `feat: cálculo [H1] validado contra planilha.xlsx` |
+| Sentenças completas em prosa contínua (sujeito-verbo-predicado, sem listas) | **Não** (texto natural) | "Achados críticos zerados antes de Delivery" |
+
+**Quando estiver em dúvida**: se o conteúdo está numa lista, tabela, header ou metadata estruturada, **usar colchetes**. Se é uma frase corrida em parágrafo, **texto natural**.
+
 ### `[H1]` — Marcação de validação contra dados reais
 
 Aparece em headers de task/feature, steps de plano detalhado, mensagens de commit e bullets de instrução de marcação. Referência direta à heurística H1 (Dados reais sempre).
