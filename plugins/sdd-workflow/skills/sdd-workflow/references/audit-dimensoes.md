@@ -99,15 +99,15 @@ Dimensões 1-7 (Segurança, Isolamento, Integridade, Performance, Responsividade
 # Audit — [Projeto] — [Tier] — [Data]
 
 ## Dimensões executadas
-[lista com 🟢/🟡/🔴 por dimensão]
+[lista com melhoria/importante/crítico por dimensão]
 
-## Achados 🔴 críticos (bloqueiam Delivery)
+## Achados críticos (bloqueiam Delivery)
 - [achado] em [arquivo:linha] — [recomendação de fix]
 
-## Achados 🟡 importantes
+## Achados importantes
 [...]
 
-## Achados 🟢 melhorias
+## Achados melhorias
 [...]
 
 ## Dimensões puladas (com motivação)

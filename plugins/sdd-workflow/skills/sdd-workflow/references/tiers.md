@@ -46,7 +46,7 @@ Mudança de tier = decisão consciente, registrada via Promoção de Tier (sub-s
 | 14. Defesa contra prompt injection (se LLM) | — | — | perguntar | obrigatório | obrigatório |
 
 **Legenda**:
-- `obrigatório`: gate falha sem cobertura. Achados 🔴 bloqueiam Delivery.
+- `obrigatório`: gate falha sem cobertura. Achados críticos bloqueiam Delivery.
 - `opcional`: IA recomenda e roda; achados informativos, não bloqueiam.
 - `perguntar`: IA pergunta no início da Audit; resposta registrada na constitution.
 - `—`: dimensão não rodada nesse tier; explicitamente pulada.

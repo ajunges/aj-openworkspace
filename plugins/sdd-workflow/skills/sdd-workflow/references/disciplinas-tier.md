@@ -170,12 +170,12 @@ LGPD (Brasil), PCI-DSS (cartão), SOC 2 (B2B SaaS sério), HIPAA (saúde nos EUA
 
 ### D-pr4 Audit dimensional completo
 
-Todas as dimensões obrigatórias pelo tier (matriz em `references/tiers.md`) executadas no Audit. Achados 🔴 zerados antes de Ship.Delivery.
+Todas as dimensões obrigatórias pelo tier (matriz em `references/tiers.md`) executadas no Audit. Achados críticos zerados antes de Ship.Delivery.
 
 **Mínimo:**
 - Audit completo executado pré-deploy
-- Achados 🔴 (críticos) zerados
-- Achados 🟡 (importantes) corrigidos ou aceitos via H5 (ADR)
+- Achados críticos zerados
+- Achados importantes corrigidos ou aceitos via H5 (ADR)
 - Audit registrado em `specs/audit-<data>.md`
 
 ### D-pr5 Defesa contra prompt injection (se LLM no caminho)
@@ -226,7 +226,7 @@ A Audit (Ship.Audit) usa as 14 dimensões em `references/audit-dimensoes.md`. Ca
 | D-pr3 Compliance | dim 11 Conformidade legal |
 | D-pr5 Defesa prompt injection | dim 14 Defesa contra prompt injection (nova em v1.0.0) |
 
-Disciplina ausente sem ADR registrado vira achado 🔴 (crítico) na Audit do tier que a exige.
+Disciplina ausente sem ADR registrado vira achado crítico na Audit do tier que a exige.
 
 ---
 

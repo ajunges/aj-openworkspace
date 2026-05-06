@@ -66,7 +66,7 @@ Complex:
 
 **Origem**: Dan North, ~2006. Mainstream em testing há quase 20 anos.
 
-**Quando usar**: Build.Tasks 🔒 (cenários de teste com dados específicos), e Ship.Audit dimensão 8 (Lógica de negócio).
+**Quando usar**: Build.Tasks [H1] (cenários de teste com dados específicos), e Ship.Audit dimensão 8 (Lógica de negócio).
 
 ### 2.1 Estrutura
 
@@ -75,7 +75,7 @@ Complex:
 - **Then** — mudanças esperadas
 - **And** — condições adicionais em qualquer dos blocos acima
 
-### 2.2 Exemplo (Build.Tasks 🔒 — validação contra dados reais)
+### 2.2 Exemplo (Build.Tasks [H1] — validação contra dados reais)
 
 ```gherkin
 Cenário: Cálculo bate com planilha de referência (fevereiro 2026)
