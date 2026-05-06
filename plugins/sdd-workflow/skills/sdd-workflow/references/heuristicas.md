@@ -208,4 +208,4 @@ Aparece em listas de status de gates, features e promoções. **Conjunto base** 
 
 ### Quality Gates (sem prefixo)
 
-Antes da v1.0.3, Quality Gates eram marcados com `✅` no cabeçalho. A partir da v1.0.3, o cabeçalho `**Quality Gate X**:` é o anchor — o nome do gate já é a referência.
+Em versões anteriores, Quality Gates eram marcados com um ícone visual no cabeçalho. A partir da v1.0.3, o cabeçalho `**Quality Gate X**:` é o anchor — o nome do gate já é a referência, sem prefixo decorativo.
