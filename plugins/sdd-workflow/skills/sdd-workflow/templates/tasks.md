@@ -4,13 +4,13 @@
 
 ## 1. Visão geral
 
-| # | Feature | Plano detalhado | 🔒 (validação dados reais) | Dependências | Status |
+| # | Feature | Plano detalhado | H1 (validação dados reais) | Dependências | Status |
 |---|---|---|---|---|---|
-| 1 | [Nome da feature] | `specs/plans/01-<slug>.md` | sim/não | — | ⏸️ Aguardando |
-| 2 | [Nome da feature] | `specs/plans/02-<slug>.md` | sim | Feature 1 | ⏸️ Aguardando |
-| 3 | [...] | `specs/plans/03-<slug>.md` | não | Feature 2 | ⏸️ Aguardando |
+| 1 | [Nome da feature] | `specs/plans/01-<slug>.md` | sim/não | — | [aguardando] |
+| 2 | [Nome da feature] | `specs/plans/02-<slug>.md` | sim | Feature 1 | [aguardando] |
+| 3 | [...] | `specs/plans/03-<slug>.md` | não | Feature 2 | [aguardando] |
 
-**Legenda de status**: ⏸️ Aguardando · 🔄 Em andamento · ✅ Concluída · ❌ Bloqueada
+**Legenda de status**: [aguardando] · [em-andamento] · [atendido] · [bloqueada]
 
 ## 2. Ordem de execução
 
@@ -19,14 +19,14 @@
 1. **Infra e Setup** — Docker, scripts, banco
 2. **Auth + Layout** — login, JWT, sidebar, mobile drawer (se UI)
 3. **CRUDs administrativos** — entidades base
-4. **Lógica de negócio 🔒** — cálculos, validações (validação obrigatória contra dados reais)
+4. **Lógica de negócio [H1]** — cálculos, validações (validação obrigatória contra dados reais)
 5. **Dashboards e visualizações** (se aplicável)
 6. **Funcionalidades específicas** (simulação, relatórios, etc.)
 7. **Polish** — isolamento, validações, responsividade
 
-## 3. Marcação 🔒 — features de validação contra dados reais
+## 3. Marcação [H1] — features de validação contra dados reais
 
-Features marcadas 🔒 exigem validação obrigatória contra dados reais dos documentos de referência (heurística H1 — Dados reais sempre, ver `references/heuristicas.md`). Quality Gate por feature inclui mostrar comparativo ao usuário antes de avançar.
+Features marcadas [H1] exigem validação obrigatória contra dados reais dos documentos de referência (heurística H1 — Dados reais sempre, ver `references/heuristicas.md`). Quality Gate por feature inclui mostrar comparativo ao usuário antes de avançar.
 
 Exemplos típicos: cálculos financeiros, motor de regras de negócio, importadores/exportadores que devem replicar comportamento de planilha existente.
 
@@ -36,8 +36,8 @@ Cada feature concluída exige:
 
 - [ ] Todos os steps do plano detalhado executados
 - [ ] Testes da feature passando (output mostrado)
-- [ ] Se 🔒: comparativo contra dados reais mostrado e aprovado
-- [ ] Aprovação humana antes de marcar ✅ e avançar pra próxima
+- [ ] Se [H1]: comparativo contra dados reais mostrado e aprovado
+- [ ] Aprovação humana antes de marcar [atendido] e avançar pra próxima
 
 ## 5. Próximos passos
 
