@@ -13,7 +13,7 @@ description: >
   ver sub-skill `sdd-promote-tier`. Pra migrar projeto v0.x → v1.0.0, ver sub-skill
   `sdd-migrate-v1`.
 disable-model-invocation: true
-version: 1.0.0
+version: 1.1.0
 triggers:
   - sdd
   - novo projeto
@@ -137,6 +137,8 @@ References e templates disponíveis estão indexados no **Apêndice** ao final d
 
 ## Estágio I — Pré-spec
 
+Estágio inicial: descobrir o que vai ser construído (Discovery), formalizar a constitution do projeto com decisões estruturais (Constitution), e fazer checkpoint crítico de stack/inventário/alvo de deploy (Stack).
+
 ### Pré-spec.Discovery
 
 Faça perguntas ao usuário pra entender:
@@ -146,80 +148,36 @@ Faça perguntas ao usuário pra entender:
 3. **Dados**: que dados entram, como são processados, o que sai?
 4. **Referência**: existe planilha, documento ou processo manual que será substituído?
 5. **Escopo V1**: o que é essencial vs. nice-to-have?
-6. **`tipo_projeto`** (decisão estrutural — ver `references/tipos-projeto.md`):
-   - `web-saas` — sistema web full-stack com UI rica
-   - `claude-plugin` — plugin para Claude Code
-   - `hubspot` — extensão HubSpot
-   - `outro` — Stack Decision livre
-7. **`tier` projetado** (visão final — ver `references/tiers.md`):
-   - `prototipo_descartavel` | `uso_interno` | `mvp` | `beta_publico` | `producao_real`
-   - **Tier é projetado**, não estado atual. Pedir explicitamente.
+6. **`tipo_projeto`**: `web-saas` | `claude-plugin` | `hubspot` | `outro` (ver `references/tipos-projeto.md`)
+7. **`tier` projetado** (visão final, não estado atual): `prototipo_descartavel` | `uso_interno` | `mvp` | `beta_publico` | `producao_real` (ver `references/tiers.md`)
 
-Se documentos de referência foram fornecidos (Excel, PDF, etc.), analisar antes de avançar:
-- PDF → `anthropic-skills:pdf`
-- Excel → `anthropic-skills:xlsx`
-- Word → `anthropic-skills:docx`
-- PowerPoint → `anthropic-skills:pptx`
-
-Use `superpowers:brainstorming` pra explorar problema/requisitos quando útil.
+Documentos de referência (Excel/PDF/Word/PowerPoint) analisados via skills `anthropic-skills:*` antes de avançar. Pode usar `superpowers:brainstorming` pra explorar.
 
 **Quality Gate Discovery**: Problema/usuários/dados/referência/escopo entendidos | tipo_projeto e tier respondidos com justificativa | Documentos de referência analisados (se houver).
 
 ### Pré-spec.Constitution (com Setup absorvido)
 
-Após Discovery aprovada, executar:
-
-1. **Criar estrutura de pastas e commit init**:
-```bash
-mkdir -p "$PROJECTS_DIR/$PROJECT_NAME/specs"
-mkdir -p "$PROJECTS_DIR/$PROJECT_NAME/src"
-cd "$PROJECTS_DIR/$PROJECT_NAME"
-git init  # se aplicável
-```
-
-2. **Escrever `specs/constitution.md`** copiando + preenchendo `templates/constitution.md`. Bloco YAML inicial obrigatório:
-
-```yaml
----
-tipo_projeto: <da Discovery>
-tier: <da Discovery>
-tier_decidido_em: YYYY-MM-DD
----
-```
-
-Mais bloco textual obrigatório explicando **por que** esse tier.
-
-3. **Escrever `CLAUDE.md` do projeto** com referência aos padrões universais (`/CLAUDE.md` raiz). Use `claude-md-management:revise-claude-md`.
-
-4. **Escrever `README.md` inicial**.
-
-5. **Commit inicial**:
-```bash
-git add .
-git commit -m "init: $PROJECT_NAME — setup + constitution"
-```
+Após Discovery aprovada: cria estrutura de pastas, escreve `specs/constitution.md` copiando + preenchendo `templates/constitution.md` (YAML inicial obrigatório com `tipo_projeto`/`tier`/`tier_decidido_em` + bloco textual explicando **por que** esse tier), escreve `CLAUDE.md` do projeto (via `claude-md-management:revise-claude-md`), `README.md` inicial e faz commit init.
 
 **Quality Gate Constitution**: Bloco YAML preenchido | Stack default (ou override) justificada | Princípios não conflitam com `/CLAUDE.md` raiz | Brand colors definidos (se UI) | progress.md criado (template) | Commit init feito.
 
 ### Pré-spec.Stack — checkpoint explícito (3 sub-componentes)
 
-**Não é confirmação automática**. Pausa real onde a IA pergunta criticamente:
+**Não é confirmação automática**. Pausa real onde a IA pergunta criticamente se a stack default ainda faz sentido dadas as particularidades de Discovery. Os 3 sub-componentes a registrar na constitution:
 
-> "Considerando as particularidades descritas em Discovery (X, Y, Z), a stack default ainda faz sentido ou precisa override?"
-
-Os 3 sub-componentes a registrar na constitution:
-
-1. **Inventário de dependências** — ver `references/inventario-dependencias.md`. Categorias: CLI do sistema, MCP servers, skills do marketplace, acesso a serviços externos. Família A (`superpowers:*` essenciais) bloqueia se faltar.
-
-2. **Stack técnica** — ver `references/stacks.md`. Default sugerida por `tipo_projeto`. Override permitido sempre, com justificativa.
-
-3. **Alvo de deploy** — ver `references/alvos-deploy.md`. **Decisão explícita do projeto**, não derivada de tipo+tier. IA pergunta "onde o produto vai viver?".
+1. **Inventário de dependências** (CLI do sistema, MCP servers, skills do marketplace, acesso a serviços externos). Família A (`superpowers:*` essenciais) bloqueia se faltar — ver `references/inventario-dependencias.md`.
+2. **Stack técnica** — default sugerida por `tipo_projeto`. Override permitido sempre, com justificativa — ver `references/stacks.md`.
+3. **Alvo de deploy** — **decisão explícita do projeto**, não derivada de tipo+tier. IA pergunta "onde o produto vai viver?" — ver `references/alvos-deploy.md`.
 
 **Quality Gate Stack**: Inventário registrado (todas as categorias) | Stack confirmada ou override registrado com justificativa | Alvo de deploy registrado (decisão explícita) | Particularidades de Discovery consideradas (anti-pattern: aceitar default sem reflexão).
+
+> Comandos shell, exemplo YAML completo da constitution e mapeamento de skills por tipo de documento: `references/fluxo-pre-spec.md`.
 
 ---
 
 ## Estágio II — Spec
+
+Estágio de especificação: requirements precisos em EARS, design técnico (schema/APIs/arquitetura) e spike opcional pra resolver risco técnico.
 
 ### Spec.Requirements (formato EARS)
 
@@ -231,7 +189,7 @@ Conteúdo obrigatório do `requirements.md`:
 - Usuários e perfis de acesso
 - Dados de referência (linkar paths/URLs dos documentos reais)
 - Módulos do sistema com requirements EARS
-- Regras de negócio críticas com exemplos de **dados reais** (princípio 1)
+- Regras de negócio críticas com exemplos de **dados reais** (heurística H1)
 - Requisitos não-funcionais conforme tier (ver `references/tiers.md`)
 - Dados iniciais (seed) — extraídos dos documentos reais
 - Fora do escopo V1
@@ -248,25 +206,15 @@ Escreva `specs/design.md` copiando + preenchendo `templates/design.md`. Conteúd
 - Arquitetura de componentes frontend (mobile-first se `web-saas`)
 - Organização de pastas
 - Estratégia de seed com dados reais
-- **Bounded contexts** opcional (DDD parcial — apenas se `tier: producao_real` complexo ou `hubspot` extension grande). Senão noop declarado.
-- **Decisão Spike**: este Design identificou risco técnico? Sim → cria `specs/spike.md`; Não → segue direto pra Build.Tasks.
+- **Bounded contexts** opcional (DDD parcial — apenas se `tier: producao_real` complexo ou `hubspot` extension grande); senão noop declarado
+- **Decisão Spike**: este Design identificou risco técnico? Sim → cria `specs/spike.md`; Não → segue direto pra Build.Tasks
 - Decisões importantes (cross-link com constitution)
-
-Skills sugeridas:
-- `frontend-design` se UI distintiva (web-saas)
-- `claude-api` se usa API Anthropic
-- `plugin-dev:*` se `tipo_projeto: claude-plugin`
-
-MCP sugerido:
-- `context7` pra docs atualizadas de libs
 
 **Quality Gate Design**: Schema cobre todos os módulos dos requirements | APIs têm autenticação e autorização definidas | Stack bate com constitution | Brand colors do projeto configurados (Tailwind, se UI) | Mobile-first documentado (sidebar, tabelas, cards) se UI | Decisão Spike registrada (sim/não).
 
 ### Spec.Spike (opcional)
 
-Entra **apenas** se Spec.Design identificou risco técnico (integração externa nova, lib desconhecida, dependência crítica). Box temporal sugerido: 1-3 dias.
-
-Escreva `specs/spike.md` copiando + preenchendo `templates/spike.md`. Estrutura:
+Entra **apenas** se Spec.Design identificou risco técnico (integração externa nova, lib desconhecida, dependência crítica). Box temporal sugerido: 1-3 dias. Escreva `specs/spike.md` copiando + preenchendo `templates/spike.md`. Estrutura:
 
 1. Risco identificado (origem: Spec.Design seção 8)
 2. Hipóteses (principal + alternativas)
@@ -276,15 +224,15 @@ Escreva `specs/spike.md` copiando + preenchendo `templates/spike.md`. Estrutura:
 6. Próximo passo
 7. Aprendizados pra registrar na Constitution
 
-Skills usadas:
-- `superpowers:test-driven-development` (validar hipóteses com testes)
-- `superpowers:systematic-debugging` (quando spike der erro)
-
 **Quality Gate Spike**: Hipóteses validadas (ou negadas com pivot decidido) | Riscos resolvidos ou aceitos com justificativa | Decisão registrada (constitution histórico) | Aprendizados extraídos pra constitution.
+
+> Skills sugeridas (frontend-design, claude-api, plugin-dev), MCP context7, exemplos completos EARS/BDD e skills auxiliares do Spike: `references/fluxo-spec.md`.
 
 ---
 
 ## Estágio III — Build
+
+Estágio de execução: plano-mestre quebrando o sistema em features (Tasks) e loop por feature com plano detalhado, TDD canônico e Quality Gate por feature (Implementation).
 
 ### Build.Tasks (plano-mestre)
 
@@ -310,34 +258,17 @@ Cada feature do plano-mestre deve:
 
 ### Build.Implementation — loop por feature
 
-Pra cada feature do plano-mestre:
+Pra cada feature do plano-mestre, escrever plano detalhado em `specs/plans/<feature>.md` usando `superpowers:writing-plans` com **5 ajustes de convenção SDD**:
 
-1. **Escrever plano detalhado** em `specs/plans/<feature>.md` usando `superpowers:writing-plans` com **5 ajustes de convenção SDD**:
+1. **Marcação [H1]** — header de task `### Task N: [Component] [H1]` ou step extra `- [ ] **Step X: validar contra dados reais [H1]**` antes do commit
+2. **Quebra por fase típica** absorvida no nível superior (`tasks.md` plano-mestre)
+3. **Quality Gate por feature** absorve gates antigos
+4. **Localização**: `specs/plans/<feature>.md` no projeto (autocontido)
+5. **Refactor explícito no ciclo TDD canônico** — `write test → run (FAIL) → implement → run (PASS) → REFACTOR → commit`. Refactor pode ser noop conscientemente declarado (não pulado silenciosamente); pra arquivos não-código (markdown, JSON) adapta semântica. Notação completa e anti-patterns: `references/linguagens-especificacao.md` seção 3.
 
-   1. **Marcação [H1]** — header de task `### Task N: [Component] [H1]` ou step extra `- [ ] **Step X: validar contra dados reais [H1]**` antes do commit
-   2. **Quebra por fase típica** absorvida no nível superior (`tasks.md` plano-mestre)
-   3. **Quality Gate por feature** absorve gates antigos
-   4. **Localização**: `specs/plans/<feature>.md` no projeto (autocontido)
-   5. **Refactor explícito no ciclo TDD canônico** — `write test → run (FAIL) → implement → run (PASS) → REFACTOR → commit`. Refactor pode ser noop conscientemente declarado (não pulado silenciosamente); pra arquivos não-código (markdown, JSON) adapta semântica. Notação completa e anti-patterns: `references/linguagens-especificacao.md` seção 3.
+Em seguida: cenário BDD pra tasks [H1] (validação contra dados reais — formato Given/When/Then com dados reais específicos), executar via `superpowers:executing-plans` ou `superpowers:subagent-driven-development`, atualizar `specs/progress.md` ao concluir.
 
-2. **Cenário BDD pra tasks [H1]** (validação contra dados reais) — formato Given/When/Then com dados reais específicos (planilha, exportação, dataset). Estrutura completa e exemplo: `references/linguagens-especificacao.md` seção 2.
-
-3. **Executar plano detalhado** com:
-   - `superpowers:executing-plans` — execução inline com checkpoints, OU
-   - `superpowers:subagent-driven-development` — fresh subagent per task com review entre tasks (recomendado pra features grandes)
-
-4. **Skills durante Implementation**:
-   - `superpowers:test-driven-development` — TDD canônico Red/Green/Refactor
-   - `superpowers:systematic-debugging` — em erros (reproduzir → isolar → diagnosticar → corrigir)
-   - `superpowers:verification-before-completion` — antes de declarar task pronta
-   - `superpowers:using-git-worktrees` — quando feature precisa isolamento
-   - `superpowers:dispatching-parallel-agents` — quando subtasks independem
-   - `commit-commands:commit` — substituir commits manuais
-   - `simplify` — depois de bloco grande de implementação
-
-5. **Quality Gate por feature** (gate além do gate por task): Todos os steps do plano detalhado executados | Testes da feature passando (output mostrado) | Se [H1]: comparativo contra dados reais mostrado e aprovado | Refactor declarado (executado ou noop justificado) | progress.md marcado [atendido].
-
-6. **Atualizar `specs/progress.md`** ao concluir feature.
+**Quality Gate por feature** (gate além do gate por task): Todos os steps do plano detalhado executados | Testes da feature passando (output mostrado) | Se [H1]: comparativo contra dados reais mostrado e aprovado | Refactor declarado (executado ou noop justificado) | progress.md marcado [atendido].
 
 ### Final de sessão (não é fase, é evento)
 
@@ -348,22 +279,23 @@ Quando a sessão de trabalho encerrar (mesmo no meio da Implementation):
 3. **Salvar na memória**: `remember:remember`
 4. **Relatório de sessão** (opcional): `session-report:session-report`
 
+> Listagem completa de skills durante Implementation (test-driven-development, systematic-debugging, verification-before-completion, using-git-worktrees, dispatching-parallel-agents, commit-commands:commit, simplify) e exemplos detalhados: `references/fluxo-build.md`.
+
 ---
 
 ## Estágio IV — Ship
 
+Estágio final: auditoria dimensional (Audit), preparação pra avaliação (Delivery) e deploy parametrizado por tier (Deploy). Promoção de Tier é sub-fluxo dedicado.
+
 ### Ship.Audit — 14 dimensões × 5 tiers
 
-Auditoria dimensional. Detalhe completo das 14 dimensões: `references/audit-dimensoes.md`. Matriz de obrigatoriedade por tier: `references/tiers.md` seção 3. Dim 14 (Defesa contra prompt injection) é condicional a "produto tem LLM no caminho?".
+Auditoria dimensional. Detalhe das 14 dimensões em `references/audit-dimensoes.md`. Matriz de obrigatoriedade por tier em `references/tiers.md` seção 3. Dim 14 (Defesa contra prompt injection) é condicional a "produto tem LLM no caminho?".
 
 Fluxo da Audit:
 
 1. **Pergunta dimensões `perguntar`** ao usuário no início (registra resposta na constitution)
 2. **Roda dimensões `obrigatório` e `opcional`** em paralelo via `superpowers:dispatching-parallel-agents`
-3. **Sub-agentes especializados**:
-   - `code-review:code-review` — dimensão Código
-   - `security-review` (built-in) — dimensão Segurança
-   - `plugin-dev:plugin-validator` — substitui dimensões 1-7 em `claude-plugin`
+3. **Sub-agentes especializados** quando aplicável (Código, Segurança, plugin-validator pra claude-plugin)
 4. **Compila relatório** em `specs/audit-<YYYY-MM-DD>.md` copiando + preenchendo `templates/audit.md`. Achados classificados em críticos (bloqueiam Delivery), importantes e melhorias.
 5. **`superpowers:requesting-code-review`** — review humana antes da Audit começar, se aplicável
 
@@ -371,7 +303,7 @@ Fluxo da Audit:
 
 ### Ship.Delivery
 
-Sistema rodando em ambiente de avaliação. Pré-deploy.
+Sistema rodando em ambiente de avaliação. Pré-deploy:
 
 1. **Aplicar fixes** dos achados críticos e importantes da Audit
 2. **Commit final** das correções
@@ -385,9 +317,7 @@ Sistema rodando em ambiente de avaliação. Pré-deploy.
 
 ### Ship.Deploy — parametrizado por tier
 
-Decisão do alvo foi tomada na Pré-spec.Stack (registrada na constitution). Esta fase **executa o deploy** conforme tier.
-
-Comportamento por tier (ver `references/alvos-deploy.md` pra detalhe):
+Decisão do alvo foi tomada na Pré-spec.Stack (registrada na constitution). Esta fase **executa o deploy** conforme tier (ver `references/alvos-deploy.md` pra detalhe):
 
 - **`prototipo_descartavel`**: não tem deploy. Roda local apenas. Ship.Deploy é noop declarado.
 - **`uso_interno`**: deploy simples (Docker compose num servidor, Vercel free, hosting básico). Sem rollback formal.
@@ -395,16 +325,13 @@ Comportamento por tier (ver `references/alvos-deploy.md` pra detalhe):
 - **`beta_publico`**: rollback plan obrigatório, observabilidade obrigatória, error tracking.
 - **`producao_real`**: rollback automático, alertas, on-call ou processo de incidente, monitoramento avançado.
 
-Pra `claude-plugin` no marketplace:
-
-- Se `marketplace-tools:publish-plugin` está instalado, usar o plugin (automatiza fluxo dos 6 passos com workaround dos bugs de cache)
-- Senão, fluxo manual: bump version no `marketplace.json` → commit → push → invalidar cache local
-
 **Quality Gate Deploy**: Env de prod separado (secrets fora do código) | Rollback plan documentado (mvp+) ou declarado noop (prototipo/uso_interno) | Monitoramento básico configurado (mvp+) ou declarado noop | Domínio configurado (se aplicável) | Fluxos validados em prod (smoke test pelo menos) | progress.md em 100%.
 
 ### Promoção de Tier (sub-fluxo dedicado)
 
 Quando o usuário expressar intenção de mudar tier ("promover esse projeto pra MVP", "agora vai virar prod real"), invocar a sub-skill **`sdd-promote-tier`** ou usar o command `/sdd-workflow:promote-tier`. 11 passos incrementais — não recomeça do zero.
+
+> Caso especial pra `claude-plugin` no marketplace (publish-plugin) e demais detalhes operacionais: `references/fluxo-ship.md`.
 
 ---
 
@@ -447,7 +374,11 @@ A SKILL.md tem `disable-model-invocation: true` — só ativa por triggers expl�
 
 | Reference | Conteúdo |
 |---|---|
-| `references/heuristicas.md` | **Camada 1**: 9 heurísticas universais detalhadas (sempre ativas) |
+| `references/fluxo-pre-spec.md` | **Estágio I detalhado** — Discovery, Constitution (com setup + comandos shell), Stack (3 sub-componentes detalhados) |
+| `references/fluxo-spec.md` | **Estágio II detalhado** — Requirements (EARS), Design (skills sugeridas, MCP), Spike |
+| `references/fluxo-build.md` | **Estágio III detalhado** — Tasks, Implementation (loop por feature, listagem completa de skills), Final de sessão |
+| `references/fluxo-ship.md` | **Estágio IV detalhado** — Audit (sub-agentes), Delivery, Deploy (caso especial claude-plugin), pointer pra Promoção de Tier |
+| `references/heuristicas.md` | **Camada 1**: 9 heurísticas universais detalhadas (sempre ativas) + convenções textuais ([H1]/[crítico]/[atendido]) |
 | `references/disciplinas-tier.md` | **Camada 3**: disciplinas operacionais por tier (cumulativas) |
 | `references/tiers.md` | 5 níveis + matriz Audit 14×5 + premissa "tier projetado" |
 | `references/tipos-projeto.md` | Catálogo: web-saas, claude-plugin, hubspot, outro + **Camada 2** inline (princípios arquiteturais por tipo) |
